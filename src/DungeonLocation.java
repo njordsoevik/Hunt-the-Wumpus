@@ -8,10 +8,12 @@ import java.util.List;
 public class DungeonLocation implements Location{
   private Treasure treasure;
   private List<Location> connections;
+  private Coordinate coordinate;
 
-  public DungeonLocation() {
+  public DungeonLocation(Coordinate c) {
     this.connections = new ArrayList<>();
     this.treasure = null;
+    this.coordinate=c;
   }
 
   @Override
@@ -32,6 +34,11 @@ public class DungeonLocation implements Location{
   @Override
   public Treasure getTreasure(Treasure t) {
     return this.treasure;
+  }
+
+  @Override
+  public Coordinate getCoordinate() {
+    return new Coordinate(coordinate.getX(),coordinate.getY());
   }
 
 }

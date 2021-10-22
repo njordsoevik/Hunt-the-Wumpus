@@ -16,20 +16,25 @@ public class TreasureDungeon implements Dungeon {
   public TreasureDungeon(int rows, int columns, int interconnectivity, boolean wrapped) {
     this.grid = new Location[rows][columns];
     this.rand = new Random();
-    forest = new ArrayList<>();
+    this.forest = new ArrayList<>();
     this.edges = new ArrayList<>();
     this.usedEdges = new ArrayList<>();
     this.unusedEdges = new ArrayList<>();
 
-    // Create all locations
+    // Create all locations grid
     for (int i=0; i<rows; i++) {
       for (int j = 0; j < columns; j++) {
-        Location l = new DungeonLocation();
-        grid[i][j] = l;
-        // Create all sets of locations
-        List<Coordinate> s = new ArrayList<>();
+        // Create coordinate for location and forest
         Coordinate c = new Coordinate(i,j);
+        // Create location
+        Location l = new DungeonLocation(c);
+        // Add location to grid
+        grid[i][j] = l;
+        // Create list (set) for forest
+        List<Coordinate> s = new ArrayList<>();
+        // Add coordinate to set
         s.add(c);
+        // Add set to forest
         forest.add(s);
       }
     }
@@ -54,6 +59,14 @@ public class TreasureDungeon implements Dungeon {
           edges.add(new Edge(1, c1,c2));
         }
         else if (i==rows-1 && j!=columns-1 ){
+          if (wrapped==true) {
+            List<Location> ls1 = new ArrayList<>();
+            ls1.add(grid[i][j]);
+            ls1.add(grid[0][j]);
+            c1 = new Coordinate(i,j);
+            c2 = new Coordinate(0,j);
+            edges.add(new Edge(1, c1,c2));
+          }
           List<Location> ls2 = new ArrayList<>();
           ls2.add(grid[i][j]);
           ls2.add(grid[i][j+1]);
@@ -62,6 +75,14 @@ public class TreasureDungeon implements Dungeon {
           edges.add(new Edge(1, c1,c2));
         }
         else if (j==columns-1 && i!=rows-1 ){
+          if (wrapped==true) {
+            List<Location> ls1 = new ArrayList<>();
+            ls1.add(grid[i][j]);
+            ls1.add(grid[i][0]);
+            c1 = new Coordinate(i,j);
+            c2 = new Coordinate(i,0);
+            edges.add(new Edge(1, c1,c2));
+          }
           List<Location> ls2 = new ArrayList<>();
           ls2.add(grid[i][j]);
           ls2.add(grid[i+1][j]);
@@ -72,7 +93,7 @@ public class TreasureDungeon implements Dungeon {
       }
     }
 
-    // loop through edges
+    // Loop through edges
     while (edges.size()>0) {
       // get random edge
       int rand_i = rand.nextInt(edges.size());
@@ -115,7 +136,7 @@ public class TreasureDungeon implements Dungeon {
     }
   }
 
-  int checkSet (Coordinate c) {
+  private int checkSet (Coordinate c) {
     for (int i=0;i<forest.size();i++) {
       if (forest.get(i).contains(c)) {
         return i;
@@ -124,23 +145,38 @@ public class TreasureDungeon implements Dungeon {
     return -1;
   }
 
-  void combineSets (int i, int j) {
+  private void combineSets (int i, int j) {
     forest.get(i).addAll(forest.get(j));
     forest.remove(j);
   }
 
-  Location getCoordinateLocation (Coordinate c) {
+
+
+  private Location getCoordinateLocation (Coordinate c) {
     return grid[c.getX()][c.getY()];
   }
 
+  private Coordinate getLocation (Location l) {
+    return l.getCoordinate();
+  }
+
   public static void main(String[] args) {
-    TreasureDungeon p = new TreasureDungeon(4,3,0,true);
+    TreasureDungeon p = new TreasureDungeon(4,3,1,true);
     Location l = p.grid[0][0];
+    for (Location l1:l.getPaths()) {
+      System.out.println(l1.getCoordinate());
+    }
+
   }
 
   @Override
   public void movePlayer(Direction dir) {
 
+  }
+
+  @Override
+  public Treasure getCurrentLocationTreasure() {
+    return null;
   }
 
   @Override

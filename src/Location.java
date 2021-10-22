@@ -34,4 +34,11 @@ public interface Location {
    */
   Treasure getTreasure(Treasure t);
 
+  /**
+   * Get the coordinate of this location on the grid.
+   *
+   * @return the coordinate.
+   */
+  Coordinate getCoordinate();
+
 }
