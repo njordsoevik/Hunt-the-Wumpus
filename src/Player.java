@@ -32,4 +32,22 @@ class Player {
   public void addTreasure(Treasure t) {
     treasures.add(t);
   }
+
+  /**
+   * Get the list of coordinate this player is placed.
+   *
+   * @return the coordinate.
+   */
+  public Coordinate getCoordinate() {
+    return this.coordinate;
+  }
+
+  /**
+   * Set the list of coordinate this player is placed.
+   *
+   * @param c The coordinate.
+   */
+  public void setCoordinate(Coordinate c) {
+    this.coordinate = c;
+  }
 }

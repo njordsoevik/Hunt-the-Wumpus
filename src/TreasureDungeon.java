@@ -144,7 +144,7 @@ public class TreasureDungeon implements Dungeon {
     }
 
     setStartEnd();
-
+    this.player = new Player(startC);
   }
 
   private void setStartEnd () {
@@ -152,7 +152,7 @@ public class TreasureDungeon implements Dungeon {
             rand.nextInt(this.grid[0].length));
     Coordinate randEnd = new Coordinate(rand.nextInt(this.grid.length),
             rand.nextInt(this.grid[0].length));
-    while (randStart.distanceTo(randEnd)<5){
+    while (Math.abs(randEnd.getI()-randStart.getI())+Math.abs(randEnd.getJ()-randStart.getJ())<5){
       randEnd = new Coordinate(rand.nextInt(this.grid.length),
               rand.nextInt(this.grid[0].length));
     }
@@ -175,7 +175,7 @@ public class TreasureDungeon implements Dungeon {
   }
 
   private Location getCoordinateLocation (Coordinate c) {
-    return grid[c.getX()][c.getY()];
+    return grid[c.getI()][c.getJ()];
   }
 
   private Coordinate getLocation (Location l) {
@@ -188,13 +188,19 @@ public class TreasureDungeon implements Dungeon {
     for (Location l1:l.getPaths()) {
       System.out.println(l1.getCoordinate());
     }
-    System.out.println(p.startC);
-    System.out.println(p.endC);
-
   }
 
   @Override
   public void movePlayer(Direction dir) {
+    Coordinate n = player.getCoordinate().addCoordinate(dir.getCoordinate());
+    Location currentLocation = getCoordinateLocation(player.getCoordinate());
+    Location newLocation = getCoordinateLocation(n);
+    if (currentLocation.getPaths().contains(newLocation)) {
+      player.setCoordinate(n);
+    }
+    else {
+      throw new IllegalArgumentException("Cannot move there");
+    }
 
   }
 
@@ -205,7 +211,29 @@ public class TreasureDungeon implements Dungeon {
 
   @Override
   public List<Direction> getDirections() {
-    return null;
+    Coordinate playerCoordinate = player.getCoordinate();
+    System.out.println("1");
+    Location currentLocation = getCoordinateLocation(playerCoordinate);
+    System.out.println("1");
+    List<Location> locations = currentLocation.getPaths();
+    System.out.println("1");
+    List<Direction> directions = new ArrayList<>();
+    for (Location l : locations ) {
+      System.out.println(locations);
+      if (playerCoordinate.getI()-l.getCoordinate().getI()==1) {
+        directions.add(Direction.NORTH);
+      }
+      else if (playerCoordinate.getI()-l.getCoordinate().getI()==-1) {
+        directions.add(Direction.SOUTH);
+      }
+      else if (playerCoordinate.getJ()-l.getCoordinate().getJ()==-1) {
+        directions.add(Direction.EAST);
+      }
+      else {
+        directions.add(Direction.WEST);
+      }
+    }
+    return directions;
   }
 
   @Override

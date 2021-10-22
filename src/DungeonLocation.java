@@ -38,7 +38,7 @@ public class DungeonLocation implements Location{
 
   @Override
   public Coordinate getCoordinate() {
-    return new Coordinate(coordinate.getX(),coordinate.getY());
+    return new Coordinate(coordinate.getI(),coordinate.getJ());
   }
 
 }

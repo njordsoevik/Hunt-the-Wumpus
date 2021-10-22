@@ -1,8 +1,8 @@
 import java.util.Objects;
 
 class Coordinate {
-  int x;
-  int y;
+  int i;
+  int j;
 
   @Override
   public boolean equals(Object o) {
@@ -10,36 +10,33 @@ class Coordinate {
       return false;
     }
     Coordinate c = (Coordinate) o;
-    return c.x == x && c.y == y;
+    return c.i == i && c.j == j;
   }
 
-  public Coordinate(int x, int y) {
-    this.x = x;
-    this.y = y;
+  public Coordinate(int i, int j) {
+    this.i = i;
+    this.j = j;
   }
 
-  public int getX() {
-    return this.x;
+  public int getI() {
+    return this.i;
   }
 
-  public int getY() {
-    return this.y;
+  public int getJ() {
+    return this.j;
   }
 
-  public int distanceTo(Coordinate c) {
-    double xDistance = Math.pow((this.getX() - c.getX()), 2);
-    double yDistance = Math.pow((this.getY() - c.getY()), 2);
-    double result = Math.pow(xDistance+yDistance,1/2);
-    return (int) result;
+  public Coordinate addCoordinate (Coordinate c) {
+    return new Coordinate(this.getI()+c.getJ(), this.getI()+c.getJ());
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(x, y);
+    return Objects.hash(i, j);
   }
 
   @Override
   public String toString() {
-    return String.format("[" + this.x + "," + "" + this.y + "]");
+    return String.format("[" + this.i + "," + "" + this.j + "]");
   }
 }

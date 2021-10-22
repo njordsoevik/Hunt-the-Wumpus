@@ -4,24 +4,19 @@
  * South, East, and West.
  */
 public enum Direction {
-  NORTH(0,1),
-  SOUTH(0,-1),
-  EAST(1,0),
-  WEST(-1,0);
+  NORTH(new Coordinate(1,0)),
+  SOUTH(new Coordinate(-1,0)),
+  EAST(new Coordinate(0,1)),
+  WEST(new Coordinate(0,-1));
 
-  private final int x;
-  private final int y;
+  private final Coordinate c;
 
-  Direction(int x, int y) {
-    this.x = x;
-    this.y = y;
+  Direction(Coordinate c) {
+    this.c=c;
   }
 
-  public int getX() {
-    return this.x;
+  public Coordinate getCoordinate() {
+    return this.c;
   }
 
-  public int getY() {
-    return this.x;
-  }
 }
