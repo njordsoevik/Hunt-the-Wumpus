@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -7,6 +8,11 @@ import java.util.List;
 public class DungeonLocation implements Location{
   private Treasure treasure;
   private List<Location> connections;
+
+  public DungeonLocation() {
+    this.connections = new ArrayList<>();
+    this.treasure = null;
+  }
 
   @Override
   public List<Location> getPaths() {

@@ -6,23 +6,34 @@ import java.util.List;
  */
 public class Edge implements Comparable<Edge>{
   private int weight;
-  private List<Location> locations;
+  private Coordinate source;
+  private Coordinate destination;
 
-  public Edge(int weight, List<Location> locations) {
+  public Edge(int weight, Coordinate source, Coordinate destination) {
     this.weight = weight;
-    this.locations = locations;
+    this.source = source;
+    this.destination = destination;
   }
 
   public int getWeight(){
     return this.weight;
   }
 
-  public List<Location> getLocations() {
-    return this.locations;
+  public Coordinate getSource() {
+    return this.source;
+  }
+
+  public Coordinate getDestination() {
+    return this.destination;
   }
 
   @Override
   public int compareTo(Edge o) {
     return this.weight - o.weight;
+  }
+
+  @Override
+  public String toString() {
+    return String.format("Source:" +this.source+", " +"Destination: "+this.destination);
   }
 }
