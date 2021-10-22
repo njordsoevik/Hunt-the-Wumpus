@@ -148,16 +148,16 @@ public class TreasureDungeon implements Dungeon {
   }
 
   private void setStartEnd () {
-    Coordinate randStart = new Coordinate(rand.nextInt(this.grid.length),
-            rand.nextInt(this.grid[0].length));
-    Coordinate randEnd = new Coordinate(rand.nextInt(this.grid.length),
-            rand.nextInt(this.grid[0].length));
-    while (Math.abs(randEnd.getI()-randStart.getI())+Math.abs(randEnd.getJ()-randStart.getJ())<5){
-      randEnd = new Coordinate(rand.nextInt(this.grid.length),
-              rand.nextInt(this.grid[0].length));
-    }
-    this.startC = randStart;
-    this.endC = randEnd;
+//    Coordinate randStart = new Coordinate(rand.nextInt(this.grid.length),
+//            rand.nextInt(this.grid[0].length));
+//    Coordinate randEnd = new Coordinate(rand.nextInt(this.grid.length),
+//            rand.nextInt(this.grid[0].length));
+//    while (Math.abs(randEnd.getI()-randStart.getI())+Math.abs(randEnd.getJ()-randStart.getJ())<5){
+//      randEnd = new Coordinate(rand.nextInt(this.grid.length),
+//              rand.nextInt(this.grid[0].length));
+//    }
+    this.startC = new Coordinate(0,0);
+    this.endC = new Coordinate(5,11);
   }
 
   private int checkSet (Coordinate c) {
@@ -167,6 +167,10 @@ public class TreasureDungeon implements Dungeon {
       }
     }
     return -1;
+  }
+
+  private Direction checkDirection(Location l1, Location l2) {
+    return null;
   }
 
   private void combineSets (int i, int j) {
@@ -192,11 +196,9 @@ public class TreasureDungeon implements Dungeon {
 
   @Override
   public void movePlayer(Direction dir) {
-    Coordinate n = player.getCoordinate().addCoordinate(dir.getCoordinate());
     Location currentLocation = getCoordinateLocation(player.getCoordinate());
-    Location newLocation = getCoordinateLocation(n);
-    if (currentLocation.getPaths().contains(newLocation)) {
-      player.setCoordinate(n);
+    if (getDirections().contains(dir)) {
+      //player.setCoordinate();
     }
     else {
       throw new IllegalArgumentException("Cannot move there");
@@ -212,14 +214,10 @@ public class TreasureDungeon implements Dungeon {
   @Override
   public List<Direction> getDirections() {
     Coordinate playerCoordinate = player.getCoordinate();
-    System.out.println("1");
     Location currentLocation = getCoordinateLocation(playerCoordinate);
-    System.out.println("1");
     List<Location> locations = currentLocation.getPaths();
-    System.out.println("1");
     List<Direction> directions = new ArrayList<>();
     for (Location l : locations ) {
-      System.out.println(locations);
       if (playerCoordinate.getI()-l.getCoordinate().getI()==1) {
         directions.add(Direction.NORTH);
       }

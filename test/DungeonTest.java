@@ -14,10 +14,6 @@ public class DungeonTest {
     q = new TreasureDungeon(4,5,0,false);
   }
 
-  @Test
-  public void movePlayer() {
-
-  }
 
   @Test
   public void getCurrentLocationTreasure() {
@@ -25,10 +21,15 @@ public class DungeonTest {
 
   @Test
   public void getDirections() {
-    System.out.println(q.getDirections());
-    q.movePlayer(Direction.NORTH);
-    System.out.println(q.getDirections());
+    //System.out.println(q.getDirections());
   }
+
+  @Test
+  public void movePlayer() {
+    System.out.println(q.getDirections());
+    q.movePlayer(Direction.SOUTH);
+  }
+
 
   @Test
   public void getPlayerTreasure() {
