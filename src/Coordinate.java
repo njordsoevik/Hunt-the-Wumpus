@@ -1,6 +1,6 @@
 import java.util.Objects;
 
-public class Coordinate {
+class Coordinate {
   int x;
   int y;
 
@@ -26,14 +26,20 @@ public class Coordinate {
     return this.y;
   }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(x,y);
+  public int distanceTo(Coordinate c) {
+    double xDistance = Math.pow((this.getX() - c.getX()), 2);
+    double yDistance = Math.pow((this.getY() - c.getY()), 2);
+    double result = Math.pow(xDistance+yDistance,1/2);
+    return (int) result;
   }
 
+  @Override
+  public int hashCode() {
+    return Objects.hash(x, y);
+  }
 
   @Override
   public String toString() {
-    return String.format("[" +this.x+"," +"" +this.y+"]");
+    return String.format("[" + this.x + "," + "" + this.y + "]");
   }
 }

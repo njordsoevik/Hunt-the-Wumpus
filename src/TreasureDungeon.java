@@ -11,11 +11,19 @@ public class TreasureDungeon implements Dungeon {
   private List<Edge> usedEdges;
   private List<Edge> unusedEdges;
   private Random rand;
-
+  private Coordinate startC;
+  private Coordinate endC;
 
   public TreasureDungeon(int rows, int columns, int interconnectivity, boolean wrapped) {
-    this.grid = new Location[rows][columns];
+    this(rows,columns,interconnectivity,wrapped,null);
+  }
+
+  public TreasureDungeon(int rows, int columns, int interconnectivity, boolean wrapped, Long seed) {
     this.rand = new Random();
+    if (!(seed==null)) {
+      this.rand.setSeed(seed);
+    }
+    this.grid = new Location[rows][columns];
     this.forest = new ArrayList<>();
     this.edges = new ArrayList<>();
     this.usedEdges = new ArrayList<>();
@@ -112,7 +120,7 @@ public class TreasureDungeon implements Dungeon {
       edges.remove(e);
     }
 
-    // loop for interconnectivity
+    // Loop for interconnectivity
     for (int k = 0; k < interconnectivity; k++) {
       if (unusedEdges.size()>0) {
         int rand_i = rand.nextInt(unusedEdges.size());
@@ -134,6 +142,22 @@ public class TreasureDungeon implements Dungeon {
       l1.addPath(l2);
       l2.addPath(l1);
     }
+
+    setStartEnd();
+
+  }
+
+  private void setStartEnd () {
+    Coordinate randStart = new Coordinate(rand.nextInt(this.grid.length),
+            rand.nextInt(this.grid[0].length));
+    Coordinate randEnd = new Coordinate(rand.nextInt(this.grid.length),
+            rand.nextInt(this.grid[0].length));
+    while (randStart.distanceTo(randEnd)<5){
+      randEnd = new Coordinate(rand.nextInt(this.grid.length),
+              rand.nextInt(this.grid[0].length));
+    }
+    this.startC = randStart;
+    this.endC = randEnd;
   }
 
   private int checkSet (Coordinate c) {
@@ -150,8 +174,6 @@ public class TreasureDungeon implements Dungeon {
     forest.remove(j);
   }
 
-
-
   private Location getCoordinateLocation (Coordinate c) {
     return grid[c.getX()][c.getY()];
   }
@@ -161,11 +183,13 @@ public class TreasureDungeon implements Dungeon {
   }
 
   public static void main(String[] args) {
-    TreasureDungeon p = new TreasureDungeon(4,3,1,true);
+    TreasureDungeon p = new TreasureDungeon(6,7,1,true);
     Location l = p.grid[0][0];
     for (Location l1:l.getPaths()) {
       System.out.println(l1.getCoordinate());
     }
+    System.out.println(p.startC);
+    System.out.println(p.endC);
 
   }
 
