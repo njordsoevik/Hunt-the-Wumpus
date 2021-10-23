@@ -6,10 +6,12 @@ import java.util.List;
  */
 public class Edge implements Comparable<Edge>{
   private int weight;
+  private Direction direction;
   private Coordinate source;
   private Coordinate destination;
 
-  public Edge(int weight, Coordinate source, Coordinate destination) {
+  public Edge(int weight, Coordinate source, Coordinate destination, Direction direction) {
+    this.direction = direction;
     this.weight = weight;
     this.source = source;
     this.destination = destination;
@@ -17,6 +19,10 @@ public class Edge implements Comparable<Edge>{
 
   public int getWeight(){
     return this.weight;
+  }
+
+  public Direction getDirection(){
+    return this.direction;
   }
 
   public Coordinate getSource() {

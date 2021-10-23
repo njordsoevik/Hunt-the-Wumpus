@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.Map;
 
 /**
  * Locations throughout the dungeon are access points. These navigated by the player to move through
@@ -11,14 +12,14 @@ public interface Location {
    *
    * @return the list of locations.
    */
-  List<Location> getPaths();
+  Map<Direction, Location> getPaths();
 
   /**
    * Add to the list of valid locations this location is connected to.
    *
    * @param l The location to place in this location's path list.
    */
-  void addPath(Location l);
+  void addPath(Direction dir, Location l);
 
   /**
    * Set the treasure this location is holding.

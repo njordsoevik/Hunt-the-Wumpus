@@ -19,4 +19,19 @@ public enum Direction {
     return this.c;
   }
 
+  public Direction getInverse() {
+    if (this == NORTH) {
+      return SOUTH;
+    }
+    else if (this == SOUTH) {
+      return NORTH;
+    }
+    else if (this == EAST) {
+      return WEST;
+    }
+    else {
+      return EAST;
+    }
+  }
+
 }

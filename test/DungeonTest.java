@@ -27,7 +27,7 @@ public class DungeonTest {
   @Test
   public void movePlayer() {
     System.out.println(q.getDirections());
-    q.movePlayer(Direction.SOUTH);
+    //q.movePlayer(Direction.SOUTH);
   }
 
 

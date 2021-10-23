@@ -1,6 +1,6 @@
 import java.util.Objects;
 
-class Coordinate {
+public class Coordinate {
   int i;
   int j;
 

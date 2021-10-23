@@ -1,6 +1,4 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class TreasureDungeon implements Dungeon {
   private Location[][] grid;
@@ -19,6 +17,9 @@ public class TreasureDungeon implements Dungeon {
   }
 
   public TreasureDungeon(int rows, int columns, int interconnectivity, boolean wrapped, Long seed) {
+    if (rows > Integer.MAX_VALUE || columns > Integer.MAX_VALUE || interconnectivity> Integer.MAX_VALUE ) {
+      throw new ArithmeticException("Input above max values");
+    }
     this.rand = new Random();
     if (!(seed==null)) {
       this.rand.setSeed(seed);
@@ -58,13 +59,13 @@ public class TreasureDungeon implements Dungeon {
           ls1.add(grid[i+1][j]);
           c1 = new Coordinate(i,j);
           c2 = new Coordinate(i+1,j);
-          edges.add(new Edge(1, c1,c2));
+          edges.add(new Edge(1, c1,c2,Direction.SOUTH));
           List<Location> ls2 = new ArrayList<>();
           ls2.add(grid[i][j]);
           ls2.add(grid[i][j+1]);
           c1 = new Coordinate(i,j);
           c2 = new Coordinate(i,j+1);
-          edges.add(new Edge(1, c1,c2));
+          edges.add(new Edge(1, c1,c2,Direction.EAST));
         }
         else if (i==rows-1 && j!=columns-1 ){
           if (wrapped==true) {
@@ -73,14 +74,14 @@ public class TreasureDungeon implements Dungeon {
             ls1.add(grid[0][j]);
             c1 = new Coordinate(i,j);
             c2 = new Coordinate(0,j);
-            edges.add(new Edge(1, c1,c2));
+            edges.add(new Edge(1, c1,c2,Direction.SOUTH));
           }
           List<Location> ls2 = new ArrayList<>();
           ls2.add(grid[i][j]);
           ls2.add(grid[i][j+1]);
           c1 = new Coordinate(i,j);
           c2 = new Coordinate(i,j+1);
-          edges.add(new Edge(1, c1,c2));
+          edges.add(new Edge(1, c1,c2,Direction.EAST));
         }
         else if (j==columns-1 && i!=rows-1 ){
           if (wrapped==true) {
@@ -89,14 +90,14 @@ public class TreasureDungeon implements Dungeon {
             ls1.add(grid[i][0]);
             c1 = new Coordinate(i,j);
             c2 = new Coordinate(i,0);
-            edges.add(new Edge(1, c1,c2));
+            edges.add(new Edge(1, c1,c2,Direction.EAST));
           }
           List<Location> ls2 = new ArrayList<>();
           ls2.add(grid[i][j]);
           ls2.add(grid[i+1][j]);
           c1 = new Coordinate(i,j);
           c2 = new Coordinate(i+1,j);
-          edges.add(new Edge(1, c1,c2));
+          edges.add(new Edge(1, c1,c2,Direction.SOUTH));
         }
       }
     }
@@ -139,8 +140,8 @@ public class TreasureDungeon implements Dungeon {
       Coordinate c2 = e.getDestination();
       Location l1 = getCoordinateLocation(c1);
       Location l2 = getCoordinateLocation(c2);
-      l1.addPath(l2);
-      l2.addPath(l1);
+      l1.addPath(e.getDirection(),l2);
+      l2.addPath(e.getDirection().getInverse(),l1);//TODO switch to opposite
     }
 
     setStartEnd();
@@ -189,9 +190,18 @@ public class TreasureDungeon implements Dungeon {
   public static void main(String[] args) {
     TreasureDungeon p = new TreasureDungeon(6,7,1,true);
     Location l = p.grid[0][0];
-    for (Location l1:l.getPaths()) {
-      System.out.println(l1.getCoordinate());
+    System.out.println(p.grid);
+    for (int i=0;i<p.grid.length;i++) {
+      System.out.println("");
+      for (int j=0;j<p.grid[i].length;j++) {
+        System.out.print(i+""+j+" ");
+      }
     }
+
+  }
+
+  private Location getLocationByDirection(Location l, Direction dir) {
+    return null;
   }
 
   @Override
@@ -212,25 +222,25 @@ public class TreasureDungeon implements Dungeon {
   }
 
   @Override
-  public List<Direction> getDirections() {
+  public Set<Direction> getDirections() {
     Coordinate playerCoordinate = player.getCoordinate();
     Location currentLocation = getCoordinateLocation(playerCoordinate);
-    List<Location> locations = currentLocation.getPaths();
-    List<Direction> directions = new ArrayList<>();
-    for (Location l : locations ) {
-      if (playerCoordinate.getI()-l.getCoordinate().getI()==1) {
-        directions.add(Direction.NORTH);
-      }
-      else if (playerCoordinate.getI()-l.getCoordinate().getI()==-1) {
-        directions.add(Direction.SOUTH);
-      }
-      else if (playerCoordinate.getJ()-l.getCoordinate().getJ()==-1) {
-        directions.add(Direction.EAST);
-      }
-      else {
-        directions.add(Direction.WEST);
-      }
-    }
+    Map<Direction, Location> locations = currentLocation.getPaths();
+    Set<Direction> directions = locations.keySet();
+//    for (Location l : locations ) {
+//      if (playerCoordinate.getI()-l.getCoordinate().getI()==1) {
+//        directions.add(Direction.NORTH);
+//      }
+//      else if (playerCoordinate.getI()-l.getCoordinate().getI()==-1) {
+//        directions.add(Direction.SOUTH);
+//      }
+//      else if (playerCoordinate.getJ()-l.getCoordinate().getJ()==-1) {
+//        directions.add(Direction.EAST);
+//      }
+//      else {
+//        directions.add(Direction.WEST);
+//      }
+//    }
     return directions;
   }
 
