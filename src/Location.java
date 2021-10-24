@@ -33,7 +33,7 @@ public interface Location {
    *
    * @param t The treasure placed in this location.
    */
-  Treasure getTreasure(Treasure t);
+  Treasure getTreasure();
 
   /**
    * Get the coordinate of this location on the grid.

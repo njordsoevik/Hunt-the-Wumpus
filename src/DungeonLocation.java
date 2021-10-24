@@ -34,7 +34,7 @@ public class DungeonLocation implements Location {
   }
 
   @Override
-  public Treasure getTreasure(Treasure t) {
+  public Treasure getTreasure() {
     return this.treasure;
   }
 

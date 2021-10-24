@@ -10,6 +10,7 @@ public class Driver {
     int rows;
     int columns;
     int interconnectivity;
+    int t_percent;
     boolean wrapped;
     System.out.println("Create a dungeon! \n");
     System.out.println("Specify number of rows: \n");
@@ -18,9 +19,10 @@ public class Driver {
     columns = Integer.parseInt(scan.nextLine());
     System.out.println("Specify interconnectivity: \n");
     interconnectivity = Integer.parseInt(scan.nextLine());
-    Dungeon d = new TreasureDungeon(rows, columns, interconnectivity, false);
+    System.out.println("Treasure percent: \n");
+    t_percent = Integer.parseInt(scan.nextLine());
+    Dungeon d = new TreasureDungeon(rows, columns, interconnectivity, false, t_percent);
     System.out.println("'d' for directions, 'north' to move north, 'q' to quit");
-    //while (!input.equalsIgnoreCase("q")) {
 
     while (!input.equalsIgnoreCase("no") && !input.equalsIgnoreCase("q")) {
       if (input.equalsIgnoreCase("yes")) {
