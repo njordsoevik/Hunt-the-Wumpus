@@ -72,11 +72,11 @@ public class TreasureDungeon implements Dungeon {
 
   @Override
   public void movePlayer(Direction dir) {
-    // Get player current location
-    Location currentLocation = getCoordinateLocation(player.getCoordinate());
-    if (isEndSquare(currentLocation.getCoordinate())) {
+    if (isGameOver()) {
       throw new IllegalArgumentException("Game is over!");
     }
+    // Get player current location
+    Location currentLocation = getCoordinateLocation(player.getCoordinate());
     // If current location has this direction available
     if (getDirections().contains(dir)) { // Set player coordinate
       Coordinate newSquare = currentLocation.getPaths().get(dir).getCoordinate();
@@ -90,11 +90,17 @@ public class TreasureDungeon implements Dungeon {
 
   @Override
   public List<Treasure> getCurrentLocationTreasure() {
+    if (isGameOver()) {
+      throw new IllegalArgumentException("Game is over!");
+    }
     return getCoordinateLocation(player.getCoordinate()).getTreasure();
   }
 
   @Override
   public Set<Direction> getDirections() {
+    if (isGameOver()) {
+      throw new IllegalArgumentException("Game is over!");
+    }
     Coordinate playerCoordinate = player.getCoordinate();
     Location currentLocation = getCoordinateLocation(playerCoordinate);
     Set<Direction> directions = currentLocation.getPaths().keySet();
@@ -108,6 +114,9 @@ public class TreasureDungeon implements Dungeon {
 
   @Override
   public void takeTreasure() {
+    if (isGameOver()) {
+      throw new IllegalArgumentException("Game is over!");
+    }
     Location current = getCoordinateLocation(player.getCoordinate());
     if (!current.getTreasure().isEmpty()) {
       player.addTreasure(current.getTreasure());

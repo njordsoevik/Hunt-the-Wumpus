@@ -50,7 +50,6 @@ public class DungeonTest {
     p = new TreasureDungeon(11,22,1,false, 120);
   }
 
-
   @Test
   public void getDirectionsWrapped() {
     Set<Direction> d = new HashSet<>();
@@ -103,7 +102,7 @@ public class DungeonTest {
   }
 
   @Test
-  public void getCurrentLocationOneTreasure() {
+  public void getCurrentLocationTreasureOne() {
     Dungeon d = new TreasureDungeon(6,7,0,false,100,4L);
     List<Treasure> treasures = new ArrayList<>();
     treasures.add(Treasure.RUBY);
@@ -111,7 +110,7 @@ public class DungeonTest {
   }
 
   @Test
-  public void getCurrentLocationMultipleTreasure() {
+  public void getCurrentLocationTreasureMultiple() {
     Dungeon d = new TreasureDungeon(6,7,0,false,300,4L);
     List<Treasure> treasures = new ArrayList<>();
     treasures.add(Treasure.RUBY);
@@ -121,7 +120,19 @@ public class DungeonTest {
   }
 
   @Test
-  public void takeTreasure() {
+  public void takeAndGetTreasureNone() {
+    Dungeon k = new TreasureDungeon(14,15,2,true, 0,4L);
+    List<Treasure> player_treasures = new ArrayList<>();
+    Assert.assertEquals(player_treasures,k.getPlayerTreasure()); // Check start no treasure
+    List<Treasure> treasures = new ArrayList<>();
+    Assert.assertEquals(treasures,k.getCurrentLocationTreasure());
+    k.takeTreasure();
+    Assert.assertEquals(player_treasures,k.getPlayerTreasure()); // Check no treasure added
+    Assert.assertEquals(treasures,k.getCurrentLocationTreasure()); // Check no treasure removed
+  }
+
+  @Test
+  public void takeAndGetTreasureOne() {
     List<Treasure> player_treasures = new ArrayList<>();
     Assert.assertEquals(player_treasures,q.getPlayerTreasure()); // Check start no treasure
     List<Treasure> treasures = new ArrayList<>();
@@ -132,13 +143,50 @@ public class DungeonTest {
     treasures.remove(Treasure.SAPPHIRE);
     Assert.assertEquals(player_treasures,q.getPlayerTreasure()); // Check treasure added
     Assert.assertEquals(treasures,q.getCurrentLocationTreasure()); // Check treasure removed
-
   }
-
 
   @Test
-  public void getPlayerTreasure() {
+  public void takeAndGetTreasureMultipleIncludingDuplicates() {
+    Dungeon k = new TreasureDungeon(14,15,2,true, 400,4L);
+    List<Treasure> player_treasures = new ArrayList<>();
+    Assert.assertEquals(player_treasures,k.getPlayerTreasure()); // Check start no treasure
+    List<Treasure> treasures = new ArrayList<>();
+    treasures.add(Treasure.RUBY);
+    treasures.add(Treasure.SAPPHIRE);
+    treasures.add(Treasure.DIAMOND);
+    treasures.add(Treasure.RUBY);
+    Assert.assertEquals(treasures,k.getCurrentLocationTreasure());
+    k.takeTreasure();
+    player_treasures.add(Treasure.RUBY);
+    player_treasures.add(Treasure.SAPPHIRE);
+    player_treasures.add(Treasure.DIAMOND);
+    player_treasures.add(Treasure.RUBY);
+    treasures.clear();
+    Assert.assertEquals(player_treasures,k.getPlayerTreasure()); // Check treasure added
+    Assert.assertEquals(treasures,k.getCurrentLocationTreasure()); // Check treasure removed
   }
 
+  @Test
+  public void takeAndGetTreasureTwoTakes() {
+    List<Treasure> player_treasures = new ArrayList<>();
+    Assert.assertEquals(player_treasures,q.getPlayerTreasure()); // Check start no treasure
+    List<Treasure> treasures = new ArrayList<>();
+    treasures.add(Treasure.SAPPHIRE); // Check one treasure exists at location
+    Assert.assertEquals(treasures,q.getCurrentLocationTreasure());
+    q.takeTreasure();
+    player_treasures.add(Treasure.SAPPHIRE);
+    treasures.remove(Treasure.SAPPHIRE);
+    Assert.assertEquals(player_treasures,q.getPlayerTreasure()); // Check treasure added
+    Assert.assertEquals(treasures,q.getCurrentLocationTreasure()); // Check treasure removed
+    // Test move and take another
+    q.movePlayer(Direction.WEST);
+    treasures.add(Treasure.DIAMOND); // Check one treasure exists at location
+    Assert.assertEquals(treasures,q.getCurrentLocationTreasure());
+    q.takeTreasure();
+    player_treasures.add(Treasure.DIAMOND);
+    treasures.remove(Treasure.DIAMOND);
+    Assert.assertEquals(player_treasures,q.getPlayerTreasure()); // Check treasure added
+    Assert.assertEquals(treasures,q.getCurrentLocationTreasure()); // Check treasure removed
+  }
 
 }
