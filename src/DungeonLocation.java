@@ -1,26 +1,25 @@
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * DungeonLocation implements the Location interface. These navigated by the player to move through
  * the dungeon. Dungeons can also store treasure.
  */
 public class DungeonLocation implements Location {
-  private Treasure treasure;
+  private List<Treasure> treasure;
   private HashMap<Direction, Location> connections;
   private Coordinate coordinate;
 
   public DungeonLocation(Coordinate c) {
     this.connections = new HashMap<>();
-    this.treasure = null;
+    this.treasure = new ArrayList<>();
     this.coordinate = c;
   }
 
   @Override
   public Map<Direction, Location> getPaths() {
     Map<Direction, Location> copy = new HashMap<>();
-    return connections;
+    copy.putAll(connections);
+    return copy;
   }
 
   @Override
@@ -29,13 +28,18 @@ public class DungeonLocation implements Location {
   }
 
   @Override
-  public void setTreasure(Treasure t) {
-    this.treasure = t;
+  public void addTreasure(Treasure t) {
+    this.treasure.add(t);
   }
 
   @Override
-  public Treasure getTreasure() {
+  public List<Treasure> getTreasure() {
     return this.treasure;
+  }
+
+  @Override
+  public void removeTreasure() {
+    this.treasure.clear();
   }
 
   @Override
@@ -68,7 +72,6 @@ public class DungeonLocation implements Location {
     Location p = new DungeonLocation(new Coordinate(1,1));
     p.addPath(Direction.NORTH,p);
     p.addPath(Direction.SOUTH,p);
-
     p.addPath(Direction.EAST,p);
     System.out.println(p.toString());
   }

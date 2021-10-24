@@ -34,6 +34,15 @@ class Player {
   }
 
   /**
+   * Add to the list of treasures this player has picked up.
+   *
+   * @param t The treasure picked up.
+   */
+  public void addTreasure(List<Treasure> t) {
+    treasures.addAll(t);
+  }
+
+  /**
    * Get the list of coordinate this player is placed.
    *
    * @return the coordinate.

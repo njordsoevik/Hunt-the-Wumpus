@@ -74,9 +74,14 @@ public class TreasureDungeon implements Dungeon {
   public void movePlayer(Direction dir) {
     // Get player current location
     Location currentLocation = getCoordinateLocation(player.getCoordinate());
+    if (isEndSquare(currentLocation.getCoordinate())) {
+      throw new IllegalArgumentException("Game is over!");
+    }
     // If current location has this direction available
     if (getDirections().contains(dir)) { // Set player coordinate
-      player.setCoordinate(currentLocation.getPaths().get(dir).getCoordinate());
+      Coordinate newSquare = currentLocation.getPaths().get(dir).getCoordinate();
+
+      player.setCoordinate(newSquare);
     } else {
       throw new IllegalArgumentException("Cannot move there");
     }
@@ -84,7 +89,7 @@ public class TreasureDungeon implements Dungeon {
   }
 
   @Override
-  public Treasure getCurrentLocationTreasure() {
+  public List<Treasure> getCurrentLocationTreasure() {
     return getCoordinateLocation(player.getCoordinate()).getTreasure();
   }
 
@@ -98,14 +103,17 @@ public class TreasureDungeon implements Dungeon {
 
   @Override
   public List<Treasure> getPlayerTreasure() {
-    return null;
+    return this.player.getTreasures();
   }
 
   @Override
   public void takeTreasure() {
-
+    Location current = getCoordinateLocation(player.getCoordinate());
+    if (!current.getTreasure().isEmpty()) {
+      player.addTreasure(current.getTreasure());
+      current.removeTreasure();
+    }
   }
-
 
   private void createGrid(int rows, int columns) {
     // Create all locations grid
@@ -264,16 +272,23 @@ public class TreasureDungeon implements Dungeon {
         places.add(z);
       }
     }
-    Collections.shuffle(places);
+    Collections.shuffle(places,rand);
     for (int k = 0; k < num; k++) {
       // k modulo size to wrap around places list in case of over 100% treasure
       int x = places.get(k%places.size())[0];
       int y = places.get(k%places.size())[1];
       treasureIndex = rand.nextInt(Treasure.values().length);
-      this.grid[x][y].setTreasure(Treasure.values()[treasureIndex]);
+      this.grid[x][y].addTreasure(Treasure.values()[treasureIndex]);
     }
   }
 
+  private boolean isEndSquare(Coordinate c) {
+    return endC.equals(c);
+  }
+
+  private boolean isGameOver() {
+    return isEndSquare(this.player.getCoordinate());
+  }
 
   public void printGrid() { //TODO remove for final
     StringBuilder b = new StringBuilder();

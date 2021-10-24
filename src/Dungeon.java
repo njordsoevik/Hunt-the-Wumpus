@@ -19,9 +19,9 @@ public interface Dungeon {
   /**
    * Get the treasure placed at the current location.
    *
-   * @return the treasure placed.
+   * @return the treasure in the player's location.
    */
-  Treasure getCurrentLocationTreasure();
+  List<Treasure> getCurrentLocationTreasure();
 
   /**
    * Get available directions for the player to move, NORTH, SOUTH, EAST, or WEST.
@@ -40,7 +40,6 @@ public interface Dungeon {
   /**
    * Take the treasure placed at the current location.
    *
-   * @throws IllegalArgumentException If no treasure exists.
    */
   void takeTreasure();
 

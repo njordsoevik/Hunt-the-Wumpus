@@ -22,18 +22,24 @@ public interface Location {
   void addPath(Direction dir, Location l);
 
   /**
-   * Set the treasure this location is holding.
+   * Add a treasure this location is holding.
    *
    * @param t The treasure to place in this location.
    */
-  void setTreasure(Treasure t);
+  void addTreasure(Treasure t);
 
   /**
    * Get the treasure this location is holding.
    *
-   * @param t The treasure placed in this location.
+   * @return The treasure placed in this location.
    */
-  Treasure getTreasure();
+  List<Treasure> getTreasure();
+
+  /**
+   * Remove the treasure this location is holding.
+   *
+   */
+  void removeTreasure();
 
   /**
    * Get the coordinate of this location on the grid.
