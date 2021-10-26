@@ -302,15 +302,28 @@ public class TreasureDungeon implements Dungeon {
   public void printGrid() { //TODO remove for final
     StringBuilder b = new StringBuilder();
     for (int i = 0; i < this.grid.length; i++) {
+      b.append("\n");
       for (int j = 0; j < this.grid[i].length; j++) {
-        b.append(this.grid[i][j].toString());
+        b.append(this.grid[i][j]);
+        b.append(this.grid[i][j].eastStringHelper());
+      }
+      b.append("\n");
+      for (int j = 0; j < this.grid[i].length; j++) {
+        b.append(this.grid[i][j].southStringHelper());
+        b.append(" ");
       }
     }
     System.out.print(b);
   }
 
-  public static void main(String[] args) {
-    Dungeon p = new TreasureDungeon(4, 5, 0, true, 20, 1L);
+  public void printCurrentLocation() {
+    System.out.println(player.getCoordinate());
   }
+
+  public static void main(String[] args) {
+    Dungeon p = new TreasureDungeon(4, 7, 0, true, 20, 1L);
+    p.printGrid();
+  }
+
 
 }

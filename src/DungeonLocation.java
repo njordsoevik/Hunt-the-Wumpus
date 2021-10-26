@@ -49,21 +49,21 @@ public class DungeonLocation implements Location {
 
   @Override
   public String toString() {
-    Set<Direction> d = connections.keySet();
-    String n = stringHelper(d, Direction.NORTH);
-    String s = stringHelper(d, Direction.SOUTH);
-    String e = stringHelper(d, Direction.EAST);
-    String w = stringHelper(d, Direction.WEST);
-    return String.format(" %s \n%s0%s\n %s ", n,w,e,s);
+    return "0";
   }
 
-  private String stringHelper(Set<Direction> s, Direction dir) {
-    if (s.contains(dir)) {
-      if (dir == Direction.NORTH || dir == Direction.SOUTH) {
-        return "|";
-      } else if (!(dir == null)) {
-        return "-";
-      }
+  @Override
+  public String southStringHelper() {
+    if (connections.keySet().contains(Direction.SOUTH)) {
+      return "|";
+    }
+    return " ";
+  }
+
+  @Override
+  public String eastStringHelper() {
+    if (connections.keySet().contains(Direction.EAST)) {
+      return "-";
     }
     return " ";
   }
@@ -71,9 +71,7 @@ public class DungeonLocation implements Location {
   public static void main(String[] args) {
     Location p = new DungeonLocation(new Coordinate(1,1));
     p.addPath(Direction.NORTH,p);
-    p.addPath(Direction.SOUTH,p);
     p.addPath(Direction.EAST,p);
-    System.out.println(p.toString());
+    System.out.println(p.eastStringHelper());
   }
-
 }

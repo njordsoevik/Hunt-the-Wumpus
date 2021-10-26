@@ -48,4 +48,18 @@ public interface Location {
    */
   Coordinate getCoordinate();
 
+  /**
+   * Helper function for printing east edge of node.
+   *
+   * @return a line if the east edge exists.
+   */
+  String eastStringHelper();
+
+  /**
+   * Helper function for printing south edge of node.
+   *
+   * @return a line if the south edge exists.
+   */
+  String southStringHelper();
+
 }

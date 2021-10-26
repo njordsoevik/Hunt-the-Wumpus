@@ -189,4 +189,22 @@ public class DungeonTest {
     Assert.assertEquals(treasures,q.getCurrentLocationTreasure()); // Check treasure removed
   }
 
+  @Test (expected = IllegalArgumentException.class)
+  public void moveAfterGameOver() {
+    Dungeon t = new TreasureDungeon(3,3,100,true,
+            400,4L);
+    t.movePlayer(Direction.SOUTH);
+    t.movePlayer(Direction.SOUTH);
+    t.movePlayer(Direction.SOUTH);
+  }
+
+  @Test (expected = IllegalArgumentException.class)
+  public void getTreasureAfterGameOver() {
+    Dungeon t = new TreasureDungeon(3,3,100,true,
+            400,4L);
+    t.movePlayer(Direction.SOUTH);
+    t.movePlayer(Direction.SOUTH);
+    t.takeTreasure();
+  }
+
 }

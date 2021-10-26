@@ -43,4 +43,8 @@ public interface Dungeon {
    */
   void takeTreasure();
 
+  void printGrid();
+
+  void printCurrentLocation();
+
 }
