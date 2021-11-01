@@ -4,6 +4,11 @@ import org.junit.Test;
 
 import java.util.*;
 
+import dungeon.Direction;
+import dungeon.Dungeon;
+import dungeon.Treasure;
+import dungeon.TreasureDungeon;
+
 
 public class DungeonTest {
   Dungeon p;
@@ -67,31 +72,53 @@ public class DungeonTest {
 
   @Test
   public void movePlayerWrapped() {
-    q.movePlayer(Direction.WEST);
-    Set<Direction> d = new HashSet<>();
-    d.add(Direction.NORTH);
-    d.add(Direction.EAST);
-    d.add(Direction.SOUTH);
-    Assert.assertEquals(d,q.getDirections());
-    q.movePlayer(Direction.SOUTH);
-    d.remove(Direction.SOUTH);
-    d.add(Direction.WEST);
-    Assert.assertEquals(d,q.getDirections());
-    q.movePlayer(Direction.NORTH); // Test moving back to old square
-    d.remove(Direction.WEST);
-    d.add(Direction.SOUTH);
-    Assert.assertEquals(d,q.getDirections());
+    Dungeon z = new TreasureDungeon(4,8,100,true, 120,4L);
+    for (int i=0;i<9;i++) {
+      z.movePlayer(Direction.WEST);
+      for (int j=0;j<4;j++) {
+        z.movePlayer(Direction.NORTH);
+      }
+    }
+    for (int i=0;i<9;i++) {
+      z.movePlayer(Direction.EAST);
+      for (int j=0;j<4;j++) {
+        z.movePlayer(Direction.SOUTH);
+      }
+    }
+
+
   }
 
-  @Test
-  public void movePlayerNonWrapped() {
-    System.out.println(p.getDirections());
-    Set<Direction> d = new HashSet<>();
-    d.add(Direction.EAST);
-    Assert.assertEquals(d,p.getDirections());
-    p.movePlayer(Direction.EAST);
-    p.movePlayer(Direction.WEST);
-    Assert.assertEquals(d,p.getDirections());// Test moving back to old square
+  @Test (expected = IllegalArgumentException.class)
+  public void movePlayerNonWrappedEast() {
+    Dungeon z = new TreasureDungeon(4,8,100,false, 120,4L);
+    for (int i=0;i<40;i++) {
+      z.movePlayer(Direction.EAST);
+    }
+  }
+
+  @Test (expected = IllegalArgumentException.class)
+  public void movePlayerNonWrappedWest() {
+    Dungeon z = new TreasureDungeon(4,8,100,false, 120,4L);
+    for (int i=0;i<40;i++) {
+      z.movePlayer(Direction.WEST);
+    }
+  }
+
+  @Test (expected = IllegalArgumentException.class)
+  public void movePlayerNonWrappedNorth() {
+    Dungeon z = new TreasureDungeon(4,8,100,false, 120,4L);
+    for (int i=0;i<40;i++) {
+      z.movePlayer(Direction.NORTH);
+    }
+  }
+
+  @Test (expected = IllegalArgumentException.class)
+  public void movePlayerNonWrappedSouth() {
+    Dungeon z = new TreasureDungeon(4,8,100,false, 120,4L);
+    for (int i=0;i<40;i++) {
+      z.movePlayer(Direction.SOUTH);
+    }
   }
 
   @Test

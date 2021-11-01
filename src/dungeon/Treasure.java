@@ -1,3 +1,4 @@
+package dungeon;
 
 /**
  * Treasures that can be placed in locations throughout the dungeon. These can be picked up by

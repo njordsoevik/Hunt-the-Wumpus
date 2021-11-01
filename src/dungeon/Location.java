@@ -1,3 +1,5 @@
+package dungeon;
+
 import java.util.List;
 import java.util.Map;
 
@@ -5,7 +7,7 @@ import java.util.Map;
  * Locations throughout the dungeon are access points. These navigated by the player to move through
  * the dungeon.
  */
-public interface Location {
+interface Location {
 
   /**
    * Get a list of valid locations this location is connected to.
@@ -61,5 +63,12 @@ public interface Location {
    * @return a line if the south edge exists.
    */
   String southStringHelper();
+
+  /**
+   * Get the number of connections to this node, used to check if this is a tunnel or a cave.
+   *
+   * @return the location type of this node.
+   */
+  LocationType getLocationType();
 
 }

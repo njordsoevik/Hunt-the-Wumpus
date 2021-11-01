@@ -1,8 +1,18 @@
+package dungeon;
+
 import java.util.Objects;
 
-public class Coordinate {
+/**
+ * Coordinates keep track of the physical location of each cave, tunnel and player.
+ */
+class Coordinate {
   int i;
   int j;
+
+  public Coordinate(int i, int j) {
+    this.i = i;
+    this.j = j;
+  }
 
   @Override
   public boolean equals(Object o) {
@@ -13,21 +23,12 @@ public class Coordinate {
     return c.i == i && c.j == j;
   }
 
-  public Coordinate(int i, int j) {
-    this.i = i;
-    this.j = j;
-  }
-
   public int getI() {
     return this.i;
   }
 
   public int getJ() {
     return this.j;
-  }
-
-  public Coordinate addCoordinate (Coordinate c) {
-    return new Coordinate(this.getI()+c.getJ(), this.getI()+c.getJ());
   }
 
   @Override

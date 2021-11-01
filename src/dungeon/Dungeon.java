@@ -1,3 +1,5 @@
+package dungeon;
+
 import java.util.List;
 import java.util.Set;
 
@@ -43,8 +45,11 @@ public interface Dungeon {
    */
   void takeTreasure();
 
+  /**
+   * Print the dungeon layout.
+   *
+   */
   void printGrid();
 
-  void printCurrentLocation();
 
 }

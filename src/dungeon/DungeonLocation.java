@@ -1,7 +1,9 @@
+package dungeon;
+
 import java.util.*;
 
 /**
- * DungeonLocation implements the Location interface. These navigated by the player to move through
+ * DungeonLocation implements the dungeon.Location interface. These navigated by the player to move through
  * the dungeon. Dungeons can also store treasure.
  */
 public class DungeonLocation implements Location {
@@ -9,6 +11,11 @@ public class DungeonLocation implements Location {
   private HashMap<Direction, Location> connections;
   private Coordinate coordinate;
 
+  /**
+   * Constructor for a dungeon location.
+   *
+   * @param c The coordinate of the grid position for this location.
+   */
   public DungeonLocation(Coordinate c) {
     this.connections = new HashMap<>();
     this.treasure = new ArrayList<>();
@@ -61,17 +68,19 @@ public class DungeonLocation implements Location {
   }
 
   @Override
+  public LocationType getLocationType() {
+    if (this.connections.size() == 2) {
+      return LocationType.TUNNEL;
+    } else {
+      return LocationType.CAVE;
+    }
+  }
+
+  @Override
   public String eastStringHelper() {
     if (connections.keySet().contains(Direction.EAST)) {
       return "-";
     }
     return " ";
-  }
-
-  public static void main(String[] args) {
-    Location p = new DungeonLocation(new Coordinate(1,1));
-    p.addPath(Direction.NORTH,p);
-    p.addPath(Direction.EAST,p);
-    System.out.println(p.eastStringHelper());
   }
 }

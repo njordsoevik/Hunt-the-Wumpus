@@ -1,5 +1,8 @@
 import java.util.Scanner;
 
+import dungeon.Dungeon;
+import dungeon.TreasureDungeon;
+
 public class Driver {
   /**
    * Main method for the driver, starts the dungeon generation and game.
@@ -19,7 +22,7 @@ public class Driver {
     columns = Integer.parseInt(scan.nextLine());
     System.out.println("Specify interconnectivity: \n");
     interconnectivity = Integer.parseInt(scan.nextLine());
-    System.out.println("Treasure percent: \n");
+    System.out.println("dungeon.Treasure percent: \n");
     t_percent = Integer.parseInt(scan.nextLine());
     Dungeon d = new TreasureDungeon(rows, columns, interconnectivity, false, t_percent);
     System.out.println("'d' for directions, 'north' to move north, 'q' to quit");
@@ -38,16 +41,16 @@ public class Driver {
 //
 //      }
 //      if (input.equalsIgnoreCase("n")) {
-//        d.movePlayer(Direction.NORTH);
+//        d.movePlayer(dungeon.Direction.NORTH);
 //      }
 //      if (input.equalsIgnoreCase("s")) {
-//        d.movePlayer(Direction.SOUTH);
+//        d.movePlayer(dungeon.Direction.SOUTH);
 //      }
 //      if (input.equalsIgnoreCase("e")) {
-//        d.movePlayer(Direction.EAST);
+//        d.movePlayer(dungeon.Direction.EAST);
 //      }
 //      if (input.equalsIgnoreCase("w")) {
-//        d.movePlayer(Direction.WEST);
+//        d.movePlayer(dungeon.Direction.WEST);
 //      }
 //    }
   }
@@ -76,5 +79,5 @@ public class Driver {
 //      } catch (NumberFormatException nfe) {
 //        System.out.print("Invalid number, try again: ");
 //      }
-//      Dungeon d = new TreasureDungeon(rows, columns, interconnectivity, true);
+//      dungeon.Dungeon d = new dungeon.TreasureDungeon(rows, columns, interconnectivity, true);
 

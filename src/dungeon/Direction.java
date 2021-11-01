@@ -1,24 +1,20 @@
+package dungeon;
 
 /**
  * Directions that can be used to access each location. These are the basic directions of North,
  * South, East, and West.
  */
 public enum Direction {
-  NORTH(new Coordinate(1,0)),
-  SOUTH(new Coordinate(-1,0)),
-  EAST(new Coordinate(0,1)),
-  WEST(new Coordinate(0,-1));
+  NORTH,
+  SOUTH,
+  EAST,
+  WEST;
 
-  private final Coordinate c;
-
-  Direction(Coordinate c) {
-    this.c=c;
-  }
-
-  public Coordinate getCoordinate() {
-    return this.c;
-  }
-
+  /**
+   * Return the opposite direction of this direction, NORTH, SOUTH, EAST, or WEST.
+   *
+   * @return Direction The opposite direction.
+   */
   public Direction getInverse() {
     if (this == NORTH) {
       return SOUTH;

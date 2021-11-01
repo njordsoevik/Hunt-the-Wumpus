@@ -1,24 +1,28 @@
-import java.util.List;
+package dungeon;
 
 /**
  * Edges connect each dungeon location adjacent locations. These edges also contain a weight,
  * used to skew the results of dungeon generation.
  */
-public class Edge implements Comparable<Edge>{
+class Edge implements Comparable<Edge>{
   private int weight;
   private Direction direction;
   private Coordinate source;
   private Coordinate destination;
 
+  /**
+   * Constructor for an edge.
+   *
+   * @param direction The direction this edge connections source and destination locations.
+   * @param source The source location of this edge.
+   * @param destination The destination location of this edge.
+   * @param weight The weight of the edge for dungeon generation.
+   */
   public Edge(int weight, Coordinate source, Coordinate destination, Direction direction) {
     this.direction = direction;
     this.weight = weight;
     this.source = source;
     this.destination = destination;
-  }
-
-  public int getWeight(){
-    return this.weight;
   }
 
   public Direction getDirection(){

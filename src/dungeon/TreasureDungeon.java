@@ -1,9 +1,15 @@
+package dungeon;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+/**
+ * DungeonLocation implements the dungeon.Location interface. These navigated by the player to move through
+ * the dungeon. Dungeons can also store treasure.
+ */
 public class TreasureDungeon implements Dungeon {
   private Location[][] grid;
   private List<List> forest;
@@ -31,7 +37,7 @@ public class TreasureDungeon implements Dungeon {
       throw new IllegalArgumentException("Arguments cannot be below zero.");
     }
     if (rows + columns < 5) {
-      throw new IllegalArgumentException("Needa bigger dungeon for a start and end distance" +
+      throw new IllegalArgumentException("Need a bigger dungeon for a start and end distance" +
               " greater than 5.");
     }
     this.rand = new Random();
@@ -239,8 +245,8 @@ public class TreasureDungeon implements Dungeon {
     Coordinate randEnd = new Coordinate(rand.nextInt(this.grid.length),
             rand.nextInt(this.grid[0].length));
     int attempts = 0;
-    while (Math.abs(randEnd.getI() - randStart.getI()) + Math.abs(randEnd.getJ() - randStart.getJ()) < 5 &&
-            attempts < 200) {
+    while (Math.abs(randEnd.getI() - randStart.getI()) + Math.abs(randEnd.getJ()
+            - randStart.getJ()) < 5 && attempts < 200) {
       randStart = new Coordinate(rand.nextInt(this.grid.length),
               rand.nextInt(this.grid[0].length));
       randEnd = new Coordinate(rand.nextInt(this.grid.length),
@@ -286,8 +292,10 @@ public class TreasureDungeon implements Dungeon {
       // k modulo size to wrap around places list in case of over 100% treasure
       int x = places.get(k%places.size())[0];
       int y = places.get(k%places.size())[1];
-      treasureIndex = rand.nextInt(Treasure.values().length);
-      this.grid[x][y].addTreasure(Treasure.values()[treasureIndex]);
+      if (this.grid[x][y].getLocationType() == LocationType.CAVE) {
+        treasureIndex = rand.nextInt(Treasure.values().length);
+        this.grid[x][y].addTreasure(Treasure.values()[treasureIndex]);
+      }
     }
   }
 
@@ -316,13 +324,9 @@ public class TreasureDungeon implements Dungeon {
     System.out.print(b);
   }
 
-  public void printCurrentLocation() {
-    System.out.println(player.getCoordinate());
-  }
-
   public static void main(String[] args) {
-    Dungeon p = new TreasureDungeon(4, 7, 0, true, 20, 1L);
-    p.printGrid();
+    Dungeon z = new TreasureDungeon(4,8,100,true, 120,4L);
+    z.printGrid();
   }
 
 
