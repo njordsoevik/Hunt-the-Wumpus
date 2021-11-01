@@ -36,7 +36,7 @@ public class TreasureDungeon implements Dungeon {
             interconnectivity < 0 || treasurePercent < 0) {
       throw new IllegalArgumentException("Arguments cannot be below zero.");
     }
-    if (rows + columns < 5) {
+    if ((rows + columns < 7)) {
       throw new IllegalArgumentException("Need a bigger dungeon for a start and end distance" +
               " greater than 5.");
     }
@@ -246,12 +246,16 @@ public class TreasureDungeon implements Dungeon {
             rand.nextInt(this.grid[0].length));
     int attempts = 0;
     while (Math.abs(randEnd.getI() - randStart.getI()) + Math.abs(randEnd.getJ()
-            - randStart.getJ()) < 5 && attempts < 200) {
+            - randStart.getJ()) < 5 && attempts < 400) {
       randStart = new Coordinate(rand.nextInt(this.grid.length),
               rand.nextInt(this.grid[0].length));
       randEnd = new Coordinate(rand.nextInt(this.grid.length),
               rand.nextInt(this.grid[0].length));
       attempts++;
+    }
+    if (attempts == 500) {
+      throw new IllegalStateException("Could not create start and end with distance " +
+              "greater than 5");
     }
     this.startC = randStart;
     this.endC = randEnd;
@@ -287,11 +291,11 @@ public class TreasureDungeon implements Dungeon {
         places.add(z);
       }
     }
-    Collections.shuffle(places,rand);
+    Collections.shuffle(places, rand);
     for (int k = 0; k < num; k++) {
       // k modulo size to wrap around places list in case of over 100% treasure
-      int x = places.get(k%places.size())[0];
-      int y = places.get(k%places.size())[1];
+      int x = places.get(k % places.size())[0];
+      int y = places.get(k % places.size())[1];
       if (this.grid[x][y].getLocationType() == LocationType.CAVE) {
         treasureIndex = rand.nextInt(Treasure.values().length);
         this.grid[x][y].addTreasure(Treasure.values()[treasureIndex]);
@@ -325,7 +329,7 @@ public class TreasureDungeon implements Dungeon {
   }
 
   public static void main(String[] args) {
-    Dungeon z = new TreasureDungeon(4,8,100,true, 120,4L);
+    Dungeon z = new TreasureDungeon(4, 8, 100, true, 120, 4L);
     z.printGrid();
   }
 

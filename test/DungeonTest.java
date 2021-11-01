@@ -71,26 +71,104 @@ public class DungeonTest {
   }
 
   @Test
-  public void movePlayerWrapped() {
+  public void movePlayerMaxInterconnectivityWrappedAllSquares() {
     Dungeon z = new TreasureDungeon(4,8,100,true, 120,4L);
-    for (int i=0;i<9;i++) {
+
+    for (int i=0;i<8;i++) {
       z.movePlayer(Direction.WEST);
       for (int j=0;j<4;j++) {
-        z.movePlayer(Direction.NORTH);
+        if (i!=4) { // Skip the ending square, so we can test all squares
+          z.movePlayer(Direction.NORTH);
+        }
       }
     }
-    for (int i=0;i<9;i++) {
+    for (int i=0;i<4;i++) {
+      z.movePlayer(Direction.NORTH);
+      for (int j=0;j<8;j++) {
+        System.out.println(i+" " + j);
+        if ((i!= 1 && j!=6)) { // Skip the ending square, so we can test all squares
+          z.movePlayer(Direction.WEST);
+        }
+      }
+    }
+  }
+
+  @Test
+  public void movePlayerMaxInterconnectivityUnWrappedAllSquares() {
+    Dungeon z = new TreasureDungeon(3,4,100,false, 120,4L);
+    // Move through all 9 squares, one path
+    z.printGrid();
+    System.out.println(z.getDirections());
+    z.movePlayer(Direction.SOUTH);
+    z.movePlayer(Direction.SOUTH);
+    z.movePlayer(Direction.WEST);
+    z.movePlayer(Direction.NORTH);
+    z.movePlayer(Direction.NORTH);
+    z.movePlayer(Direction.WEST);
+    z.movePlayer(Direction.WEST);
+    z.movePlayer(Direction.SOUTH);
+    z.movePlayer(Direction.EAST);
+    z.movePlayer(Direction.SOUTH);
+    z.movePlayer(Direction.WEST);
+    try {
       z.movePlayer(Direction.EAST);
-      for (int j=0;j<4;j++) {
-        z.movePlayer(Direction.SOUTH);
-      }
+    } catch (IllegalArgumentException e) {
     }
+  }
 
+  @Test
+  public void movePlayerZeroInterconnectivityUnWrappedAllSquares() {
+    Dungeon z = new TreasureDungeon(3,4,0,false, 120,4L);
+    // Move through all squares, one path
+    z.printGrid();
+    z.movePlayer(Direction.SOUTH);
+    z.movePlayer(Direction.SOUTH);
+    z.movePlayer(Direction.EAST);
+    z.movePlayer(Direction.EAST);
+    z.movePlayer(Direction.WEST);
+    z.movePlayer(Direction.WEST);
+    z.movePlayer(Direction.NORTH);
+    z.movePlayer(Direction.EAST);
+    z.movePlayer(Direction.EAST);
+    z.movePlayer(Direction.WEST);
+    z.movePlayer(Direction.NORTH);
+    z.movePlayer(Direction.EAST);
+    z.movePlayer(Direction.EAST);
+    z.movePlayer(Direction.SOUTH);
+    z.movePlayer(Direction.SOUTH);
+    try {
+      z.movePlayer(Direction.NORTH);
+    } catch (IllegalArgumentException e) {
+      System.out.println(e + " expected.");
+    }
+  }
 
+  @Test
+  public void movePlayerZeroInterconnectivityWrappedAllSquares() {
+    Dungeon z = new TreasureDungeon(3,4,0,true, 120,4L);
+    // Move through all squares, one path
+    z.printGrid();
+    z.movePlayer(Direction.SOUTH);
+    z.movePlayer(Direction.EAST);
+    z.movePlayer(Direction.NORTH);
+    z.movePlayer(Direction.SOUTH);
+    z.movePlayer(Direction.EAST);
+    z.movePlayer(Direction.NORTH);
+    z.movePlayer(Direction.SOUTH);
+    z.movePlayer(Direction.WEST);
+    z.movePlayer(Direction.WEST);
+    z.movePlayer(Direction.WEST);
+    z.movePlayer(Direction.NORTH);
+    z.movePlayer(Direction.NORTH);
+    try {
+      z.movePlayer(Direction.EAST);
+    } catch (IllegalArgumentException e) {
+      System.out.println(e + " expected.");
+    }
   }
 
   @Test (expected = IllegalArgumentException.class)
-  public void movePlayerNonWrappedEast() {
+  public void movePlayerUnWrappedEast() {
     Dungeon z = new TreasureDungeon(4,8,100,false, 120,4L);
     for (int i=0;i<40;i++) {
       z.movePlayer(Direction.EAST);
