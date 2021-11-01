@@ -4,15 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * dungeon.Player to access and navigate the dungeon. Players can also store treasure.
+ * Player to access and navigate the dungeon. Players can also store treasure.
  */
 class Player {
   private List<Treasure> treasures;
   private Coordinate coordinate;
 
-  Player(Coordinate coordinate) {
+  /**
+   * Constructor for a player.
+   *
+   * @param c The coordinate of the grid position for this player.
+   */
+  Player(Coordinate c) {
     this.treasures = new ArrayList<>();
-    this.coordinate = coordinate;
+    this.coordinate = c;
   }
 
   /**
@@ -20,7 +25,7 @@ class Player {
    *
    * @return the list of treasures.
    */
-  public List<Treasure> getTreasures() {
+  List<Treasure> getTreasures() {
     List<Treasure> c = new ArrayList<>();
     c.addAll(this.treasures);
     return c;
@@ -31,16 +36,7 @@ class Player {
    *
    * @param t The treasure picked up.
    */
-  public void addTreasure(Treasure t) {
-    treasures.add(t);
-  }
-
-  /**
-   * Add to the list of treasures this player has picked up.
-   *
-   * @param t The treasure picked up.
-   */
-  public void addTreasure(List<Treasure> t) {
+  void addTreasure(List<Treasure> t) {
     treasures.addAll(t);
   }
 
@@ -49,7 +45,7 @@ class Player {
    *
    * @return the coordinate.
    */
-  public Coordinate getCoordinate() {
+  Coordinate getCoordinate() {
     return this.coordinate;
   }
 
@@ -58,7 +54,7 @@ class Player {
    *
    * @param c The coordinate.
    */
-  public void setCoordinate(Coordinate c) {
+  void setCoordinate(Coordinate c) {
     this.coordinate = c;
   }
 }

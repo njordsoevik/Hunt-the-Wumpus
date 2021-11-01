@@ -6,7 +6,7 @@ import java.util.*;
  * DungeonLocation implements the dungeon.Location interface. These navigated by the player to move through
  * the dungeon. Dungeons can also store treasure.
  */
-public class DungeonLocation implements Location {
+class DungeonLocation implements Location {
   private List<Treasure> treasure;
   private HashMap<Direction, Location> connections;
   private Coordinate coordinate;
@@ -41,7 +41,9 @@ public class DungeonLocation implements Location {
 
   @Override
   public List<Treasure> getTreasure() {
-    return this.treasure;
+    List<Treasure> copy = new ArrayList<>();
+    copy.addAll(this.treasure);
+    return copy;
   }
 
   @Override

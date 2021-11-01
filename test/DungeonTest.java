@@ -20,7 +20,7 @@ public class DungeonTest {
             20,1L);
     q = new TreasureDungeon(14,15,0,false,
             100,2L);
-  }
+  }//TODO check right treasure percent
 
   @Test (expected = IllegalArgumentException.class)
   public void createInvalidDungeonRows() {
@@ -85,7 +85,6 @@ public class DungeonTest {
     for (int i=0;i<4;i++) {
       z.movePlayer(Direction.NORTH);
       for (int j=0;j<8;j++) {
-        System.out.println(i+" " + j);
         if ((i!= 1 && j!=6)) { // Skip the ending square, so we can test all squares
           z.movePlayer(Direction.WEST);
         }
@@ -97,8 +96,6 @@ public class DungeonTest {
   public void movePlayerMaxInterconnectivityUnWrappedAllSquares() {
     Dungeon z = new TreasureDungeon(3,4,100,false, 120,4L);
     // Move through all 9 squares, one path
-    z.printGrid();
-    System.out.println(z.getDirections());
     z.movePlayer(Direction.SOUTH);
     z.movePlayer(Direction.SOUTH);
     z.movePlayer(Direction.WEST);
@@ -113,6 +110,7 @@ public class DungeonTest {
     try {
       z.movePlayer(Direction.EAST);
     } catch (IllegalArgumentException e) {
+      System.out.println("Expected error:" + e);
     }
   }
 
@@ -120,7 +118,6 @@ public class DungeonTest {
   public void movePlayerZeroInterconnectivityUnWrappedAllSquares() {
     Dungeon z = new TreasureDungeon(3,4,0,false, 120,4L);
     // Move through all squares, one path
-    z.printGrid();
     z.movePlayer(Direction.SOUTH);
     z.movePlayer(Direction.SOUTH);
     z.movePlayer(Direction.EAST);
@@ -147,7 +144,6 @@ public class DungeonTest {
   public void movePlayerZeroInterconnectivityWrappedAllSquares() {
     Dungeon z = new TreasureDungeon(3,4,0,true, 120,4L);
     // Move through all squares, one path
-    z.printGrid();
     z.movePlayer(Direction.SOUTH);
     z.movePlayer(Direction.EAST);
     z.movePlayer(Direction.NORTH);
@@ -210,7 +206,7 @@ public class DungeonTest {
   public void getCurrentLocationTreasureOne() {
     Dungeon d = new TreasureDungeon(6,7,0,false,100,4L);
     List<Treasure> treasures = new ArrayList<>();
-    treasures.add(Treasure.RUBY);
+    treasures.add(Treasure.SAPPHIRE);
     Assert.assertEquals(treasures,d.getCurrentLocationTreasure());
   }
 
@@ -218,14 +214,32 @@ public class DungeonTest {
   public void getCurrentLocationTreasureMultiple() {
     Dungeon d = new TreasureDungeon(6,7,0,false,300,4L);
     List<Treasure> treasures = new ArrayList<>();
+    treasures.add(Treasure.SAPPHIRE);
     treasures.add(Treasure.RUBY);
-    treasures.add(Treasure.DIAMOND);
-    treasures.add(Treasure.DIAMOND);
+    treasures.add(Treasure.RUBY);
     Assert.assertEquals(treasures,d.getCurrentLocationTreasure());
   }
 
   @Test
-  public void takeAndGetTreasureNone() {
+  public void checkTunnelVsCaveTreasure() {
+    Dungeon d = new TreasureDungeon(3,4,3,false,300,4L);
+
+    Assert.assertEquals(1,d.getDirections().size()); // check cave size 1
+    Assert.assertTrue(!d.getCurrentLocationTreasure().isEmpty()); // has treasure
+    d.movePlayer(Direction.SOUTH);
+    Assert.assertEquals(3,d.getDirections().size()); // check cave size 3
+    Assert.assertTrue(!d.getCurrentLocationTreasure().isEmpty()); // has treasure
+    d.movePlayer(Direction.EAST);
+    Assert.assertEquals(4,d.getDirections().size());// check cave size 4
+    Assert.assertTrue(!d.getCurrentLocationTreasure().isEmpty());// has treasure
+    d.movePlayer(Direction.NORTH);
+    Assert.assertEquals(2,d.getDirections().size());// check cave size 4
+    Assert.assertTrue(d.getCurrentLocationTreasure().isEmpty());// has no treasure
+  }
+
+
+  @Test
+  public void takeTreasureInEmptyCaveNone() {
     Dungeon k = new TreasureDungeon(14,15,2,true, 0,4L);
     List<Treasure> player_treasures = new ArrayList<>();
     Assert.assertEquals(player_treasures,k.getPlayerTreasure()); // Check start no treasure
@@ -238,6 +252,7 @@ public class DungeonTest {
 
   @Test
   public void takeAndGetTreasureOne() {
+    Dungeon q = new TreasureDungeon(4,6,100,true, 100,4L);
     List<Treasure> player_treasures = new ArrayList<>();
     Assert.assertEquals(player_treasures,q.getPlayerTreasure()); // Check start no treasure
     List<Treasure> treasures = new ArrayList<>();
@@ -256,35 +271,24 @@ public class DungeonTest {
     List<Treasure> player_treasures = new ArrayList<>();
     Assert.assertEquals(player_treasures,k.getPlayerTreasure()); // Check start no treasure
     List<Treasure> treasures = new ArrayList<>();
-    treasures.add(Treasure.RUBY);
+    treasures.add(Treasure.DIAMOND);
+    treasures.add(Treasure.DIAMOND);
     treasures.add(Treasure.SAPPHIRE);
     treasures.add(Treasure.DIAMOND);
-    treasures.add(Treasure.RUBY);
     Assert.assertEquals(treasures,k.getCurrentLocationTreasure());
     k.takeTreasure();
-    player_treasures.add(Treasure.RUBY);
-    player_treasures.add(Treasure.SAPPHIRE);
-    player_treasures.add(Treasure.DIAMOND);
-    player_treasures.add(Treasure.RUBY);
+    Assert.assertEquals(treasures,k.getPlayerTreasure()); // Check treasure added
     treasures.clear();
-    Assert.assertEquals(player_treasures,k.getPlayerTreasure()); // Check treasure added
     Assert.assertEquals(treasures,k.getCurrentLocationTreasure()); // Check treasure removed
   }
 
   @Test
   public void takeAndGetTreasureTwoTakes() {
+    Dungeon q = new TreasureDungeon(14,15,100,true, 100,4L);
     List<Treasure> player_treasures = new ArrayList<>();
     Assert.assertEquals(player_treasures,q.getPlayerTreasure()); // Check start no treasure
     List<Treasure> treasures = new ArrayList<>();
-    treasures.add(Treasure.SAPPHIRE); // Check one treasure exists at location
-    Assert.assertEquals(treasures,q.getCurrentLocationTreasure());
-    q.takeTreasure();
-    player_treasures.add(Treasure.SAPPHIRE);
-    treasures.remove(Treasure.SAPPHIRE);
-    Assert.assertEquals(player_treasures,q.getPlayerTreasure()); // Check treasure added
-    Assert.assertEquals(treasures,q.getCurrentLocationTreasure()); // Check treasure removed
-    // Test move and take another
-    q.movePlayer(Direction.WEST);
+    q.movePlayer(Direction.NORTH);
     treasures.add(Treasure.DIAMOND); // Check one treasure exists at location
     Assert.assertEquals(treasures,q.getCurrentLocationTreasure());
     q.takeTreasure();
@@ -292,24 +296,35 @@ public class DungeonTest {
     treasures.remove(Treasure.DIAMOND);
     Assert.assertEquals(player_treasures,q.getPlayerTreasure()); // Check treasure added
     Assert.assertEquals(treasures,q.getCurrentLocationTreasure()); // Check treasure removed
+    // Test move and take another
+    q.movePlayer(Direction.NORTH);
+    treasures.add(Treasure.RUBY); // Check one treasure exists at location
+    Assert.assertEquals(treasures,q.getCurrentLocationTreasure());
+    q.takeTreasure();
+    player_treasures.add(Treasure.RUBY);
+    treasures.remove(Treasure.RUBY);
+    Assert.assertEquals(player_treasures,q.getPlayerTreasure()); // Check treasure added
+    Assert.assertEquals(treasures,q.getCurrentLocationTreasure()); // Check treasure removed
   }
 
-  @Test (expected = IllegalArgumentException.class)
-  public void moveAfterGameOver() {
-    Dungeon t = new TreasureDungeon(3,3,100,true,
-            400,4L);
-    t.movePlayer(Direction.SOUTH);
-    t.movePlayer(Direction.SOUTH);
-    t.movePlayer(Direction.SOUTH);
-  }
 
   @Test (expected = IllegalArgumentException.class)
-  public void getTreasureAfterGameOver() {
-    Dungeon t = new TreasureDungeon(3,3,100,true,
-            400,4L);
-    t.movePlayer(Direction.SOUTH);
-    t.movePlayer(Direction.SOUTH);
-    t.takeTreasure();
+  public void takeTreasureAfterGameOver() {
+    Dungeon z = new TreasureDungeon(3,4,0,true, 120,4L);
+    // Move through all squares, one path
+    z.movePlayer(Direction.SOUTH);
+    z.movePlayer(Direction.EAST);
+    z.movePlayer(Direction.NORTH);
+    z.movePlayer(Direction.SOUTH);
+    z.movePlayer(Direction.EAST);
+    z.movePlayer(Direction.NORTH);
+    z.movePlayer(Direction.SOUTH);
+    z.movePlayer(Direction.WEST);
+    z.movePlayer(Direction.WEST);
+    z.movePlayer(Direction.WEST);
+    z.movePlayer(Direction.NORTH);
+    z.movePlayer(Direction.NORTH);
+    z.takeTreasure();
   }
 
 }

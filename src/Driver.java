@@ -1,14 +1,15 @@
+import java.util.Random;
 import java.util.Scanner;
+import java.util.Set;
 
+import dungeon.Direction;
 import dungeon.Dungeon;
 import dungeon.TreasureDungeon;
 
 public class Driver {
-  /**
-   * Main method for the driver, starts the dungeon generation and game.
-   */
   public static void main(String[] args) {
     Scanner scan = new Scanner(System.in);
+    Random rand = new Random();
     String input = "";
     int rows;
     int columns;
@@ -20,64 +21,40 @@ public class Driver {
     rows = Integer.parseInt(scan.nextLine());
     System.out.println("Specify number of columns: \n");
     columns = Integer.parseInt(scan.nextLine());
+    System.out.println("Specify wrapped (T/F): \n");
+    String temp = scan.nextLine();
+    if (temp.equalsIgnoreCase("t")) {
+      wrapped = true;
+    }
+    else if (temp.equalsIgnoreCase("f")) {
+      wrapped = false;
+    } else {
+      throw new IllegalArgumentException("Not a valid input!");
+    }
     System.out.println("Specify interconnectivity: \n");
     interconnectivity = Integer.parseInt(scan.nextLine());
     System.out.println("dungeon.Treasure percent: \n");
     t_percent = Integer.parseInt(scan.nextLine());
-    Dungeon d = new TreasureDungeon(rows, columns, interconnectivity, false, t_percent);
-    System.out.println("'d' for directions, 'north' to move north, 'q' to quit");
-
-    while (!input.equalsIgnoreCase("no") && !input.equalsIgnoreCase("q")) {
-      if (input.equalsIgnoreCase("yes")) {
-        System.out.println("Battle starting! \n");
+    Dungeon d = new TreasureDungeon(rows, columns, interconnectivity, wrapped, t_percent);
+    while (!d.isGameOver()) {
+      d.takeTreasure();
+      System.out.println("Picking up any treasure.");
+      System.out.println("Player treasure: "+d.getPlayerTreasure());
+      Set<Direction> ds = d.getDirections();
+      Direction dir = null;
+      System.out.println("Get Directions: "+ ds);
+      int directionIndex = rand.nextInt(ds.size());
+      int item = 0;
+      for (Direction iterator: ds) {
+        if (item == directionIndex) {
+          dir = iterator;
+          break;
+        }
+        item++;
       }
+      System.out.println("Moving: "+ dir);
+      d.movePlayer(dir);
     }
-
-
-//    while (!input.equalsIgnoreCase("q")) { // TODO change to hitting end spot
-//      if (input.equalsIgnoreCase("d")) {
-//        System.out.println("D");
-//        //System.out.println(d.getDirections());
-//
-//      }
-//      if (input.equalsIgnoreCase("n")) {
-//        d.movePlayer(dungeon.Direction.NORTH);
-//      }
-//      if (input.equalsIgnoreCase("s")) {
-//        d.movePlayer(dungeon.Direction.SOUTH);
-//      }
-//      if (input.equalsIgnoreCase("e")) {
-//        d.movePlayer(dungeon.Direction.EAST);
-//      }
-//      if (input.equalsIgnoreCase("w")) {
-//        d.movePlayer(dungeon.Direction.WEST);
-//      }
-//    }
+    System.out.println("End of dungeon reached!");
   }
 }
-
-
-//      System.out.println("Create a dungeon! \n");
-//      try {
-//        System.out.println("Specify number of rows: \n");
-//        int rows = Integer.parseInt(scan.nextLine());
-//        break;
-//      } catch (NumberFormatException nfe) {
-//        System.out.print("Invalid number, try again: ");
-//      }
-//      try {
-//        System.out.println("Specify number of columns: \n");
-//        columns = Integer.parseInt(scan.nextLine());
-//        break;
-//      } catch (NumberFormatException nfe) {
-//        System.out.print("Invalid number, try again: ");
-//      }
-//      try {
-//        System.out.println("Specify interconnectivity: \n");
-//        interconnectivity = Integer.parseInt(scan.nextLine());
-//        break;
-//      } catch (NumberFormatException nfe) {
-//        System.out.print("Invalid number, try again: ");
-//      }
-//      dungeon.Dungeon d = new dungeon.TreasureDungeon(rows, columns, interconnectivity, true);
-

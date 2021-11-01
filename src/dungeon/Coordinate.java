@@ -9,7 +9,13 @@ class Coordinate {
   int i;
   int j;
 
-  public Coordinate(int i, int j) {
+  /**
+   * Constructor for an edge.
+   *
+   * @param i The row location of the coordinate.
+   * @param j The column location of the coordinate.
+   */
+  Coordinate(int i, int j) {
     this.i = i;
     this.j = j;
   }
@@ -23,11 +29,11 @@ class Coordinate {
     return c.i == i && c.j == j;
   }
 
-  public int getI() {
+  int getI() {
     return this.i;
   }
 
-  public int getJ() {
+  int getJ() {
     return this.j;
   }
 

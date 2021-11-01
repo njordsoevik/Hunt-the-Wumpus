@@ -245,8 +245,8 @@ public class TreasureDungeon implements Dungeon {
     Coordinate randEnd = new Coordinate(rand.nextInt(this.grid.length),
             rand.nextInt(this.grid[0].length));
     int attempts = 0;
-    while (Math.abs(randEnd.getI() - randStart.getI()) + Math.abs(randEnd.getJ()
-            - randStart.getJ()) < 5 && attempts < 400) {
+    while ((Math.abs(randEnd.getI() - randStart.getI()) + Math.abs(randEnd.getJ()
+            - randStart.getJ())) < 5 && (attempts < 400)) {
       randStart = new Coordinate(rand.nextInt(this.grid.length),
               rand.nextInt(this.grid[0].length));
       randEnd = new Coordinate(rand.nextInt(this.grid.length),
@@ -307,10 +307,12 @@ public class TreasureDungeon implements Dungeon {
     return endC.equals(c);
   }
 
-  private boolean isGameOver() {
+  @Override
+  public boolean isGameOver() {
     return isEndSquare(this.player.getCoordinate());
   }
 
+  @Override
   public void printGrid() { //TODO remove for final
     StringBuilder b = new StringBuilder();
     for (int i = 0; i < this.grid.length; i++) {
@@ -326,11 +328,6 @@ public class TreasureDungeon implements Dungeon {
       }
     }
     System.out.print(b);
-  }
-
-  public static void main(String[] args) {
-    Dungeon z = new TreasureDungeon(4, 8, 100, true, 120, 4L);
-    z.printGrid();
   }
 
 

@@ -25,15 +25,15 @@ class Edge implements Comparable<Edge>{
     this.destination = destination;
   }
 
-  public Direction getDirection(){
+  Direction getDirection(){
     return this.direction;
   }
 
-  public Coordinate getSource() {
+  Coordinate getSource() {
     return this.source;
   }
 
-  public Coordinate getDestination() {
+  Coordinate getDestination() {
     return this.destination;
   }
 
