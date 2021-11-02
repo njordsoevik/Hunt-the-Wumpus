@@ -20,7 +20,7 @@ public class DungeonTest {
             20,1L);
     q = new TreasureDungeon(14,15,0,false,
             100,2L);
-  }//TODO check right treasure percent
+  }
 
   @Test (expected = IllegalArgumentException.class)
   public void createInvalidDungeonRows() {
@@ -196,6 +196,105 @@ public class DungeonTest {
   }
 
   @Test
+  public void correctTreasurePercentZero() {
+    Dungeon z = new TreasureDungeon(3,4,100,false, 0,4L);
+    z.movePlayer(Direction.SOUTH);
+    z.takeTreasure();
+    z.movePlayer(Direction.SOUTH);
+    z.takeTreasure();
+    z.movePlayer(Direction.WEST);
+    z.takeTreasure();
+    z.movePlayer(Direction.NORTH);
+    z.takeTreasure();
+    z.movePlayer(Direction.NORTH);
+    z.takeTreasure();
+    z.movePlayer(Direction.WEST);
+    z.takeTreasure();
+    z.movePlayer(Direction.WEST);
+    z.takeTreasure();
+    z.movePlayer(Direction.SOUTH);
+    z.takeTreasure();
+    z.movePlayer(Direction.EAST);
+    z.takeTreasure();
+    z.movePlayer(Direction.SOUTH);
+    z.takeTreasure();
+    z.movePlayer(Direction.WEST);
+    try {
+      z.movePlayer(Direction.EAST);
+    } catch (IllegalArgumentException e) {
+      System.out.println(e + " expected.");
+    }
+    // Expect 1 less than 50% because of ending square holding a treasure
+    Assert.assertEquals(0,z.getPlayerTreasure().size());
+  }
+
+  @Test
+  public void correctTreasurePercent50() {
+    Dungeon z = new TreasureDungeon(3,4,100,false, 50,4L);
+    z.movePlayer(Direction.SOUTH);
+    z.takeTreasure();
+    z.movePlayer(Direction.SOUTH);
+    z.takeTreasure();
+    z.movePlayer(Direction.WEST);
+    z.takeTreasure();
+    z.movePlayer(Direction.NORTH);
+    z.takeTreasure();
+    z.movePlayer(Direction.NORTH);
+    z.takeTreasure();
+    z.movePlayer(Direction.WEST);
+    z.takeTreasure();
+    z.movePlayer(Direction.WEST);
+    z.takeTreasure();
+    z.movePlayer(Direction.SOUTH);
+    z.takeTreasure();
+    z.movePlayer(Direction.EAST);
+    z.takeTreasure();
+    z.movePlayer(Direction.SOUTH);
+    z.takeTreasure();
+    z.movePlayer(Direction.WEST);
+    try {
+      z.movePlayer(Direction.EAST);
+    } catch (IllegalArgumentException e) {
+      System.out.println(e + " expected.");
+    }
+    // Expect 1 less than 50% because of ending square holding a treasure
+    Assert.assertEquals(5,z.getPlayerTreasure().size());
+  }
+
+  @Test
+  public void correctTreasurePercent100() {
+    Dungeon z = new TreasureDungeon(3,4,100,false, 100,4L);
+    z.movePlayer(Direction.SOUTH);
+    z.takeTreasure();
+    z.movePlayer(Direction.SOUTH);
+    z.takeTreasure();
+    z.movePlayer(Direction.WEST);
+    z.takeTreasure();
+    z.movePlayer(Direction.NORTH);
+    z.takeTreasure();
+    z.movePlayer(Direction.NORTH);
+    z.takeTreasure();
+    z.movePlayer(Direction.WEST);
+    z.takeTreasure();
+    z.movePlayer(Direction.WEST);
+    z.takeTreasure();
+    z.movePlayer(Direction.SOUTH);
+    z.takeTreasure();
+    z.movePlayer(Direction.EAST);
+    z.takeTreasure();
+    z.movePlayer(Direction.SOUTH);
+    z.takeTreasure();
+    z.movePlayer(Direction.WEST);
+    try {
+      z.movePlayer(Direction.EAST);
+    } catch (IllegalArgumentException e) {
+      System.out.println(e + " expected.");
+    }
+    // Expect 1 less than 50% because of ending square holding a treasure
+    Assert.assertEquals(0,z.getPlayerTreasure().size());
+  }
+
+  @Test
   public void getCurrentLocationNoTreasure() {
     Dungeon d = new TreasureDungeon(6,7,0,false,0,4L);
     List<Treasure> treasures = new ArrayList<>();
@@ -223,7 +322,6 @@ public class DungeonTest {
   @Test
   public void checkTunnelVsCaveTreasure() {
     Dungeon d = new TreasureDungeon(3,4,3,false,300,4L);
-
     Assert.assertEquals(1,d.getDirections().size()); // check cave size 1
     Assert.assertTrue(!d.getCurrentLocationTreasure().isEmpty()); // has treasure
     d.movePlayer(Direction.SOUTH);

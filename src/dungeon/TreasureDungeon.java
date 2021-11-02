@@ -281,7 +281,9 @@ public class TreasureDungeon implements Dungeon {
 
   private void placeTreasure(int rows, int columns, int percent) {
     int treasureIndex;
-    int num = ((percent) * (rows * columns)) / 100;
+    int num = (int) Math.ceil((double)((percent) * (rows * columns)) / 100);
+
+    //int num = ((percent) * (rows * columns)) / 100;
     List<Integer[]> places = new ArrayList<>();
     for (int i = 0; i < rows; i++) {
       for (int j = 0; j < columns; j++) {

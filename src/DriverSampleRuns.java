@@ -10,7 +10,7 @@ public class DriverSampleRuns {
    */
   public static void main(String[] args) {
     System.out.println("Sample Run 1: Wrapping Dungeon");
-    System.out.println("3 rows, 4 columns, 0 interconnectivity, 30 percent treasure.");
+    System.out.println("3 rows, 4 columns, 0 interconnectivity, 80 percent treasure.");
     Dungeon z = new TreasureDungeon(3,4,0,false, 80,4L);
     System.out.println("Player is at starting square when dungeon is created.");
     System.out.println("Player treasure starts empty: "+z.getPlayerTreasure());
