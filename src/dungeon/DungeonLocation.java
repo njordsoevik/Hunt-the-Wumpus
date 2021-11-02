@@ -1,15 +1,18 @@
 package dungeon;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
- * DungeonLocation implements the dungeon.Location interface. These navigated by the player to move through
- * the dungeon. Dungeons can also store treasure.
+ * DungeonLocation implements the dungeon.Location interface. These navigated by the player to
+ * move through the dungeon. Dungeons can also store treasure.
  */
 class DungeonLocation implements Location {
-  private List<Treasure> treasure;
-  private HashMap<Direction, Location> connections;
-  private Coordinate coordinate;
+  private final List<Treasure> treasure;
+  private final HashMap<Direction, Location> connections;
+  private final Coordinate coordinate;
 
   /**
    * Constructor for a dungeon location.
@@ -63,7 +66,7 @@ class DungeonLocation implements Location {
 
   @Override
   public String southStringHelper() {
-    if (connections.keySet().contains(Direction.SOUTH)) {
+    if (connections.containsKey(Direction.SOUTH)) {
       return "|";
     }
     return " ";
@@ -80,7 +83,7 @@ class DungeonLocation implements Location {
 
   @Override
   public String eastStringHelper() {
-    if (connections.keySet().contains(Direction.EAST)) {
+    if (connections.containsKey(Direction.EAST)) {
       return "-";
     }
     return " ";

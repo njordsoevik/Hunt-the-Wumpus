@@ -41,19 +41,13 @@ public interface Dungeon {
 
   /**
    * Take the treasure placed at the current location.
-   *
    */
   void takeTreasure();
 
   /**
    * Check if the game is over by reaching the final square.
-   *
    */
   boolean isGameOver();
 
-  /**
-   * Print the dungeon layout.
-   *
-   */
-  void printGrid(); //TODO remove this
+
 }

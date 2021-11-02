@@ -6,11 +6,17 @@ import dungeon.Direction;
 import dungeon.Dungeon;
 import dungeon.TreasureDungeon;
 
+/**
+ * Driver for the command-line sample runs.
+ */
 public class Driver {
+
+  /**
+   * Main method for the driver, starts the dungeon input generation and game.
+   */
   public static void main(String[] args) {
     Scanner scan = new Scanner(System.in);
     Random rand = new Random();
-    String input = "";
     int rows;
     int columns;
     int interconnectivity;
@@ -25,8 +31,7 @@ public class Driver {
     String temp = scan.nextLine();
     if (temp.equalsIgnoreCase("t")) {
       wrapped = true;
-    }
-    else if (temp.equalsIgnoreCase("f")) {
+    } else if (temp.equalsIgnoreCase("f")) {
       wrapped = false;
     } else {
       throw new IllegalArgumentException("Not a valid input!");
@@ -39,20 +44,20 @@ public class Driver {
     while (!d.isGameOver()) {
       d.takeTreasure();
       System.out.println("Picking up any treasure.");
-      System.out.println("Player treasure: "+d.getPlayerTreasure());
+      System.out.println("Player treasure: " + d.getPlayerTreasure());
       Set<Direction> ds = d.getDirections();
       Direction dir = null;
-      System.out.println("Get Directions: "+ ds);
+      System.out.println("Get Directions: " + ds);
       int directionIndex = rand.nextInt(ds.size());
       int item = 0;
-      for (Direction iterator: ds) {
+      for (Direction iterator : ds) {
         if (item == directionIndex) {
           dir = iterator;
           break;
         }
         item++;
       }
-      System.out.println("Moving: "+ dir);
+      System.out.println("Moving: " + dir);
       d.movePlayer(dir);
     }
     System.out.println("End of dungeon reached!");

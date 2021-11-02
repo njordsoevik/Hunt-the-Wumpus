@@ -7,7 +7,7 @@ import java.util.List;
  * Player to access and navigate the dungeon. Players can also store treasure.
  */
 class Player {
-  private List<Treasure> treasures;
+  private final List<Treasure> treasures;
   private Coordinate coordinate;
 
   /**

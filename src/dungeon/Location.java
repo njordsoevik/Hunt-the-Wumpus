@@ -39,7 +39,6 @@ interface Location {
 
   /**
    * Remove the treasure this location is holding.
-   *
    */
   void removeTreasure();
 

@@ -7,41 +7,60 @@ import java.util.Random;
 import java.util.Set;
 
 /**
- * DungeonLocation implements the dungeon.Location interface. These navigated by the player to move through
- * the dungeon. Dungeons can also store treasure.
+ * DungeonLocation implements the dungeon.Location interface. These navigated by the player to
+ * move through the dungeon. Dungeons can also store treasure.
  */
 public class TreasureDungeon implements Dungeon {
-  private Location[][] grid;
-  private List<List> forest;
-  private Player player;
-  private List<Edge> edges;
-  private List<Edge> usedEdges;
-  private List<Edge> unusedEdges;
-  private Random rand;
+  private final Location[][] grid;
+  private final List<List> forest;
+  private final Player player;
+  private final List<Edge> edges;
+  private final List<Edge> usedEdges;
+  private final List<Edge> unusedEdges;
+  private final Random rand;
   private Coordinate startC;
   private Coordinate endC;
 
+  /**
+   * Constructor for a dungeon, can specify size and attributes of the generated dungeon.
+   *
+   * @param rows The number of rows in the dungeon.
+   * @param columns The number of columns in the dungeon.
+   * @param interconnectivity The interconnectivity for kruskal's algorithm.
+   * @param wrapped If the dungeon should wrap around the edges.
+   * @param treasurePercent Percent of caves with treasure.
+   */
   public TreasureDungeon(int rows, int columns, int interconnectivity, boolean wrapped,
                          int treasurePercent) {
     this(rows, columns, interconnectivity, wrapped, treasurePercent, null);
   }
 
+  /**
+   * Constructor for a dungeon, can specify size and attributes of the generated dungeon.
+   *
+   * @param rows The number of rows in the dungeon.
+   * @param columns The number of columns in the dungeon.
+   * @param interconnectivity The interconnectivity for kruskal's algorithm.
+   * @param wrapped If the dungeon should wrap around the edges.
+   * @param treasurePercent Percent of caves with treasure.
+   * @param seed Seed for testing randomness.
+   */
   public TreasureDungeon(int rows, int columns, int interconnectivity, boolean wrapped,
                          int treasurePercent, Long seed) {
-    if (rows > Integer.MAX_VALUE || columns > Integer.MAX_VALUE ||
-            interconnectivity > Integer.MAX_VALUE || treasurePercent > Integer.MAX_VALUE) {
+    if (rows > Integer.MAX_VALUE || columns > Integer.MAX_VALUE
+            || interconnectivity > Integer.MAX_VALUE || treasurePercent > Integer.MAX_VALUE) {
       throw new ArithmeticException("Input above max values");
     }
-    if (rows < 0 || columns < 0 ||
-            interconnectivity < 0 || treasurePercent < 0) {
+    if (rows <= 0 || columns <= 0
+            || interconnectivity < 0 || treasurePercent < 0) {
       throw new IllegalArgumentException("Arguments cannot be below zero.");
     }
     if ((rows + columns < 7)) {
-      throw new IllegalArgumentException("Need a bigger dungeon for a start and end distance" +
-              " greater than 5.");
+      throw new IllegalArgumentException("Need a bigger dungeon for a start and end distance"
+              + " greater than 5.");
     }
     this.rand = new Random();
-    if (!(seed == null)) {
+    if (seed != null) {
       this.rand.setSeed(seed);
     }
     this.grid = new Location[rows][columns];
@@ -74,7 +93,6 @@ public class TreasureDungeon implements Dungeon {
     // Create player at starting coordinate
     this.player = new Player(startC);
   }
-
 
   @Override
   public void movePlayer(Direction dir) {
@@ -164,7 +182,7 @@ public class TreasureDungeon implements Dungeon {
           c2 = new Coordinate(i, j + 1);
           edges.add(new Edge(1, c1, c2, Direction.EAST));
         } else if (i == rows - 1 && j != columns - 1) {
-          if (wrapped == true) {
+          if (wrapped) {
             c1 = new Coordinate(i, j);
             c2 = new Coordinate(0, j);
             edges.add(new Edge(1, c1, c2, Direction.SOUTH));
@@ -173,7 +191,7 @@ public class TreasureDungeon implements Dungeon {
           c2 = new Coordinate(i, j + 1);
           edges.add(new Edge(1, c1, c2, Direction.EAST));
         } else if (j == columns - 1 && i != rows - 1) {
-          if (wrapped == true) {
+          if (wrapped) {
             c1 = new Coordinate(i, j);
             c2 = new Coordinate(i, 0);
             edges.add(new Edge(1, c1, c2, Direction.EAST));
@@ -182,7 +200,7 @@ public class TreasureDungeon implements Dungeon {
           c2 = new Coordinate(i + 1, j);
           edges.add(new Edge(1, c1, c2, Direction.SOUTH));
         } else if (j == columns - 1 && i == rows - 1) {
-          if (wrapped == true) {
+          if (wrapped) {
             c1 = new Coordinate(i, j);
             c2 = new Coordinate(i, 0);
             edges.add(new Edge(1, c1, c2, Direction.EAST));
@@ -254,8 +272,8 @@ public class TreasureDungeon implements Dungeon {
       attempts++;
     }
     if (attempts == 500) {
-      throw new IllegalStateException("Could not create start and end with distance " +
-              "greater than 5");
+      throw new IllegalStateException("Could not create start and end with distance "
+              + "greater than 5");
     }
     this.startC = randStart;
     this.endC = randEnd;
@@ -281,9 +299,8 @@ public class TreasureDungeon implements Dungeon {
 
   private void placeTreasure(int rows, int columns, int percent) {
     int treasureIndex;
-    int num = (int) Math.ceil((double)((percent) * (rows * columns)) / 100);
+    int num = (int) Math.ceil((double) ((percent) * (rows * columns)) / 100);
 
-    //int num = ((percent) * (rows * columns)) / 100;
     List<Integer[]> places = new ArrayList<>();
     for (int i = 0; i < rows; i++) {
       for (int j = 0; j < columns; j++) {
@@ -312,24 +329,6 @@ public class TreasureDungeon implements Dungeon {
   @Override
   public boolean isGameOver() {
     return isEndSquare(this.player.getCoordinate());
-  }
-
-  @Override
-  public void printGrid() { //TODO remove for final
-    StringBuilder b = new StringBuilder();
-    for (int i = 0; i < this.grid.length; i++) {
-      b.append("\n");
-      for (int j = 0; j < this.grid[i].length; j++) {
-        b.append(this.grid[i][j]);
-        b.append(this.grid[i][j].eastStringHelper());
-      }
-      b.append("\n");
-      for (int j = 0; j < this.grid[i].length; j++) {
-        b.append(this.grid[i][j].southStringHelper());
-        b.append(" ");
-      }
-    }
-    System.out.print(b);
   }
 
 

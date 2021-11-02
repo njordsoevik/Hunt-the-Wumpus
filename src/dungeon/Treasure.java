@@ -7,5 +7,5 @@ package dungeon;
 public enum Treasure {
   DIAMOND,
   RUBY,
-  SAPPHIRE;
+  SAPPHIRE
 }

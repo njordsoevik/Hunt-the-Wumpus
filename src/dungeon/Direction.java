@@ -18,14 +18,11 @@ public enum Direction {
   public Direction getInverse() {
     if (this == NORTH) {
       return SOUTH;
-    }
-    else if (this == SOUTH) {
+    } else if (this == SOUTH) {
       return NORTH;
-    }
-    else if (this == EAST) {
+    } else if (this == EAST) {
       return WEST;
-    }
-    else {
+    } else {
       return EAST;
     }
   }
