@@ -49,5 +49,11 @@ public interface Dungeon {
    */
   boolean isGameOver();
 
+  /**
+   * Print the dungeon layout.
+   */
+  void printGrid(); //TODO remove this
+
+
 
 }
