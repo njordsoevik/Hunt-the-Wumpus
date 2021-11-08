@@ -7,7 +7,8 @@ import java.util.List;
  * Player to access and navigate the dungeon. Players can also store treasure.
  */
 class Player {
-  private final List<Treasure> treasures;
+  private List<Treasure> treasures;
+  private int arrows;
   private Coordinate coordinate;
 
   /**
@@ -18,6 +19,18 @@ class Player {
   Player(Coordinate c) {
     this.treasures = new ArrayList<>();
     this.coordinate = c;
+  }
+
+  /**
+   * Constructor for a player with arrows.
+   *
+   * @param c The coordinate of the grid position for this player.
+   * @param arrows The number of arrows for this player.
+   */
+  Player(Coordinate c, int arrows) {
+    this.treasures = new ArrayList<>();
+    this.coordinate = c;
+    this.arrows = arrows;
   }
 
   /**

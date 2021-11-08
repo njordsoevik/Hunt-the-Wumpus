@@ -13,6 +13,7 @@ class DungeonLocation implements Location {
   private final List<Treasure> treasure;
   private final HashMap<Direction, Location> connections;
   private final Coordinate coordinate;
+  private boolean containsOtyugh;
 
   /**
    * Constructor for a dungeon location.
@@ -23,6 +24,7 @@ class DungeonLocation implements Location {
     this.connections = new HashMap<>();
     this.treasure = new ArrayList<>();
     this.coordinate = c;
+    this.containsOtyugh = false;
   }
 
   @Override
@@ -79,6 +81,14 @@ class DungeonLocation implements Location {
     } else {
       return LocationType.CAVE;
     }
+  }
+
+  @Override
+  public void addOtyugh() {
+    if (this.containsOtyugh) {
+      throw new IllegalStateException("Cannot contain two Otyughs");
+    }
+    this.containsOtyugh = true;
   }
 
   @Override

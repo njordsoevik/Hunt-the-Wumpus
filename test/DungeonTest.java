@@ -85,7 +85,7 @@ public class DungeonTest {
 
   @Test
   public void testMinimumPathDistanceMinimumSize() {
-    for (int i = 0; i<50;i++) {
+    for (int i = 0; i < 50; i++) {
       Dungeon z = new TreasureDungeon(3, 4, 0, false, 120, 4L);
       Random rand = new Random();
       int numberOfMoves = 0;
@@ -104,7 +104,7 @@ public class DungeonTest {
         numberOfMoves++;
         z.movePlayer(dir);
       }
-      Assert.assertTrue(numberOfMoves>=5); //Check at-least 5 moves were made in each run
+      Assert.assertTrue(numberOfMoves >= 5); //Check at-least 5 moves were made in each run
       Assert.assertTrue(z.isGameOver());
     }
   }

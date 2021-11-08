@@ -70,4 +70,10 @@ interface Location {
    */
   LocationType getLocationType();
 
+  /**
+   * Add an Otyugh to this location.
+   *
+   */
+  void addOtyugh();
+
 }

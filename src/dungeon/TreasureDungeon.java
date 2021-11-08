@@ -94,6 +94,12 @@ public class TreasureDungeon implements Dungeon {
     this.player = new Player(startC);
   }
 
+
+  @Override
+  public boolean isGameOver() {
+    return isEndSquare(this.player.getCoordinate());
+  }
+
   @Override
   public void movePlayer(Direction dir) {
     if (isGameOver()) {
@@ -146,6 +152,30 @@ public class TreasureDungeon implements Dungeon {
       player.addTreasure(current.getTreasure());
       current.removeTreasure();
     }
+  }
+
+  protected Location[][] getGrid() {
+    return this.grid;
+  }
+
+  protected Random getRandom() {
+    return this.rand;
+  }
+
+  protected Coordinate getStart() {
+    return startC;
+  }
+
+  protected Coordinate getEnd() {
+    return endC;
+  }
+
+  protected Location getCoordinateLocation(Coordinate c) {
+    return grid[c.getI()][c.getJ()];
+  }
+
+  protected boolean isEndSquare(Coordinate c) {
+    return endC.equals(c);
   }
 
   private void createGrid(int rows, int columns) {
@@ -264,7 +294,7 @@ public class TreasureDungeon implements Dungeon {
             rand.nextInt(this.grid[0].length));
     int attempts = 0;
     while ((Math.abs(randEnd.getI() - randStart.getI()) + Math.abs(randEnd.getJ()
-            - randStart.getJ())) < 5 && (attempts < 400)) {
+            - randStart.getJ())) < 5) {
       randStart = new Coordinate(rand.nextInt(this.grid.length),
               rand.nextInt(this.grid[0].length));
       randEnd = new Coordinate(rand.nextInt(this.grid.length),
@@ -293,9 +323,6 @@ public class TreasureDungeon implements Dungeon {
     forest.remove(j);
   }
 
-  private Location getCoordinateLocation(Coordinate c) {
-    return grid[c.getI()][c.getJ()];
-  }
 
   private void placeTreasure(int rows, int columns, int percent) {
     int treasureIndex;
@@ -320,15 +347,6 @@ public class TreasureDungeon implements Dungeon {
         this.grid[x][y].addTreasure(Treasure.values()[treasureIndex]);
       }
     }
-  }
-
-  private boolean isEndSquare(Coordinate c) {
-    return endC.equals(c);
-  }
-
-  @Override
-  public boolean isGameOver() {
-    return isEndSquare(this.player.getCoordinate());
   }
 
 
