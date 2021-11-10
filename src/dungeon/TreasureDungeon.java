@@ -97,7 +97,7 @@ public class TreasureDungeon implements Dungeon {
 
   @Override
   public boolean isGameOver() {
-    return isEndSquare(this.player.getCoordinate());
+    return (isEndSquare(this.player.getCoordinate()) || getPlayer().getHealth()==Health.DEAD);
   }
 
   @Override
@@ -110,12 +110,10 @@ public class TreasureDungeon implements Dungeon {
     // If current location has this direction available
     if (getDirections().contains(dir)) { // Set player coordinate
       Coordinate newSquare = currentLocation.getPaths().get(dir).getCoordinate();
-
       player.setCoordinate(newSquare);
     } else {
       throw new IllegalArgumentException("Cannot move there");
     }
-
   }
 
   @Override
@@ -179,6 +177,10 @@ public class TreasureDungeon implements Dungeon {
 
   protected Random getRandom() {
     return this.rand;
+  }
+
+  protected Player getPlayer() {
+    return this.player;
   }
 
   protected Coordinate getStart() {

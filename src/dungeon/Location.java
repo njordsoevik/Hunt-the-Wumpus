@@ -93,4 +93,11 @@ interface Location {
    * Remove the arrows this location is holding.
    */
   void removeArrows();
+
+  /**
+   * Return an Otyugh if one resides in this location.
+   *
+   * @return An Otyugh if one resides here, else null.
+   */
+  Otyugh getOtyugh();
 }

@@ -18,6 +18,7 @@ public interface Dungeon {
    */
   void movePlayer(Direction direction);
 
+
   /**
    * Get the treasure placed at the current location.
    *

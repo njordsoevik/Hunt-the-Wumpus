@@ -8,8 +8,9 @@ import java.util.List;
  */
 class Player {
   private List<Treasure> treasures;
-  private int arrows;
+  private List<Arrow> arrows;
   private Coordinate coordinate;
+  private Health health;
 
   /**
    * Constructor for a player.
@@ -18,19 +19,9 @@ class Player {
    */
   Player(Coordinate c) {
     this.treasures = new ArrayList<>();
+    this.arrows = new ArrayList<>();
     this.coordinate = c;
-  }
-
-  /**
-   * Constructor for a player with arrows.
-   *
-   * @param c      The coordinate of the grid position for this player.
-   * @param arrows The number of arrows for this player.
-   */
-  Player(Coordinate c, int arrows) {
-    this.treasures = new ArrayList<>();
-    this.coordinate = c;
-    this.arrows = arrows;
+    this.health = Health.HEALTHY;
   }
 
   /**
@@ -75,13 +66,42 @@ class Player {
    * Removes an arrow from the players inventory, used after an arrow is shot.
    */
   void removeArrow() {
-    this.arrows = this.arrows - 1;
+    this.arrows.remove(0);
   }
 
   /**
    * Adds arrows to the players inventory.
    */
-  void addArrow(int add) {
-    this.arrows = this.arrows + add;
+  void addArrow(List<Arrow> a) {
+    this.arrows.addAll(a);
   }
+
+  /**
+   * Get the list of arrows this player has picked up.
+   *
+   * @return the list of arrows.
+   */
+  List<Arrow> getArrows() {
+    List<Arrow> c = new ArrayList<>();
+    c.addAll(this.arrows);
+    return c;
+  }
+
+  /**
+   * Get the health of this player.
+   *
+   * @return the player health.
+   */
+  public Health getHealth() {
+    return this.health;
+  }
+
+  /**
+   * Reduce the health of this player.
+   *
+   */
+  public void reduceHealth() {
+    this.health = Health.DEAD;
+  }
+
 }

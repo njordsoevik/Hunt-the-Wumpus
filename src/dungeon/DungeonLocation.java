@@ -14,7 +14,7 @@ class DungeonLocation implements Location {
   private List<Arrow> arrows;
   private HashMap<Direction, Location> connections;
   private final Coordinate coordinate;
-  private boolean containsOtyugh;
+  private Otyugh otyugh;
 
   /**
    * Constructor for a dungeon location.
@@ -24,8 +24,8 @@ class DungeonLocation implements Location {
   public DungeonLocation(Coordinate c) {
     this.connections = new HashMap<>();
     this.treasure = new ArrayList<>();
+    this.arrows = new ArrayList<>();
     this.coordinate = c;
-    this.containsOtyugh = false;
   }
 
   @Override
@@ -86,10 +86,10 @@ class DungeonLocation implements Location {
 
   @Override
   public void addOtyugh() {
-    if (this.containsOtyugh) {
+    if (this.otyugh!=null) {
       throw new IllegalStateException("Cannot contain two Otyughs");
     }
-    this.containsOtyugh = true;
+    this.otyugh = new Otyugh();
   }
 
   @Override
@@ -107,6 +107,11 @@ class DungeonLocation implements Location {
   @Override
   public void removeArrows() {
     this.arrows.clear();
+  }
+
+  @Override
+  public Otyugh getOtyugh() {
+    return this.otyugh;
   }
 
   @Override

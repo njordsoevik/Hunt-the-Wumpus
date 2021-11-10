@@ -1,12 +1,14 @@
 package dungeon;
 
+import java.util.List;
+
 public interface OtyughDungeon extends Dungeon {
 
   /**
    * Pick up arrows in the current location.
    *
    */
-  void pickUpArrows();
+  void takeArrows();
 
   /**
    * Shoot an arrow in a specified distance and direction. This hits an Otyugh only if the distance
@@ -17,5 +19,19 @@ public interface OtyughDungeon extends Dungeon {
    *
    */
   void shootArrow(Direction dir, int distance);
+
+  /**
+   * Get the arrows that the player is currently holding.
+   *
+   * @return the list of arrows.
+   */
+  List<Arrow> getPlayerArrows();
+
+  /**
+   * Get the arrows placed at the current location.
+   *
+   * @return the arrow in the player's location.
+   */
+  List<Arrow> getCurrentLocationArrows();
 
 }
