@@ -76,4 +76,21 @@ interface Location {
    */
   void addOtyugh();
 
+  /**
+   * Add arrows to this location.
+   *
+   */
+  void addArrows(Arrow arrow);
+
+  /**
+   * Get the arrows this location is holding.
+   *
+   * @return The arrows placed in this location.
+   */
+  List<Arrow> getArrows();
+
+  /**
+   * Remove the arrows this location is holding.
+   */
+  void removeArrows();
 }

@@ -1,4 +1,5 @@
 package dungeon;
 
-public class Otyugh {
+public enum Otyugh {
+  INJURED, HEALTHY;
 }

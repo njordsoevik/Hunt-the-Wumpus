@@ -24,7 +24,7 @@ class Player {
   /**
    * Constructor for a player with arrows.
    *
-   * @param c The coordinate of the grid position for this player.
+   * @param c      The coordinate of the grid position for this player.
    * @param arrows The number of arrows for this player.
    */
   Player(Coordinate c, int arrows) {
@@ -69,5 +69,19 @@ class Player {
    */
   void setCoordinate(Coordinate c) {
     this.coordinate = c;
+  }
+
+  /**
+   * Removes an arrow from the players inventory, used after an arrow is shot.
+   */
+  void removeArrow() {
+    this.arrows = this.arrows - 1;
+  }
+
+  /**
+   * Adds arrows to the players inventory.
+   */
+  void addArrow(int add) {
+    this.arrows = this.arrows + add;
   }
 }

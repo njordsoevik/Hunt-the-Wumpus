@@ -10,8 +10,9 @@ import java.util.Map;
  * move through the dungeon. Dungeons can also store treasure.
  */
 class DungeonLocation implements Location {
-  private final List<Treasure> treasure;
-  private final HashMap<Direction, Location> connections;
+  private List<Treasure> treasure;
+  private List<Arrow> arrows;
+  private HashMap<Direction, Location> connections;
   private final Coordinate coordinate;
   private boolean containsOtyugh;
 
@@ -89,6 +90,23 @@ class DungeonLocation implements Location {
       throw new IllegalStateException("Cannot contain two Otyughs");
     }
     this.containsOtyugh = true;
+  }
+
+  @Override
+  public void addArrows(Arrow arrow) {
+    this.arrows.add(arrow);
+  }
+
+  @Override
+  public List<Arrow> getArrows() {
+    List<Arrow> copy = new ArrayList<>();
+    copy.addAll(this.arrows);
+    return copy;
+  }
+
+  @Override
+  public void removeArrows() {
+    this.arrows.clear();
   }
 
   @Override

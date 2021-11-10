@@ -52,4 +52,15 @@ public class OtyughTreasureDungeon extends TreasureDungeon implements OtyughDung
       throw new IllegalArgumentException("Too many Otyughs, cannot fit in the caves.");
     }
   }
+
+  @Override
+  public void pickUpArrows() {
+
+  }
+
+  @Override
+  public void shootArrow(Direction dir, int distance) {
+
+  }
+
 }
