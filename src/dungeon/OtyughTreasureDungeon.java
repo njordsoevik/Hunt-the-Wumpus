@@ -17,7 +17,6 @@ public class OtyughTreasureDungeon extends TreasureDungeon implements OtyughDung
   public OtyughTreasureDungeon(int rows, int columns, int interconnectivity, boolean wrapped,
                                int treasurePercent, int arrowPercent, int numberOtyugh, Long seed) {
     super(rows, columns, interconnectivity, wrapped, treasurePercent, seed);
-    printGrid();
     placeOtyugh(rows, columns, numberOtyugh);
     placeArrows(rows, columns, arrowPercent);
     addStartingArrows(STARTING_ARROWS);
@@ -43,11 +42,12 @@ public class OtyughTreasureDungeon extends TreasureDungeon implements OtyughDung
         }
       }
       Collections.shuffle(places, this.getRandom());
-
       for (int k = 0; k < places.size(); k++) {
         int x = places.get(k)[0];
         int y = places.get(k)[1];
-        if (getGrid()[x][y].getLocationType() == LocationType.CAVE) {
+        if (!(getGrid()[x][y].getCoordinate().equals(getStart()))
+                && !(getGrid()[x][y].getCoordinate().equals(getEnd()))
+                && (getGrid()[x][y].getLocationType() == LocationType.CAVE)) {
           getGrid()[x][y].addOtyugh();
           leftToPlace--;
         }
@@ -105,26 +105,28 @@ public class OtyughTreasureDungeon extends TreasureDungeon implements OtyughDung
 
   @Override
   public void shootArrow(Direction dir, int distance) {
-    shootArrowHelper(dir, distance, false);
+    if (getPlayer().getArrows().size()==0) {
+      throw new IllegalArgumentException("Player does not have any arrows to shoot.");
+    }
+    Location current = getCoordinateLocation(getPlayer().getCoordinate());
+    shootArrowHelper(current, dir, distance, false);
+    getPlayer().removeArrow();
   }
 
-  private void shootArrowHelper(Direction dir, int distance, boolean traveling) {
-    // get current location
-    Location current = getCoordinateLocation(getPlayer().getCoordinate());
+  private void shootArrowHelper(Location l, Direction dir, int distance, boolean traveling) {
     // if distance is zero, kill otyugh if there
     if (distance == 0) {
-      if (current.getOtyugh()!=null) {
-        current.getOtyugh().reduceHealth();
+      if (l.getOtyugh()!=null) {
+        l.getOtyugh().reduceHealth();
       }
       return;
     }
-    System.out.println("1");
-    Map<Direction, Location> directions = current.getPaths();
+    Map<Direction, Location> directions = l.getPaths();
     // if direction exists, move one into direction
     if (directions.containsKey(dir)) {
-      shootArrowHelper(dir,distance-1,true);
+      shootArrowHelper(directions.get(dir), dir,distance-1,true);
     } else { // if not, check if tunnel
-      if (current.getLocationType()==LocationType.CAVE) {  // Break arrow in cave
+      if (l.getLocationType()==LocationType.CAVE) {  // Break arrow in cave
         return;
       } else { // If in tunnel
         if (!traveling) { // If not traveling arrow, break
@@ -132,7 +134,7 @@ public class OtyughTreasureDungeon extends TreasureDungeon implements OtyughDung
         } else { // If traveling arrow, shoot out other side
           directions.remove(dir.getInverse());
           for (Direction moveDirection : directions.keySet()) {
-            shootArrowHelper(moveDirection, distance-1,true);
+            shootArrowHelper(directions.get(moveDirection), moveDirection, distance-1,true);
           }
         }
       }
@@ -163,10 +165,10 @@ public class OtyughTreasureDungeon extends TreasureDungeon implements OtyughDung
     if (getDirections().contains(dir)) { // Set player coordinate
       Coordinate newSquare = currentLocation.getPaths().get(dir).getCoordinate();
       getPlayer().setCoordinate(newSquare);
+      checkOtyugh(getCoordinateLocation(newSquare));
     } else {
       throw new IllegalArgumentException("Cannot move there");
     }
-    checkOtyugh(currentLocation);
   }
 
   private void checkOtyugh(Location l) {
@@ -177,6 +179,7 @@ public class OtyughTreasureDungeon extends TreasureDungeon implements OtyughDung
         getPlayer().reduceHealth();
       } else if (o.getHealth() == Health.INJURED) {
         int hit = getRandom().nextInt(2);
+        System.out.println(hit);
         if (hit == 1) {
           getPlayer().reduceHealth();
         }

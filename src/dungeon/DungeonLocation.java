@@ -64,7 +64,17 @@ class DungeonLocation implements Location {
 
   @Override
   public String toString() {
-    return "0";
+    if (this.otyugh==null) {
+      return "0";
+    } else if (this.otyugh.getHealth()==Health.HEALTHY) {
+      return "H";
+    }
+    else if (this.otyugh.getHealth()==Health.INJURED) {
+      return "I";
+    }
+    else {
+      return "D";
+    }
   }
 
   @Override
