@@ -40,4 +40,11 @@ public interface OtyughDungeon extends Dungeon {
    * @return the location type of the player's location.
    */
   LocationType getCurrentLocationType();
+
+  /**
+   * Get player health.
+   *
+   * @return the players health.
+   */
+  Health getPlayerHealth();
 }

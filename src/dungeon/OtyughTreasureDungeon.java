@@ -161,6 +161,11 @@ public class OtyughTreasureDungeon extends TreasureDungeon implements OtyughDung
   }
 
   @Override
+  public Health getPlayerHealth() {
+    return getPlayer().getHealth();
+  }
+
+  @Override
   public void movePlayer(Direction dir) {
     if (isGameOver()) {
       throw new IllegalArgumentException("Game is over!");

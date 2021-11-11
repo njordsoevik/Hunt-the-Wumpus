@@ -50,11 +50,5 @@ public interface Dungeon {
    */
   boolean isGameOver();
 
-  /**
-   * Print the dungeon layout.
-   */
-  String printGrid(); //TODO remove this
-
-
 
 }

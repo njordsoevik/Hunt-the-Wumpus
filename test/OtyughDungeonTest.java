@@ -61,18 +61,17 @@ public class OtyughDungeonTest {
   @Test
   public void checkOtyughDies() {
     OtyughDungeon z = new OtyughTreasureDungeon(3, 4, 0, false, 20, 200, 7, 5L);
-    z.printGrid();
+    System.out.println(z);
     z.shootArrow(Direction.SOUTH, 1);
-    z.printGrid();
+    System.out.println(z);
     z.shootArrow(Direction.SOUTH, 1);
-    z.printGrid();
+    System.out.println(z);
     z.movePlayer(Direction.SOUTH);
     z.movePlayer(Direction.NORTH);
     z.movePlayer(Direction.SOUTH);
     z.movePlayer(Direction.NORTH);
     z.movePlayer(Direction.SOUTH);
     z.shootArrow(Direction.SOUTH, 1);
-    z.printGrid();
     z.movePlayer(Direction.SOUTH);
     z.movePlayer(Direction.NORTH); //repeat this to die
 
@@ -89,12 +88,12 @@ public class OtyughDungeonTest {
     z.shootArrow(Direction.EAST,1);
     z.shootArrow(Direction.EAST,1);
     z.movePlayer(Direction.EAST);
-    z.printGrid();
+    System.out.println(z);
     z.shootArrow(Direction.NORTH,2);
     z.shootArrow(Direction.NORTH,2);
     z.shootArrow(Direction.NORTH,3);
     z.shootArrow(Direction.SOUTH,3);
-    z.printGrid();
+    System.out.println(z);
   }
   @Test
   public void testReduceArrows() {
@@ -109,12 +108,12 @@ public class OtyughDungeonTest {
 
   @Test
   public void controller() {
-    Readable testInput = new StringReader("m south");
+    Readable testInput = new StringReader("m south p s south 5");
     Appendable outputLog = new StringBuilder();
     Appendable testLog = new StringBuilder();
-    OtyughDungeon m = new OtyughTreasureDungeon(3, 4, 0, false, 20, 1000, 2, 5L);
+    OtyughDungeon m = new OtyughTreasureDungeon(3, 4, 0, false, 120, 50, 2, 5L);
     DungeonController c = new DungeonConsoleController(testInput,outputLog);
-    System.out.println(m.printGrid());
+    System.out.println(m);
     c.playGame(m);
 
     System.out.println(outputLog);

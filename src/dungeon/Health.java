@@ -1,5 +1,5 @@
 package dungeon;
 
-enum Health {
+public enum Health {
     HEALTHY, INJURED, DEAD
 }
