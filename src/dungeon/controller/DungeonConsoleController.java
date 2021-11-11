@@ -3,12 +3,15 @@ package dungeon.controller;
 import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 import dungeon.Arrow;
 import dungeon.Direction;
 import dungeon.Health;
 import dungeon.OtyughDungeon;
+import dungeon.Smell;
 import dungeon.Treasure;
 import dungeon.controller.commands.Move;
 import dungeon.controller.commands.PickUp;
@@ -41,7 +44,7 @@ public class DungeonConsoleController implements DungeonController {
   public void playGame(OtyughDungeon m) {
     String element = "";
     String move = "";
-    Direction moveDirecton;
+    Direction moveDirection = null;
     int distance;
     OtyughDungeonCommand cmd = null;
 
@@ -55,26 +58,66 @@ public class DungeonConsoleController implements DungeonController {
         switch (element) {
           case "q":
           case "Q":
-            try {
               out.append("Game quit! Ending game state.").append("\n");
               return;
-            } catch (IOException ioe) {
-              throw new IllegalStateException("Append failed", ioe);
+          case "i":
+          case "I":
+            List<Arrow> arrows = m.getPlayerArrows();
+            if (!arrows.isEmpty()) {
+              out.append("You are holding arrows: ");
+              for (Arrow a : arrows) {
+                out.append(" ").append(a.toString());
+              }
+              out.append("\n");
+            } else {
+              out.append("You are holding no arrows").append("\n");
             }
+
+            List<Treasure> treasures = m.getCurrentLocationTreasure();
+            if (!treasures.isEmpty()) {
+              out.append("You are holding treasures: ");
+              for (Treasure d : treasures) {
+                out.append(" ").append(d.toString());
+              }
+              out.append("\n");
+            } else {
+              out.append("You are holding no treasure").append("\n");
+            }
+            break;
           case "m":
           case "M":
             out.append("Choose direction: ").append("\n");
-            while (true) {
-              try {
-                move = scan.next();
-                moveDirecton = Direction.valueOf(move.toUpperCase());
+            move = scan.next();
+            switch (move) {
+              case "q":
+              case "Q":
+                out.append("Game quit! Ending game state.").append("\n");
+                return;
+              case "e":
+              case "east":
+                moveDirection = Direction.EAST;
                 break;
-              } catch (IllegalArgumentException ex) {
-                out.append("Invalid move, try again.").append("\n");
-              }
+              case "w":
+              case "west":
+                moveDirection = Direction.WEST;
+                break;
+              case "n":
+              case "north":
+                moveDirection = Direction.NORTH;
+                break;
+              case "s":
+              case "south":
+                moveDirection = Direction.SOUTH;
+                break;
+              default:
+                out.append("Invalid direction, try again.").append("\n");
             }
             out.append("Moving ").append(move).append("\n");
-            cmd = new Move(moveDirecton);
+            if (m.getDirections().contains(moveDirection)) {
+              cmd = new Move(moveDirection);
+            } else {
+              out.append("Cannot move ").append(move).append(" from this location.");
+            }
             break;
           case "p":
           case "P":
@@ -84,14 +127,30 @@ public class DungeonConsoleController implements DungeonController {
           case "s":
           case "S":
             out.append("Choose direction: ").append("\n");
-            while (true) {
-              try {
-                move = scan.next();
-                moveDirecton = Direction.valueOf(move.toUpperCase());
+            move = scan.next();
+            switch (move) {
+              case "q":
+              case "Q":
+                out.append("Game quit! Ending game state.").append("\n");
+                return;
+              case "e":
+              case "east":
+                moveDirection = Direction.EAST;
                 break;
-              } catch (IllegalArgumentException ex) {
+              case "w":
+              case "west":
+                moveDirection = Direction.WEST;
+                break;
+              case "n":
+              case "north":
+                moveDirection = Direction.NORTH;
+                break;
+              case "s":
+              case "south":
+                moveDirection = Direction.SOUTH;
+                break;
+              default:
                 out.append("Invalid direction, try again.").append("\n");
-              }
             }
             out.append("Choose distance: ").append("\n");
             while (true) {
@@ -102,8 +161,9 @@ public class DungeonConsoleController implements DungeonController {
                 out.append("Invalid distance, try again.").append("\n");
               }
             }
-            out.append("Shooting ").append(move).append(" ").append(distance + " ").append("squares").append("\n");
-            cmd = new Shoot(moveDirecton,distance);
+            out.append("Shooting ").append(move).append(" ").append(distance + " ")
+                    .append("squares").append("\n");
+            cmd = new Shoot(moveDirection,distance);
             break;
           default:
             out.append("Unknown operator: ").append(element).append("\n");
@@ -112,7 +172,6 @@ public class DungeonConsoleController implements DungeonController {
         if (cmd != null) {
           cmd.execute(m);
         }
-        helperPrint(m);
       } catch (IOException ioe) {
         throw new IllegalStateException("Append failed", ioe);
       }
@@ -124,12 +183,13 @@ public class DungeonConsoleController implements DungeonController {
           } else {
             out.append("End square reached, game over!");
           }
+          return;
         }
          catch (IOException ioe) {
             throw new IllegalStateException("Append failed", ioe);
           }
       }
-
+      helperPrint(m);
     }
   }
 
@@ -137,8 +197,6 @@ public class DungeonConsoleController implements DungeonController {
     Iterator<Direction> itr;
     try {
       out.append("\n");
-      // Show cave or tunnel
-      //out.append("You are in a ").append(m.getCurrentLocationType().toString()).append("\n");
 
       // Show directions
       out.append("Doors lead to:");
@@ -149,22 +207,36 @@ public class DungeonConsoleController implements DungeonController {
       out.append("\n");
 
       // Show treasures and arrows
-      out.append("The cave you are in holds arrows: ");
-      for (Arrow a : m.getCurrentLocationArrows()) {
-        out.append(" ").append(a.toString());
+      List<Arrow> arrows = m.getCurrentLocationArrows();
+      if (!arrows.isEmpty()) {
+        out.append("The cave you are in holds arrows: ");
+        for (Arrow a : arrows) {
+          out.append(" ").append(a.toString());
+        }
+        out.append("\n");
       }
-      out.append("\n");
-      out.append("The cave you are in holds treasures: ");
-      for (Treasure d : m.getCurrentLocationTreasure()) {
-        out.append(" ").append(d.toString());
+
+      List<Treasure> treasures = m.getCurrentLocationTreasure();
+      if (!treasures.isEmpty()) {
+        out.append("The cave you are in holds treasures: ");
+        for (Treasure d : treasures) {
+          out.append(" ").append(d.toString());
+        }
+        out.append("\n");
       }
-      out.append("\n");
 
-      // TODO Show smell
+      // Show smell
+      if (m.getSmell() == Smell.MORE_PUNGENT) {
+        out.append("There is a VERY pungent smell in the air").append("\n");
+      } else if (m.getSmell() == Smell.LESS_PUNGENT) {
+        out.append("There is a less pungent smell in the air").append("\n");
+      } else {
+        out.append("There is no smell in the air").append("\n");
+      }
 
-      //MPS question
+      // MPS question
       out.append("\n");
-      out.append("Move, Pickup, or Shoot? (M-P-S) ").append("\n");
+      out.append("Move, Pickup, Shoot, or Player Information? (M-P-S-I) ").append("\n");
     } catch (IOException ioe) {
       throw new IllegalStateException("Append failed", ioe);
     }

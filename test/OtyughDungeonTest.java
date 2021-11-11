@@ -140,7 +140,6 @@ public class OtyughDungeonTest {
     DungeonController c = new DungeonConsoleController(testInput,outputLog);
     System.out.println(m);
     c.playGame(m);
-
     System.out.println(outputLog);
   }
 

@@ -1,7 +1,5 @@
 package dungeon.controller.commands;
 
-import java.util.Locale;
-
 import dungeon.Direction;
 import dungeon.OtyughDungeon;
 import dungeon.controller.OtyughDungeonCommand;
