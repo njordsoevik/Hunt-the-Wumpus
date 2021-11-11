@@ -34,4 +34,10 @@ public interface OtyughDungeon extends Dungeon {
    */
   List<Arrow> getCurrentLocationArrows();
 
+  /**
+   * Get the location type of the player's location.
+   *
+   * @return the location type of the player's location.
+   */
+  LocationType getCurrentLocationType();
 }

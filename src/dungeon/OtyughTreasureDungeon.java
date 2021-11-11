@@ -47,7 +47,8 @@ public class OtyughTreasureDungeon extends TreasureDungeon implements OtyughDung
         int y = places.get(k)[1];
         if (!(getGrid()[x][y].getCoordinate().equals(getStart()))
                 && !(getGrid()[x][y].getCoordinate().equals(getEnd()))
-                && (getGrid()[x][y].getLocationType() == LocationType.CAVE)) {
+                && (getGrid()[x][y].getLocationType() == LocationType.CAVE)
+                && leftToPlace > 0) {
           getGrid()[x][y].addOtyugh();
           leftToPlace--;
         }
@@ -76,8 +77,8 @@ public class OtyughTreasureDungeon extends TreasureDungeon implements OtyughDung
       // k modulo size to wrap around places list
       int x = places.get(k % places.size())[0];
       int y = places.get(k % places.size())[1];
-        arrowIndex = this.getRandom().nextInt(Arrow.values().length);
-        this.getGrid()[x][y].addArrows(Arrow.values()[arrowIndex]);
+      arrowIndex = this.getRandom().nextInt(Arrow.values().length);
+      this.getGrid()[x][y].addArrows(Arrow.values()[arrowIndex]);
     }
   }
 
@@ -105,7 +106,7 @@ public class OtyughTreasureDungeon extends TreasureDungeon implements OtyughDung
 
   @Override
   public void shootArrow(Direction dir, int distance) {
-    if (getPlayer().getArrows().size()==0) {
+    if (getPlayer().getArrows().size() == 0) {
       throw new IllegalArgumentException("Player does not have any arrows to shoot.");
     }
     Location current = getCoordinateLocation(getPlayer().getCoordinate());
@@ -116,7 +117,7 @@ public class OtyughTreasureDungeon extends TreasureDungeon implements OtyughDung
   private void shootArrowHelper(Location l, Direction dir, int distance, boolean traveling) {
     // if distance is zero, kill otyugh if there
     if (distance == 0) {
-      if (l.getOtyugh()!=null) {
+      if (l.getOtyugh() != null) {
         l.getOtyugh().reduceHealth();
       }
       return;
@@ -124,9 +125,9 @@ public class OtyughTreasureDungeon extends TreasureDungeon implements OtyughDung
     Map<Direction, Location> directions = l.getPaths();
     // if direction exists, move one into direction
     if (directions.containsKey(dir)) {
-      shootArrowHelper(directions.get(dir), dir,distance-1,true);
+      shootArrowHelper(directions.get(dir), dir, distance - 1, true);
     } else { // if not, check if tunnel
-      if (l.getLocationType()==LocationType.CAVE) {  // Break arrow in cave
+      if (l.getLocationType() == LocationType.CAVE) {  // Break arrow in cave
         return;
       } else { // If in tunnel
         if (!traveling) { // If not traveling arrow, break
@@ -134,7 +135,7 @@ public class OtyughTreasureDungeon extends TreasureDungeon implements OtyughDung
         } else { // If traveling arrow, shoot out other side
           directions.remove(dir.getInverse());
           for (Direction moveDirection : directions.keySet()) {
-            shootArrowHelper(directions.get(moveDirection), moveDirection, distance-1,true);
+            shootArrowHelper(directions.get(moveDirection), moveDirection, distance - 1, true);
           }
         }
       }
@@ -152,6 +153,11 @@ public class OtyughTreasureDungeon extends TreasureDungeon implements OtyughDung
       throw new IllegalArgumentException("Game is over!");
     }
     return getCoordinateLocation(getPlayer().getCoordinate()).getArrows();
+  }
+
+  @Override
+  public LocationType getCurrentLocationType() {
+    return getCoordinateLocation(getPlayer().getCoordinate()).getLocationType();
   }
 
   @Override
@@ -174,12 +180,11 @@ public class OtyughTreasureDungeon extends TreasureDungeon implements OtyughDung
   private void checkOtyugh(Location l) {
     // Get Otyugh
     Otyugh o = l.getOtyugh();
-    if (o!=null) {
+    if (o != null) {
       if (o.getHealth() == Health.HEALTHY) {
         getPlayer().reduceHealth();
       } else if (o.getHealth() == Health.INJURED) {
         int hit = getRandom().nextInt(2);
-        System.out.println(hit);
         if (hit == 1) {
           getPlayer().reduceHealth();
         }

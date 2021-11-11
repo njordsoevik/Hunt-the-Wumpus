@@ -154,7 +154,7 @@ public class TreasureDungeon implements Dungeon {
 
 
   @Override
-  public void printGrid() { //TODO remove for final
+  public String printGrid() { //TODO remove for final
     StringBuilder b = new StringBuilder();
     for (int i = 0; i < this.grid.length; i++) {
       b.append("\n");
@@ -168,7 +168,8 @@ public class TreasureDungeon implements Dungeon {
         b.append(" ");
       }
     }
-    System.out.print(b);
+    b.append("\n");
+    return b.toString();
   }
 
   protected Location[][] getGrid() {

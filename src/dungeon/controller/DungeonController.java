@@ -1,4 +1,6 @@
-package dungeon;
+package dungeon.controller;
+
+import dungeon.OtyughDungeon;
 
 /**
  * Represents a Controller for Dungeon: handle user moves by executing them using the model;

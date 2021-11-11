@@ -53,7 +53,7 @@ public interface Dungeon {
   /**
    * Print the dungeon layout.
    */
-  void printGrid(); //TODO remove this
+  String printGrid(); //TODO remove this
 
 
 

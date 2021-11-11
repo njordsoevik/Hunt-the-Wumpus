@@ -2,11 +2,14 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
 import dungeon.Arrow;
 import dungeon.Direction;
+import dungeon.controller.DungeonConsoleController;
+import dungeon.controller.DungeonController;
 import dungeon.OtyughDungeon;
 import dungeon.OtyughTreasureDungeon;
 
@@ -101,5 +104,19 @@ public class OtyughDungeonTest {
     z.shootArrow(Direction.SOUTH, 1);
     z.shootArrow(Direction.SOUTH, 2);
     System.out.println(z.getPlayerArrows());
+  }
+
+
+  @Test
+  public void controller() {
+    Readable testInput = new StringReader("m south");
+    Appendable outputLog = new StringBuilder();
+    Appendable testLog = new StringBuilder();
+    OtyughDungeon m = new OtyughTreasureDungeon(3, 4, 0, false, 20, 1000, 2, 5L);
+    DungeonController c = new DungeonConsoleController(testInput,outputLog);
+    System.out.println(m.printGrid());
+    c.playGame(m);
+
+    System.out.println(outputLog);
   }
 }
