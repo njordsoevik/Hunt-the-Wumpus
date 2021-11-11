@@ -8,6 +8,7 @@ import java.util.List;
 
 import dungeon.Arrow;
 import dungeon.Direction;
+import dungeon.Smell;
 import dungeon.controller.DungeonConsoleController;
 import dungeon.controller.DungeonController;
 import dungeon.OtyughDungeon;
@@ -105,6 +106,30 @@ public class OtyughDungeonTest {
     System.out.println(z.getPlayerArrows());
   }
 
+  @Test
+  public void smellOtyughs() {
+    OtyughDungeon z = new OtyughTreasureDungeon(3, 4, 0, false, 20, 1000, 5, 5L);
+    z.takeArrows();
+    // One in next room, two in two room away
+    Assert.assertEquals(Smell.MORE_PUNGENT, z.getSmell());
+    z.shootArrow(Direction.SOUTH,1);
+    // One injured in next room, two in two room away
+    Assert.assertEquals(Smell.MORE_PUNGENT, z.getSmell());
+    z.shootArrow(Direction.SOUTH,1);
+    // One dead in next room, two in two room away
+    Assert.assertEquals(Smell.MORE_PUNGENT, z.getSmell());
+    z.shootArrow(Direction.SOUTH,2);
+    z.shootArrow(Direction.SOUTH,2);
+    // One dead in next room, one alive two rooms away
+    Assert.assertEquals(Smell.LESS_PUNGENT, z.getSmell());
+    // Move closer to the alive one
+    z.movePlayer(Direction.SOUTH);
+    Assert.assertEquals(Smell.MORE_PUNGENT, z.getSmell());
+    // Kill last nearby one
+    z.shootArrow(Direction.EAST,1);
+    z.shootArrow(Direction.EAST,1);
+    Assert.assertEquals(Smell.NONE, z.getSmell());
+  }
 
   @Test
   public void controller() {
@@ -118,4 +143,6 @@ public class OtyughDungeonTest {
 
     System.out.println(outputLog);
   }
+
+
 }

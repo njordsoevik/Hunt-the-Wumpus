@@ -47,4 +47,13 @@ public interface OtyughDungeon extends Dungeon {
    * @return the players health.
    */
   Health getPlayerHealth();
+
+  /**
+   * Get smell of nearby Otyughs. Detecting a more pungent smell either means that there is a
+   * single Otyugh 1 position from the player's current location or that there are multiple
+   * Otyughs within 2 positions from the player's current location.
+   *
+   * @return the smell of nearby Otyughs.
+   */
+  Smell getSmell();
 }

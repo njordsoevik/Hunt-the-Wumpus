@@ -183,7 +183,6 @@ public class OtyughTreasureDungeon extends TreasureDungeon implements OtyughDung
   }
 
   private void checkOtyugh(Location l) {
-    // Get Otyugh
     Otyugh o = l.getOtyugh();
     if (o != null) {
       if (o.getHealth() == Health.HEALTHY) {
@@ -194,6 +193,42 @@ public class OtyughTreasureDungeon extends TreasureDungeon implements OtyughDung
           getPlayer().reduceHealth();
         }
       }
+    }
+  }
+
+  @Override
+  public Smell getSmell() {
+    int countOtyugh = 0;
+    List<Location> secondaryLocations = new ArrayList<>();
+    Location currentLocation = getCoordinateLocation(getPlayer().getCoordinate());
+    // Check all first directions
+    for (Map.Entry<Direction, Location> entry : currentLocation.getPaths().entrySet()) {
+      Location l = entry.getValue();
+      Direction d = entry.getKey();
+      Otyugh o = l.getOtyugh();
+      if (o != null && (l.getOtyugh().getHealth() == Health.HEALTHY
+              || l.getOtyugh().getHealth() == Health.INJURED)) {
+        return Smell.MORE_PUNGENT;
+      } else {
+        Map<Direction, Location> temp = l.getPaths(); // Get all secondary locations
+        temp.remove(d.getInverse()); // Remove our source node
+        secondaryLocations.addAll(temp.values());
+      }
+    }
+    for (Location l2 : secondaryLocations) {
+      Otyugh o2 = l2.getOtyugh();
+      if (o2 != null && (o2.getHealth() == Health.HEALTHY
+              || o2.getHealth() == Health.INJURED)) {
+        countOtyugh++;
+      }
+    }
+    if (countOtyugh >= 2) {
+      return Smell.MORE_PUNGENT;
+    }
+    else if (countOtyugh == 1) {
+      return Smell.LESS_PUNGENT;
+    } else {
+      return Smell.NONE;
     }
   }
 
