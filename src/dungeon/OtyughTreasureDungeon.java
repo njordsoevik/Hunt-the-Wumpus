@@ -106,6 +106,9 @@ public class OtyughTreasureDungeon extends TreasureDungeon implements OtyughDung
 
   @Override
   public void shootArrow(Direction dir, int distance) {
+    if (dir == null || distance < 0) {
+      throw new IllegalArgumentException("Not valid direction or distance.");
+    }
     if (getPlayer().getArrows().size() == 0) {
       throw new IllegalArgumentException("Player does not have any arrows to shoot.");
     }
@@ -153,11 +156,6 @@ public class OtyughTreasureDungeon extends TreasureDungeon implements OtyughDung
       throw new IllegalArgumentException("Game is over!");
     }
     return getCoordinateLocation(getPlayer().getCoordinate()).getArrows();
-  }
-
-  @Override
-  public LocationType getCurrentLocationType() {
-    return getCoordinateLocation(getPlayer().getCoordinate()).getLocationType();
   }
 
   @Override

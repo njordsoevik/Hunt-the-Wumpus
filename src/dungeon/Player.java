@@ -92,7 +92,7 @@ class Player {
    *
    * @return the player health.
    */
-  public Health getHealth() {
+  Health getHealth() {
     return this.health;
   }
 
@@ -100,7 +100,7 @@ class Player {
    * Reduce the health of this player.
    *
    */
-  public void reduceHealth() {
+  void reduceHealth() {
     this.health = Health.DEAD;
   }
 

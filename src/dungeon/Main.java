@@ -14,6 +14,6 @@ public class Main {
   public static void main(String[] args) {
     Readable input = new InputStreamReader(System.in);
     Appendable output = System.out;
-    new DungeonConsoleController(input, output).playGame(new OtyughTreasureDungeon(3, 4, 0, false, 20, 1000, 0, 5L));
+    new DungeonConsoleController(input, output).playGame(new OtyughTreasureDungeon(3, 4, 0, false, 20, 80, 0, 5L));
   }
 }

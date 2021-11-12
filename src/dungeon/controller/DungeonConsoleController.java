@@ -1,6 +1,7 @@
 package dungeon.controller;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Iterator;
 import java.util.List;
@@ -73,7 +74,7 @@ public class DungeonConsoleController implements DungeonController {
               out.append("You are holding no arrows").append("\n");
             }
 
-            List<Treasure> treasures = m.getCurrentLocationTreasure();
+            List<Treasure> treasures = m.getPlayerTreasure();
             if (!treasures.isEmpty()) {
               out.append("You are holding treasures: ");
               for (Treasure d : treasures) {
@@ -109,8 +110,6 @@ public class DungeonConsoleController implements DungeonController {
               case "south":
                 moveDirection = Direction.SOUTH;
                 break;
-              default:
-                out.append("Invalid direction, try again.").append("\n");
             }
             out.append("Moving ").append(move).append("\n");
             if (m.getDirections().contains(moveDirection)) {
@@ -121,7 +120,7 @@ public class DungeonConsoleController implements DungeonController {
             break;
           case "p":
           case "P":
-            out.append("Picking up any treasures or arrows").append("\n");
+            out.append("You have picked up any treasures or arrows").append("\n");
             cmd = new PickUp();
             break;
           case "s":
@@ -149,21 +148,24 @@ public class DungeonConsoleController implements DungeonController {
               case "south":
                 moveDirection = Direction.SOUTH;
                 break;
-              default:
-                out.append("Invalid direction, try again.").append("\n");
             }
             out.append("Choose distance: ").append("\n");
             while (true) {
               try {
-                distance = scan.nextInt();
+                distance = Integer.parseInt(scan.next());
                 break;
-              } catch (InputMismatchException ex) {
+              } catch (NumberFormatException ex) {
                 out.append("Invalid distance, try again.").append("\n");
               }
             }
-            out.append("Shooting ").append(move).append(" ").append(distance + " ")
-                    .append("squares").append("\n");
-            cmd = new Shoot(moveDirection,distance);
+            if (Arrays.asList(Direction.values()).contains(moveDirection) && distance >=0) {
+              out.append("Shooting ").append(moveDirection.toString()).append(" ")
+                      .append(distance + " ").append("squares").append("\n");
+              cmd = new Shoot(moveDirection,distance);
+            } else {
+              out.append("Cannot shoot in ").append(move).append(" direction ")
+                      .append(distance+ " units");
+            }
             break;
           default:
             out.append("Unknown operator: ").append(element).append("\n");
@@ -196,8 +198,7 @@ public class DungeonConsoleController implements DungeonController {
   private void helperPrint(OtyughDungeon m) {
     Iterator<Direction> itr;
     try {
-      out.append("\n");
-
+      out.append("\n").append("\n");
       // Show directions
       out.append("Doors lead to:");
       itr = m.getDirections().iterator();
@@ -229,14 +230,13 @@ public class DungeonConsoleController implements DungeonController {
       if (m.getSmell() == Smell.MORE_PUNGENT) {
         out.append("There is a VERY pungent smell in the air").append("\n");
       } else if (m.getSmell() == Smell.LESS_PUNGENT) {
-        out.append("There is a less pungent smell in the air").append("\n");
+        out.append("There is a faint smell in the air").append("\n");
       } else {
         out.append("There is no smell in the air").append("\n");
       }
 
       // MPS question
-      out.append("\n");
-      out.append("Move, Pickup, Shoot, or Player Information? (M-P-S-I) ").append("\n");
+      out.append("\n").append("Move, Pickup, Shoot, or Player Information? (M-P-S-I) ").append("\n");
     } catch (IOException ioe) {
       throw new IllegalStateException("Append failed", ioe);
     }
