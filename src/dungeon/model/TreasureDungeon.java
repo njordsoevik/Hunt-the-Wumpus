@@ -126,9 +126,6 @@ public class TreasureDungeon implements Dungeon {
 
   @Override
   public Set<Direction> getDirections() {
-    if (isGameOver()) {
-      throw new IllegalArgumentException("Game is over!");
-    }
     Coordinate playerCoordinate = player.getCoordinate();
     Location currentLocation = getCoordinateLocation(playerCoordinate);
     Set<Direction> directions = currentLocation.getPaths().keySet();

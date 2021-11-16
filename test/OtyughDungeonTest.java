@@ -5,16 +5,18 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
+import dungeon.controller.DungeonConsoleController;
+import dungeon.controller.DungeonController;
 import dungeon.model.Arrow;
 import dungeon.model.Direction;
 import dungeon.model.Health;
 import dungeon.model.OtyughDungeon;
 import dungeon.model.OtyughTreasureDungeon;
 import dungeon.model.Smell;
-import dungeon.controller.DungeonConsoleController;
-import dungeon.controller.DungeonController;
+import dungeon.model.TreasureDungeon;
 
 /**
  * A testing class for the OtyughDungeon interface.
@@ -28,21 +30,8 @@ public class OtyughDungeonTest {
 
   @Test
   public void placeExactAmountOtyughs() {
-    new OtyughTreasureDungeon(3, 4, 0, false, 20, 10, 7, 5L);
-  }
-
-  @Test
-  public void checkOneOtyughLastCaveEnd() {
-    OtyughDungeon z = new OtyughTreasureDungeon(3, 4, 0, false, 20, 10, 1, 5L);
-    z.movePlayer(Direction.SOUTH);
-    z.movePlayer(Direction.EAST);
-    z.movePlayer(Direction.SOUTH);
-    z.movePlayer(Direction.EAST);
-    z.shootArrow(Direction.EAST, 1);
-    z.shootArrow(Direction.EAST, 1);
-    z.movePlayer(Direction.EAST);
-    Assert.assertEquals(z.isGameOver(), true);
-    Assert.assertEquals(z.getPlayerHealth(), Health.HEALTHY);
+    TreasureDungeon z = new OtyughTreasureDungeon(3, 4, 0, false, 20, 10, 7, 5L);
+    Assert.assertEquals(false, z.isGameOver());
   }
 
   @Test
@@ -107,6 +96,46 @@ public class OtyughDungeonTest {
   }
 
   @Test
+  public void checkArrowsCorrectPercentage() {
+    OtyughDungeon z = new OtyughTreasureDungeon(3, 4, 0, false, 20, 100, 1, 5L);
+    System.out.println(z);
+    z.takeArrows();
+    z.movePlayer(Direction.SOUTH);
+    z.takeArrows();
+    z.movePlayer(Direction.SOUTH);
+    z.takeArrows();
+    z.movePlayer(Direction.NORTH);
+    z.takeArrows();
+    z.movePlayer(Direction.EAST);
+    z.takeArrows();
+    z.movePlayer(Direction.NORTH);
+    z.takeArrows();
+    z.movePlayer(Direction.EAST);
+    z.takeArrows();
+    z.movePlayer(Direction.EAST);
+    z.takeArrows();
+    z.movePlayer(Direction.WEST);
+    z.takeArrows();
+    z.movePlayer(Direction.SOUTH);
+    z.takeArrows();
+    z.movePlayer(Direction.EAST);
+    z.takeArrows();
+    z.movePlayer(Direction.WEST);
+    z.takeArrows();
+    z.movePlayer(Direction.NORTH);
+    z.takeArrows();
+    z.movePlayer(Direction.WEST);
+    z.takeArrows();
+    z.movePlayer(Direction.SOUTH);
+    z.takeArrows();
+    z.movePlayer(Direction.SOUTH);
+    z.takeArrows();
+    z.movePlayer(Direction.EAST);
+    z.takeArrows();
+    Assert.assertEquals(14,z.getPlayerArrows().size()); // 3(Starting)+12(Squares)-1(Ending)
+  }
+
+  @Test
   public void checkOtyughHealthyKillsPlayer() {
     OtyughDungeon z = new OtyughTreasureDungeon(3, 4, 0, false, 20, 200, 7, 5L);
     Assert.assertEquals(Health.HEALTHY, z.getPlayerHealth());
@@ -155,6 +184,46 @@ public class OtyughDungeonTest {
       z.movePlayer(Direction.NORTH);
     }
     Assert.assertEquals(Health.HEALTHY, z.getPlayerHealth());
+  }
+
+  @Test
+  public void checkOtyughIsInCaveNotTunnels() {
+    OtyughDungeon z = new OtyughTreasureDungeon(10, 10, 0, false, 20, 200, 7, 5L);
+    for (int i = 0; i < 50; i++) {
+      while (z.isGameOver() == false) {
+        Random r = new Random();
+        Direction move = (Direction) z.getDirections().toArray()[r.nextInt(z.getDirections().size())];
+        z.movePlayer(move);
+      }
+      if (z.getPlayerHealth() == Health.DEAD) {
+        Assert.assertTrue(z.getDirections().size() != 2);
+      }
+    }
+  }
+
+  @Test
+  public void checkOtyughNotInStart() {
+    for (int i = 0; i < 100; i++) {
+      OtyughDungeon z = new OtyughTreasureDungeon(3, 4, 0, false, 20, 200, 1);
+      Direction move = (Direction) z.getDirections().toArray()[0];
+      z.movePlayer(move);
+      z.movePlayer(move.getInverse());
+      Assert.assertEquals(false, z.isGameOver());
+    }
+  }
+
+  @Test
+  public void checkOneOtyughLastCaveEnd() {
+    OtyughDungeon z = new OtyughTreasureDungeon(3, 4, 0, false, 20, 10, 1, 5L);
+    z.movePlayer(Direction.SOUTH);
+    z.movePlayer(Direction.EAST);
+    z.movePlayer(Direction.SOUTH);
+    z.movePlayer(Direction.EAST);
+    z.shootArrow(Direction.EAST, 1);
+    z.shootArrow(Direction.EAST, 1);
+    z.movePlayer(Direction.EAST);
+    Assert.assertEquals(z.isGameOver(), true);
+    Assert.assertEquals(z.getPlayerHealth(), Health.HEALTHY);
   }
 
   @Test

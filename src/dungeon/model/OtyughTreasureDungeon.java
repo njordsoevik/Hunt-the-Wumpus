@@ -54,7 +54,6 @@ public class OtyughTreasureDungeon extends TreasureDungeon implements OtyughDung
 
 
   private void placeOtyugh(int rows, int columns, int number) {
-    System.out.println(number);
     int leftToPlace = number;
     // Place at end
     this.getCoordinateLocation(this.getEnd()).addOtyugh();
