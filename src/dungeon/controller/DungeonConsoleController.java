@@ -113,6 +113,7 @@ public class DungeonConsoleController implements DungeonController {
               case "SOUTH":
                 moveDirection = Direction.SOUTH;
                 break;
+              default: // No default case needed
             }
             out.append("Moving ").append(move).append("\n");
             if (m.getDirections().contains(moveDirection)) {
@@ -159,6 +160,7 @@ public class DungeonConsoleController implements DungeonController {
               case "SOUTH":
                 moveDirection = Direction.SOUTH;
                 break;
+              default: // No default case needed
             }
             out.append("Choose distance: ").append("\n");
             while (true) {

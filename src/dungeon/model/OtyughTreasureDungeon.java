@@ -5,15 +5,45 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+
+/**
+ * OtyughTreasureDungeon implements the OtyughDungeon interface. OtyughTreasureDungeons store
+ * treasure,arrows, and Otyughs. The caves  can be navigated by the player.
+ */
 public class OtyughTreasureDungeon extends TreasureDungeon implements OtyughDungeon {
   private final int STARTING_ARROWS = 3;
 
+  /**
+   * Constructor for a dungeon, can specify size and attributes of the generated dungeon.
+   *
+   * @param rows              The number of rows in the dungeon.
+   * @param columns           The number of columns in the dungeon.
+   * @param interconnectivity The interconnectivity for kruskal's algorithm.
+   * @param wrapped           If the dungeon should wrap around the edges.
+   * @param treasurePercent   Percent of caves with treasure.
+   * @param arrowPercent   Percent of caves with arrows.
+   * @param numberOtyugh   The number of Otyughs to inhabit the caves. If zero is inputted, one
+   *                       Otyugh will be placed at the final cave.
+   */
   public OtyughTreasureDungeon(int rows, int columns, int interconnectivity, boolean wrapped,
                                int treasurePercent, int arrowPercent, int numberOtyugh) {
     this(rows, columns, interconnectivity, wrapped, treasurePercent,
             arrowPercent, numberOtyugh, null);
   }
 
+  /**
+   * Constructor for a dungeon, can specify size and attributes of the generated dungeon.
+   *
+   * @param rows              The number of rows in the dungeon.
+   * @param columns           The number of columns in the dungeon.
+   * @param interconnectivity The interconnectivity for kruskal's algorithm.
+   * @param wrapped           If the dungeon should wrap around the edges.
+   * @param treasurePercent   Percent of caves with treasure.
+   * @param arrowPercent   Percent of caves with arrows.
+   * @param numberOtyugh   The number of Otyughs to inhabit the caves. If zero is inputted, one
+   *                       Otyugh will be placed at the final cave.
+   * @param seed              Seed for testing randomness.
+   */
   public OtyughTreasureDungeon(int rows, int columns, int interconnectivity, boolean wrapped,
                                int treasurePercent, int arrowPercent, int numberOtyugh, Long seed) {
     super(rows, columns, interconnectivity, wrapped, treasurePercent, seed);

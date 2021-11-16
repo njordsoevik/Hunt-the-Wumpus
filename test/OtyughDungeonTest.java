@@ -16,6 +16,9 @@ import dungeon.model.Smell;
 import dungeon.controller.DungeonConsoleController;
 import dungeon.controller.DungeonController;
 
+/**
+ * A testing class for the OtyughDungeon interface.
+ */
 public class OtyughDungeonTest {
 
   @Test(expected = IllegalArgumentException.class)

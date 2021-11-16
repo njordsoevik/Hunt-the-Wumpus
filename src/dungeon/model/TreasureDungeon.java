@@ -7,8 +7,8 @@ import java.util.Random;
 import java.util.Set;
 
 /**
- * DungeonLocation implements the dungeon.model.Location interface. These navigated by the player to
- * move through the dungeon. Dungeons can also store treasure.
+ * TreasureDungeon implements the Dungeon interface. Dungeons store treasure and can be naviagted
+ * by the player.
  */
 public class TreasureDungeon implements Dungeon {
   private final Location[][] grid;

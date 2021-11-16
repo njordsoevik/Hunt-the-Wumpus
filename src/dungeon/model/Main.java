@@ -45,7 +45,8 @@ public class Main {
     a_percent = Integer.parseInt(scan.nextLine());
     System.out.println("Number of Otyughs:");
     n_monsters = Integer.parseInt(scan.nextLine());
-    OtyughDungeon d = new OtyughTreasureDungeon(rows, columns, interconnectivity, wrapped, t_percent, a_percent, n_monsters);
+    OtyughDungeon d = new OtyughTreasureDungeon(rows, columns, interconnectivity, wrapped
+            , t_percent, a_percent, n_monsters);
     Readable input = new InputStreamReader(System.in);
     Appendable output = System.out;
     System.out.println("Input will be from System.in and the output will be to System.out. \n");
