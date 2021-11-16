@@ -47,6 +47,12 @@ public class OtyughTreasureDungeon extends TreasureDungeon implements OtyughDung
   public OtyughTreasureDungeon(int rows, int columns, int interconnectivity, boolean wrapped,
                                int treasurePercent, int arrowPercent, int numberOtyugh, Long seed) {
     super(rows, columns, interconnectivity, wrapped, treasurePercent, seed);
+    if (arrowPercent > Integer.MAX_VALUE || numberOtyugh > Integer.MAX_VALUE) {
+      throw new ArithmeticException("Input above max values");
+    }
+    if (arrowPercent <= 0 || numberOtyugh < 0) {
+      throw new IllegalArgumentException("Arguments cannot be below zero.");
+    }
     placeOtyugh(rows, columns, numberOtyugh);
     placeArrows(rows, columns, arrowPercent);
     addStartingArrows(STARTING_ARROWS);

@@ -24,6 +24,25 @@ import dungeon.model.TreasureDungeon;
 public class OtyughDungeonTest {
 
   @Test(expected = IllegalArgumentException.class)
+  public void createInvalidDungeonArrowPercentMax() {
+    new OtyughTreasureDungeon(3, 4, 0, false, 20, Integer.MAX_VALUE+1, 7, 5L);}
+
+  @Test(expected = IllegalArgumentException.class)
+  public void createInvalidDungeonArrowPercentUnder0() {
+    new OtyughTreasureDungeon(3, 4, 0, false, 20, -1, 7, 5L);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void createInvalidDungeonNumberOtyughMax() {
+    new OtyughTreasureDungeon(3, 4, 0, false, 20, 5, Integer.MAX_VALUE+1, 5L);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void createInvalidDungeonNumberOtyughUnder0() {
+    new OtyughTreasureDungeon(3, 4, 0, false, 20, 5, -1, 5L);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
   public void addOneTooManyOtyughs() {
     new OtyughTreasureDungeon(3, 4, 0, false, 20, 10, 8, 5L);
   }
@@ -62,7 +81,7 @@ public class OtyughDungeonTest {
     a.remove(0);
     Assert.assertEquals(z.getPlayerArrows(), a);
     try {
-      z.shootArrow(Direction.SOUTH, 1);
+      z.shootArrow(Direction.SOUTH, 1); // Shooting after running out of arrows
     } catch (IllegalArgumentException ex) {
       Assert.assertEquals(z.getPlayerArrows(), a);
     }
@@ -226,6 +245,25 @@ public class OtyughDungeonTest {
     Assert.assertEquals(z.getPlayerHealth(), Health.HEALTHY);
   }
 
+
+  @Test
+  public void testShootingAllDirections() {
+    OtyughDungeon z = new OtyughTreasureDungeon(3, 4, 0, false, 20, 10000, 7, 5L);
+    z.takeArrows();
+    z.shootArrow(Direction.SOUTH, 1);
+    z.shootArrow(Direction.WEST, 1);
+    z.shootArrow(Direction.EAST, 1);
+    z.shootArrow(Direction.NORTH, 1);
+  }
+
+  @Test (expected = IllegalArgumentException.class)
+  public void testShootingNegativeDistance() {
+    OtyughDungeon z = new OtyughTreasureDungeon(3, 4, 0, false, 20, 10000, 7, 5L);
+    z.takeArrows();
+    z.shootArrow(Direction.SOUTH, -1);
+  }
+
+
   @Test
   public void testShootingAndSmellUpdates() {
     OtyughDungeon z = new OtyughTreasureDungeon(3, 4, 0, false, 20, 10000, 7, 5L);
@@ -252,12 +290,14 @@ public class OtyughDungeonTest {
     // Move closer to Otyugh to get faint smell
     z.movePlayer(Direction.EAST);
     Assert.assertEquals(Smell.LESS_PUNGENT, z.getSmell());
-    // BENDING ARROWS: Shoot north and goes North -> East, kill Otyugh
+    // BENDING ARROWS: Shoot north and goes North -> East, kill Otyugh and reduces smell to none
     z.shootArrow(Direction.NORTH, 2);
     z.shootArrow(Direction.NORTH, 2);
     Assert.assertEquals(Smell.NONE, z.getSmell());
-    // Move close to Otyugh then away to get full smell range
     z.movePlayer(Direction.NORTH);
+    // Verify we shot through a tunnel and the arrow must have exited EAST
+    Assert.assertEquals(2, z.getDirections().size());
+    // Move close to Otyugh then away to get full smell range
     Assert.assertEquals(Smell.LESS_PUNGENT, z.getSmell());
     z.movePlayer(Direction.EAST);
     Assert.assertEquals(Smell.MORE_PUNGENT, z.getSmell());
