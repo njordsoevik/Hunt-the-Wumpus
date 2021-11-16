@@ -1,4 +1,4 @@
-package dungeon;
+package dungeon.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,7 +11,7 @@ public class OtyughTreasureDungeon extends TreasureDungeon implements OtyughDung
   public OtyughTreasureDungeon(int rows, int columns, int interconnectivity, boolean wrapped,
                                int treasurePercent, int arrowPercent, int numberOtyugh) {
     this(rows, columns, interconnectivity, wrapped, treasurePercent,
-            numberOtyugh, arrowPercent, null);
+            arrowPercent, numberOtyugh, null);
   }
 
   public OtyughTreasureDungeon(int rows, int columns, int interconnectivity, boolean wrapped,
@@ -24,6 +24,7 @@ public class OtyughTreasureDungeon extends TreasureDungeon implements OtyughDung
 
 
   private void placeOtyugh(int rows, int columns, int number) {
+    System.out.println(number);
     int leftToPlace = number;
     // Place at end
     this.getCoordinateLocation(this.getEnd()).addOtyugh();
@@ -222,8 +223,7 @@ public class OtyughTreasureDungeon extends TreasureDungeon implements OtyughDung
     }
     if (countOtyugh >= 2) {
       return Smell.MORE_PUNGENT;
-    }
-    else if (countOtyugh == 1) {
+    } else if (countOtyugh == 1) {
       return Smell.LESS_PUNGENT;
     } else {
       return Smell.NONE;

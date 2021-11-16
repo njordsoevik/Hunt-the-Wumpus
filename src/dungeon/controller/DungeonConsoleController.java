@@ -2,21 +2,16 @@ package dungeon.controller;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.InputMismatchException;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 
-import dungeon.Arrow;
-import dungeon.Direction;
-import dungeon.Health;
-import dungeon.OtyughDungeon;
-import dungeon.Smell;
-import dungeon.Treasure;
-import dungeon.controller.commands.Move;
-import dungeon.controller.commands.PickUp;
-import dungeon.controller.commands.Shoot;
+import dungeon.model.Arrow;
+import dungeon.model.Direction;
+import dungeon.model.Health;
+import dungeon.model.OtyughDungeon;
+import dungeon.model.Smell;
+import dungeon.model.Treasure;
 
 /**
  * This starter files is for students to implement a console controller for the
@@ -59,8 +54,8 @@ public class DungeonConsoleController implements DungeonController {
         switch (element) {
           case "q":
           case "Q":
-              out.append("Game quit! Ending game state.").append("\n");
-              return;
+            out.append("Game quit! Ending game state.").append("\n");
+            return;
           case "i":
           case "I":
             List<Arrow> arrows = m.getPlayerArrows();
@@ -96,18 +91,26 @@ public class DungeonConsoleController implements DungeonController {
                 return;
               case "e":
               case "east":
+              case "E":
+              case "EAST":
                 moveDirection = Direction.EAST;
                 break;
               case "w":
               case "west":
+              case "W":
+              case "WEST":
                 moveDirection = Direction.WEST;
                 break;
               case "n":
               case "north":
+              case "N":
+              case "NORTH":
                 moveDirection = Direction.NORTH;
                 break;
               case "s":
               case "south":
+              case "S":
+              case "SOUTH":
                 moveDirection = Direction.SOUTH;
                 break;
             }
@@ -134,18 +137,26 @@ public class DungeonConsoleController implements DungeonController {
                 return;
               case "e":
               case "east":
+              case "E":
+              case "EAST":
                 moveDirection = Direction.EAST;
                 break;
               case "w":
               case "west":
+              case "W":
+              case "WEST":
                 moveDirection = Direction.WEST;
                 break;
               case "n":
               case "north":
+              case "N":
+              case "NORTH":
                 moveDirection = Direction.NORTH;
                 break;
               case "s":
               case "south":
+              case "S":
+              case "SOUTH":
                 moveDirection = Direction.SOUTH;
                 break;
             }
@@ -158,13 +169,13 @@ public class DungeonConsoleController implements DungeonController {
                 out.append("Invalid distance, try again.").append("\n");
               }
             }
-            if (Arrays.asList(Direction.values()).contains(moveDirection) && distance >=0) {
+            if (Arrays.asList(Direction.values()).contains(moveDirection) && distance >= 0) {
               out.append("Shooting ").append(moveDirection.toString()).append(" ")
                       .append(distance + " ").append("squares").append("\n");
-              cmd = new Shoot(moveDirection,distance);
+              cmd = new Shoot(moveDirection, distance);
             } else {
               out.append("Cannot shoot in ").append(move).append(" direction ")
-                      .append(distance+ " units");
+                      .append(distance + " units");
             }
             break;
           default:
@@ -186,10 +197,9 @@ public class DungeonConsoleController implements DungeonController {
             out.append("End square reached, game over!");
           }
           return;
+        } catch (IOException ioe) {
+          throw new IllegalStateException("Append failed", ioe);
         }
-         catch (IOException ioe) {
-            throw new IllegalStateException("Append failed", ioe);
-          }
       }
       helperPrint(m);
     }
@@ -219,7 +229,7 @@ public class DungeonConsoleController implements DungeonController {
 
       List<Treasure> treasures = m.getCurrentLocationTreasure();
       if (!treasures.isEmpty()) {
-        out.append("The cave you are in holds treasures: ");
+        out.append("The cave you are in holds treasures:");
         for (Treasure d : treasures) {
           out.append(" ").append(d.toString());
         }

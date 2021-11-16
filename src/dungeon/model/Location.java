@@ -1,4 +1,4 @@
-package dungeon;
+package dungeon.model;
 
 import java.util.List;
 import java.util.Map;
@@ -72,13 +72,11 @@ interface Location {
 
   /**
    * Add an Otyugh to this location.
-   *
    */
   void addOtyugh();
 
   /**
    * Add arrows to this location.
-   *
    */
   void addArrows(Arrow arrow);
 

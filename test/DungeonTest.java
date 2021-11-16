@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-import dungeon.Direction;
-import dungeon.Dungeon;
-import dungeon.Treasure;
-import dungeon.TreasureDungeon;
+import dungeon.model.Direction;
+import dungeon.model.Dungeon;
+import dungeon.model.Treasure;
+import dungeon.model.TreasureDungeon;
 
 /**
  * A testing class for the dungeon interface.

@@ -1,6 +1,6 @@
-import dungeon.Direction;
-import dungeon.Dungeon;
-import dungeon.TreasureDungeon;
+import dungeon.model.Direction;
+import dungeon.model.Dungeon;
+import dungeon.model.TreasureDungeon;
 
 /**
  * Driver for the pre-generated sample runs.

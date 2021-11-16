@@ -1,4 +1,4 @@
-package dungeon;
+package dungeon.model;
 
 /**
  * Directions that can be used to access each location. These are the basic directions of North,

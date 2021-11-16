@@ -1,4 +1,4 @@
-package dungeon;
+package dungeon.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,14 +6,14 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * DungeonLocation implements the dungeon.Location interface. These navigated by the player to
+ * DungeonLocation implements the dungeon.model.Location interface. These navigated by the player to
  * move through the dungeon. Dungeons can also store treasure.
  */
 class DungeonLocation implements Location {
-  private List<Treasure> treasure;
-  private List<Arrow> arrows;
-  private HashMap<Direction, Location> connections;
   private final Coordinate coordinate;
+  private final List<Treasure> treasure;
+  private final List<Arrow> arrows;
+  private final HashMap<Direction, Location> connections;
   private Otyugh otyugh;
 
   /**
@@ -64,15 +64,13 @@ class DungeonLocation implements Location {
 
   @Override
   public String toString() {
-    if (this.otyugh==null) {
+    if (this.otyugh == null) {
       return "0";
-    } else if (this.otyugh.getHealth()==Health.HEALTHY) {
+    } else if (this.otyugh.getHealth() == Health.HEALTHY) {
       return "H";
-    }
-    else if (this.otyugh.getHealth()==Health.INJURED) {
+    } else if (this.otyugh.getHealth() == Health.INJURED) {
       return "I";
-    }
-    else {
+    } else {
       return "D";
     }
   }
@@ -96,7 +94,7 @@ class DungeonLocation implements Location {
 
   @Override
   public void addOtyugh() {
-    if (this.otyugh!=null) {
+    if (this.otyugh != null) {
       throw new IllegalStateException("Cannot contain two Otyughs");
     }
     this.otyugh = new Otyugh();

@@ -1,4 +1,4 @@
-package dungeon;
+package dungeon.model;
 
 /**
  * Edges connect each dungeon location adjacent locations. These edges also contain a weight,

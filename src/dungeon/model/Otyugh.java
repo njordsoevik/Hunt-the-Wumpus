@@ -1,9 +1,9 @@
-package dungeon;
+package dungeon.model;
 
 class Otyugh {
   private Health health;
 
-  public Otyugh () {
+  public Otyugh() {
     this.health = Health.HEALTHY;
   }
 
@@ -17,7 +17,7 @@ class Otyugh {
   }
 
   public void reduceHealth() {
-    if ( this.health == Health.HEALTHY ) {
+    if (this.health == Health.HEALTHY) {
       this.health = Health.INJURED;
     } else {
       this.health = Health.DEAD;

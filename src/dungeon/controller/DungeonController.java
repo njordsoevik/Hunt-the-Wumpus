@@ -1,10 +1,10 @@
 package dungeon.controller;
 
-import dungeon.OtyughDungeon;
+import dungeon.model.OtyughDungeon;
 
 /**
- * Represents a Controller for Dungeon: handle user moves by executing them using the model;
- * convey move outcomes to the user in some form.
+ * Represents a Controller for Dungeon and handles user moves by executing them using the model.
+ * Convey move outcomes to the user in some form.
  */
 public interface DungeonController {
 

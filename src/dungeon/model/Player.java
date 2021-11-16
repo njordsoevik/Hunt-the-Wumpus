@@ -1,4 +1,4 @@
-package dungeon;
+package dungeon.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,8 +7,8 @@ import java.util.List;
  * Player to access and navigate the dungeon. Players can also store treasure.
  */
 class Player {
-  private List<Treasure> treasures;
-  private List<Arrow> arrows;
+  private final List<Treasure> treasures;
+  private final List<Arrow> arrows;
   private Coordinate coordinate;
   private Health health;
 
@@ -98,7 +98,6 @@ class Player {
 
   /**
    * Reduce the health of this player.
-   *
    */
   void reduceHealth() {
     this.health = Health.DEAD;

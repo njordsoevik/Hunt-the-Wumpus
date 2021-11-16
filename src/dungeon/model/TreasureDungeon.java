@@ -1,4 +1,4 @@
-package dungeon;
+package dungeon.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -7,7 +7,7 @@ import java.util.Random;
 import java.util.Set;
 
 /**
- * DungeonLocation implements the dungeon.Location interface. These navigated by the player to
+ * DungeonLocation implements the dungeon.model.Location interface. These navigated by the player to
  * move through the dungeon. Dungeons can also store treasure.
  */
 public class TreasureDungeon implements Dungeon {
@@ -24,11 +24,11 @@ public class TreasureDungeon implements Dungeon {
   /**
    * Constructor for a dungeon, can specify size and attributes of the generated dungeon.
    *
-   * @param rows The number of rows in the dungeon.
-   * @param columns The number of columns in the dungeon.
+   * @param rows              The number of rows in the dungeon.
+   * @param columns           The number of columns in the dungeon.
    * @param interconnectivity The interconnectivity for kruskal's algorithm.
-   * @param wrapped If the dungeon should wrap around the edges.
-   * @param treasurePercent Percent of caves with treasure.
+   * @param wrapped           If the dungeon should wrap around the edges.
+   * @param treasurePercent   Percent of caves with treasure.
    */
   public TreasureDungeon(int rows, int columns, int interconnectivity, boolean wrapped,
                          int treasurePercent) {
@@ -38,12 +38,12 @@ public class TreasureDungeon implements Dungeon {
   /**
    * Constructor for a dungeon, can specify size and attributes of the generated dungeon.
    *
-   * @param rows The number of rows in the dungeon.
-   * @param columns The number of columns in the dungeon.
+   * @param rows              The number of rows in the dungeon.
+   * @param columns           The number of columns in the dungeon.
    * @param interconnectivity The interconnectivity for kruskal's algorithm.
-   * @param wrapped If the dungeon should wrap around the edges.
-   * @param treasurePercent Percent of caves with treasure.
-   * @param seed Seed for testing randomness.
+   * @param wrapped           If the dungeon should wrap around the edges.
+   * @param treasurePercent   Percent of caves with treasure.
+   * @param seed              Seed for testing randomness.
    */
   public TreasureDungeon(int rows, int columns, int interconnectivity, boolean wrapped,
                          int treasurePercent, Long seed) {
@@ -97,7 +97,7 @@ public class TreasureDungeon implements Dungeon {
 
   @Override
   public boolean isGameOver() {
-    return (isEndSquare(this.player.getCoordinate()) || getPlayer().getHealth()==Health.DEAD);
+    return (isEndSquare(this.player.getCoordinate()) || getPlayer().getHealth() == Health.DEAD);
   }
 
   @Override
