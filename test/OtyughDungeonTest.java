@@ -117,7 +117,6 @@ public class OtyughDungeonTest {
   @Test
   public void checkArrowsCorrectPercentage() {
     OtyughDungeon z = new OtyughTreasureDungeon(3, 4, 0, false, 20, 100, 1, 5L);
-    System.out.println(z);
     z.takeArrows();
     z.movePlayer(Direction.SOUTH);
     z.takeArrows();
@@ -308,10 +307,12 @@ public class OtyughDungeonTest {
     z.movePlayer(Direction.SOUTH);
     z.movePlayer(Direction.EAST);
     // Test overshooting does not kill
+    Assert.assertEquals(Smell.MORE_PUNGENT, z.getSmell());
     z.shootArrow(Direction.EAST, 5);
     z.shootArrow(Direction.EAST, 5);
     Assert.assertEquals(Smell.MORE_PUNGENT, z.getSmell());
     // Test undershooting does not kill
+    Assert.assertEquals(Smell.MORE_PUNGENT, z.getSmell());
     z.shootArrow(Direction.EAST, 0);
     z.shootArrow(Direction.EAST, 0);
     Assert.assertEquals(Smell.MORE_PUNGENT, z.getSmell());
@@ -354,7 +355,6 @@ public class OtyughDungeonTest {
   }
 
   // Controller Tests
-
   @Test(expected = IllegalArgumentException.class)
   public void invalidModelController() {
     Readable testInput = new StringReader("m south p s south 5");

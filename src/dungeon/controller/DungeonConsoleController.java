@@ -82,44 +82,11 @@ public class DungeonConsoleController implements DungeonController {
             break;
           case "m":
           case "M":
-            out.append("Choose direction: ").append("\n");
-            move = scan.next();
-            switch (move) {
-              case "q":
-              case "Q":
-                out.append("Game quit! Ending game state.").append("\n");
-                return;
-              case "e":
-              case "east":
-              case "E":
-              case "EAST":
-                moveDirection = Direction.EAST;
-                break;
-              case "w":
-              case "west":
-              case "W":
-              case "WEST":
-                moveDirection = Direction.WEST;
-                break;
-              case "n":
-              case "north":
-              case "N":
-              case "NORTH":
-                moveDirection = Direction.NORTH;
-                break;
-              case "s":
-              case "south":
-              case "S":
-              case "SOUTH":
-                moveDirection = Direction.SOUTH;
-                break;
-              default: // No default case needed
-            }
-            out.append("Moving ").append(move).append("\n");
+            moveDirection = helperMove();
             if (m.getDirections().contains(moveDirection)) {
               cmd = new Move(moveDirection);
             } else {
-              out.append("Cannot move ").append(move).append(" from this location.");
+              out.append("Cannot move ").append(moveDirection.toString()).append(" from this location.");
             }
             break;
           case "p":
@@ -129,39 +96,7 @@ public class DungeonConsoleController implements DungeonController {
             break;
           case "s":
           case "S":
-            out.append("Choose direction: ").append("\n");
-            move = scan.next();
-            switch (move) {
-              case "q":
-              case "Q":
-                out.append("Game quit! Ending game state.").append("\n");
-                return;
-              case "e":
-              case "east":
-              case "E":
-              case "EAST":
-                moveDirection = Direction.EAST;
-                break;
-              case "w":
-              case "west":
-              case "W":
-              case "WEST":
-                moveDirection = Direction.WEST;
-                break;
-              case "n":
-              case "north":
-              case "N":
-              case "NORTH":
-                moveDirection = Direction.NORTH;
-                break;
-              case "s":
-              case "south":
-              case "S":
-              case "SOUTH":
-                moveDirection = Direction.SOUTH;
-                break;
-              default: // No default case needed
-            }
+            moveDirection = helperMove();
             out.append("Choose distance: ").append("\n");
             while (true) {
               try {
@@ -205,6 +140,45 @@ public class DungeonConsoleController implements DungeonController {
       }
       helperPrint(m);
     }
+  }
+
+  private Direction helperMove() {
+    String move;
+    Direction moveDirection = null;
+    try {
+      out.append("Choose direction: ").append("\n");
+      move = scan.next();
+      switch (move) {
+        case "e":
+        case "east":
+        case "E":
+        case "EAST":
+          moveDirection = Direction.EAST;
+          break;
+        case "w":
+        case "west":
+        case "W":
+        case "WEST":
+          moveDirection = Direction.WEST;
+          break;
+        case "n":
+        case "north":
+        case "N":
+        case "NORTH":
+          moveDirection = Direction.NORTH;
+          break;
+        case "s":
+        case "south":
+        case "S":
+        case "SOUTH":
+          moveDirection = Direction.SOUTH;
+          break;
+        default: // No default case needed
+      }
+    } catch (IOException ioe) {
+      throw new IllegalStateException("Append failed", ioe);
+    }
+    return moveDirection;
   }
 
   private void helperPrint(OtyughDungeon m) {
