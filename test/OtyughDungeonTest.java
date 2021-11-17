@@ -262,7 +262,6 @@ public class OtyughDungeonTest {
     z.shootArrow(Direction.SOUTH, -1);
   }
 
-
   @Test
   public void testShootingAndSmellUpdates() {
     OtyughDungeon z = new OtyughTreasureDungeon(3, 4, 0, false, 20, 10000, 7, 5L);
@@ -272,6 +271,7 @@ public class OtyughDungeonTest {
     z.shootArrow(Direction.SOUTH, 1);
     z.shootArrow(Direction.SOUTH, 1);
     // Does not update after killing Otyugh nearby, because two far ones
+    // SHOOT STRAIGHT OVER DISTANCE TEST
     Assert.assertEquals(Smell.MORE_PUNGENT, z.getSmell());
     z.shootArrow(Direction.SOUTH, 2);
     z.shootArrow(Direction.SOUTH, 2);
@@ -289,7 +289,8 @@ public class OtyughDungeonTest {
     // Move closer to Otyugh to get faint smell
     z.movePlayer(Direction.EAST);
     Assert.assertEquals(Smell.LESS_PUNGENT, z.getSmell());
-    // BENDING ARROWS: Shoot north and goes North -> East, kill Otyugh and reduces smell to none
+    // BENDING ARROWS TEST: Shoot north and goes North -> East, kill Otyugh and reduces smell to
+    // none
     z.shootArrow(Direction.NORTH, 2);
     z.shootArrow(Direction.NORTH, 2);
     Assert.assertEquals(Smell.NONE, z.getSmell());
@@ -306,17 +307,17 @@ public class OtyughDungeonTest {
     Assert.assertEquals(Smell.NONE, z.getSmell());
     z.movePlayer(Direction.SOUTH);
     z.movePlayer(Direction.EAST);
-    // Test overshooting does not kill
+    // TEST OVERSHOOTING does not kill
     Assert.assertEquals(Smell.MORE_PUNGENT, z.getSmell());
     z.shootArrow(Direction.EAST, 5);
     z.shootArrow(Direction.EAST, 5);
     Assert.assertEquals(Smell.MORE_PUNGENT, z.getSmell());
-    // Test undershooting does not kill
+    // TEST UNDERSHOOTING does not kill
     Assert.assertEquals(Smell.MORE_PUNGENT, z.getSmell());
     z.shootArrow(Direction.EAST, 0);
     z.shootArrow(Direction.EAST, 0);
     Assert.assertEquals(Smell.MORE_PUNGENT, z.getSmell());
-    // Test shooting into the wall is valid and does not kill
+    // TEST SHOOTING INTO THE WALL is valid and does not kill
     z.shootArrow(Direction.NORTH, 0);
     z.shootArrow(Direction.NORTH, 0);
     Assert.assertEquals(Smell.MORE_PUNGENT, z.getSmell());
@@ -364,20 +365,55 @@ public class OtyughDungeonTest {
     c.playGame(m);
   }
 
-  @Test
-  public void controllerMove() {
-    Readable testInput = new StringReader("m south");
-    Appendable outputLog = new StringBuilder();
+
+  @Test(expected = IllegalStateException.class)
+  public void testFailingAppendable() {
     OtyughDungeon m = new OtyughTreasureDungeon(3, 4, 0, false, 120, 50, 2, 5L);
+    StringReader input = new StringReader("m south");
+    Appendable gameLog = new FailingAppendable();
+    DungeonController c = new DungeonConsoleController(input, gameLog);
+    c.playGame(m);
+  }
+
+  @Test
+  public void testModelGetsCorrectInput() {
+    OtyughDungeon m = new MockModel();
+    StringReader input = new StringReader("m south");
+    Appendable outputLog = new StringBuilder();
+    DungeonController c = new DungeonConsoleController(input, outputLog);
+    c.playGame(m);
+    Assert.assertEquals(Direction.SOUTH.toString(), ((MockModel) m).inputOne);
+    input = new StringReader("s east 5");
+    c = new DungeonConsoleController(input, outputLog);
+    c.playGame(m);
+    Assert.assertEquals(Direction.EAST.toString(), ((MockModel) m).inputOne);
+    Assert.assertEquals(String.valueOf(5), ((MockModel) m).inputTwo);
+  }
+
+  @Test
+  public void controllerMoveAllDirections() {
+    Readable testInput = new StringReader("m south m east m west m north");
+    Appendable outputLog = new StringBuilder();
+    OtyughDungeon m = new OtyughTreasureDungeon(10, 10, 1000, true, 120, 50, 1, 5L);
     DungeonController c = new DungeonConsoleController(testInput, outputLog);
     c.playGame(m);
     Set directions = new HashSet();
     directions.add(Direction.SOUTH);
     directions.add(Direction.EAST);
     directions.add(Direction.NORTH);
+    directions.add(Direction.WEST);
     Assert.assertEquals(m.getDirections(), directions);
   }
 
+  @Test
+  public void controllerShootAllDirections() {
+    Readable testInput = new StringReader("p s south 5 s east 5 s west 5 s north 5");
+    Appendable outputLog = new StringBuilder();
+    OtyughDungeon m = new OtyughTreasureDungeon(10, 10, 1000, true, 120, 200, 1, 5L);
+    DungeonController c = new DungeonConsoleController(testInput, outputLog);
+    c.playGame(m);
+    Assert.assertEquals(m.isGameOver(), false);
+  }
 
   @Test
   public void controllerTestCapitalLetters() {
