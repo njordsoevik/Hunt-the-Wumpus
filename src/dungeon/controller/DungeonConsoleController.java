@@ -222,7 +222,8 @@ public class DungeonConsoleController implements DungeonController {
       }
 
       // MPS question
-      out.append("\n").append("Move, Pickup, Shoot, or Player Information? (M-P-S-I) ").append("\n");
+      out.append("\n").append("Move, Pickup, Shoot, or Player Information? (M-P-S-I) ")
+              .append("\n");
     } catch (IOException ioe) {
       throw new IllegalStateException("Append failed", ioe);
     }

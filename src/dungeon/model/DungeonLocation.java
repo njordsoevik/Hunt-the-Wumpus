@@ -13,7 +13,7 @@ class DungeonLocation implements Location {
   private final Coordinate coordinate;
   private final List<Treasure> treasure;
   private final List<Arrow> arrows;
-  private final HashMap<Direction, Location> connections;
+  private final Map<Direction, Location> connections;
   private Otyugh otyugh;
 
   /**

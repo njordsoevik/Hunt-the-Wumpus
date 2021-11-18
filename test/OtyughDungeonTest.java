@@ -355,6 +355,26 @@ public class OtyughDungeonTest {
     Assert.assertEquals(Smell.NONE, z.getSmell());
   }
 
+  @Test
+  public void smellOtyughNoOverlapInDiagonal() {
+    OtyughDungeon z = new OtyughTreasureDungeon(3, 4, 100, false, 20, 1000, 2, 5L);
+    z.takeArrows();
+    z.movePlayer(Direction.NORTH);
+    // One diagonally away from player, two spaces away
+    Assert.assertEquals(Smell.LESS_PUNGENT, z.getSmell());
+  }
+
+  @Test
+  public void smellOtyughWhenInSameCave() {
+    OtyughDungeon z = new OtyughTreasureDungeon(3, 4, 100, false, 20, 1000, 2, 5L);
+    z.takeArrows();
+    z.movePlayer(Direction.NORTH);
+    z.movePlayer(Direction.NORTH);
+    z.movePlayer(Direction.EAST);
+    // Player stepped in cave with injured Otyugh
+    Assert.assertEquals(Smell.MORE_PUNGENT, z.getSmell());
+  }
+
   // Controller Tests
   @Test(expected = IllegalArgumentException.class)
   public void invalidModelController() {
@@ -451,6 +471,39 @@ public class OtyughDungeonTest {
     c = new DungeonConsoleController(testInput, outputLog);
     c.playGame(m);
     Assert.assertEquals(m.getSmell(), Smell.NONE);
+  }
+
+  @Test
+  public void testControllerGetInformationAfterPickingUp() {
+    Readable testInput = new StringReader("p i");
+    Appendable outputLog = new StringBuilder();
+    OtyughDungeon m = new OtyughTreasureDungeon(3, 4, 0, false, 200, 200, 1, 5L);
+    DungeonController c = new DungeonConsoleController(testInput, outputLog);
+    c.playGame(m);
+    String test = "\n" +
+            "\n" +
+            "Doors lead to: SOUTH\n" +
+            "The cave you are in holds arrows:  CROOKED CROOKED\n" +
+            "The cave you are in holds treasures: SAPPHIRE SAPPHIRE\n" +
+            "There is no smell in the air\n" +
+            "\n" +
+            "Move, Pickup, Shoot, or Player Information? (M-P-S-I) \n" +
+            "You have picked up any treasures or arrows\n" +
+            "\n" +
+            "\n" +
+            "Doors lead to: SOUTH\n" +
+            "There is no smell in the air\n" +
+            "\n" +
+            "Move, Pickup, Shoot, or Player Information? (M-P-S-I) \n" +
+            "You are holding arrows:  CROOKED CROOKED CROOKED CROOKED CROOKED\n" +
+            "You are holding treasures:  SAPPHIRE SAPPHIRE\n" +
+            "\n" +
+            "\n" +
+            "Doors lead to: SOUTH\n" +
+            "There is no smell in the air\n" +
+            "\n" +
+            "Move, Pickup, Shoot, or Player Information? (M-P-S-I) \n";
+    Assert.assertEquals(outputLog.toString(),test);
   }
 
   @Test

@@ -2,8 +2,10 @@ package dungeon.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 
 /**
@@ -21,9 +23,9 @@ public class OtyughTreasureDungeon extends TreasureDungeon implements OtyughDung
    * @param interconnectivity The interconnectivity for kruskal's algorithm.
    * @param wrapped           If the dungeon should wrap around the edges.
    * @param treasurePercent   Percent of caves with treasure.
-   * @param arrowPercent   Percent of caves with arrows.
-   * @param numberOtyugh   The number of Otyughs to inhabit the caves. If zero is inputted, one
-   *                       Otyugh will be placed at the final cave.
+   * @param arrowPercent      Percent of caves with arrows.
+   * @param numberOtyugh      The number of Otyughs to inhabit the caves. If zero is inputted, one
+   *                          Otyugh will be placed at the final cave.
    */
   public OtyughTreasureDungeon(int rows, int columns, int interconnectivity, boolean wrapped,
                                int treasurePercent, int arrowPercent, int numberOtyugh) {
@@ -39,9 +41,9 @@ public class OtyughTreasureDungeon extends TreasureDungeon implements OtyughDung
    * @param interconnectivity The interconnectivity for kruskal's algorithm.
    * @param wrapped           If the dungeon should wrap around the edges.
    * @param treasurePercent   Percent of caves with treasure.
-   * @param arrowPercent   Percent of caves with arrows.
-   * @param numberOtyugh   The number of Otyughs to inhabit the caves. If zero is inputted, one
-   *                       Otyugh will be placed at the final cave.
+   * @param arrowPercent      Percent of caves with arrows.
+   * @param numberOtyugh      The number of Otyughs to inhabit the caves. If zero is inputted, one
+   *                          Otyugh will be placed at the final cave.
    * @param seed              Seed for testing randomness.
    */
   public OtyughTreasureDungeon(int rows, int columns, int interconnectivity, boolean wrapped,
@@ -233,8 +235,12 @@ public class OtyughTreasureDungeon extends TreasureDungeon implements OtyughDung
   @Override
   public Smell getSmell() {
     int countOtyugh = 0;
-    List<Location> secondaryLocations = new ArrayList<>();
+    Set<Location> secondaryLocations = new HashSet<>();
     Location currentLocation = getCoordinateLocation(getPlayer().getCoordinate());
+    Otyugh currentOtyugh = currentLocation.getOtyugh();
+    if (currentOtyugh != null && currentOtyugh.getHealth() != Health.DEAD) {
+      return Smell.MORE_PUNGENT;
+    }
     // Check all first directions
     for (Map.Entry<Direction, Location> entry : currentLocation.getPaths().entrySet()) {
       Location l = entry.getValue();
