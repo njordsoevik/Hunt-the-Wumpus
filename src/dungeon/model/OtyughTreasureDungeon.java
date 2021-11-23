@@ -52,7 +52,7 @@ public class OtyughTreasureDungeon extends TreasureDungeon implements OtyughDung
     if (arrowPercent > Integer.MAX_VALUE || numberOtyugh > Integer.MAX_VALUE) {
       throw new ArithmeticException("Input above max values");
     }
-    if (arrowPercent <= 0 || numberOtyugh < 0) {
+    if (arrowPercent < 0 || numberOtyugh < 0) {
       throw new IllegalArgumentException("Arguments cannot be below zero.");
     }
     placeOtyugh(rows, columns, numberOtyugh);
@@ -98,6 +98,9 @@ public class OtyughTreasureDungeon extends TreasureDungeon implements OtyughDung
   }
 
   private void placeArrows(int rows, int columns, int percent) {
+    if (percent == 0) {
+      return;
+    }
     int arrowIndex;
     int num = (int) Math.ceil((double) ((percent) * (rows * columns)) / 100);
 

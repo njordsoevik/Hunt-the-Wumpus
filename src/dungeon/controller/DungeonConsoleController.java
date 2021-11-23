@@ -39,16 +39,15 @@ public class DungeonConsoleController implements DungeonController {
   @Override
   public void playGame(OtyughDungeon m) {
     String element = "";
-    String move = "";
-    Direction moveDirection = null;
+    Direction moveDirection;
     int distance;
-    OtyughDungeonCommand cmd = null;
-
+    OtyughDungeonCommand cmd;
     if (!(m instanceof OtyughDungeon)) {
       throw new IllegalArgumentException("Model is invalid!");
     }
     helperPrint(m);
     while (scan.hasNext()) {
+      cmd = null;
       try {
         element = scan.next();
         switch (element) {
@@ -86,7 +85,7 @@ public class DungeonConsoleController implements DungeonController {
             if (m.getDirections().contains(moveDirection)) {
               cmd = new Move(moveDirection);
             } else {
-              out.append("Cannot move ").append(moveDirection.toString()).append(" from this location.");
+              out.append("Cannot move there from this location.");
             }
             break;
           case "p":
@@ -107,12 +106,15 @@ public class DungeonConsoleController implements DungeonController {
               }
             }
             if (Arrays.asList(Direction.values()).contains(moveDirection) && distance >= 0) {
-              out.append("Shooting ").append(moveDirection.toString()).append(" ")
-                      .append(distance + " ").append("squares").append("\n");
-              cmd = new Shoot(moveDirection, distance);
+              if (!m.getPlayerArrows().isEmpty()) {
+                out.append("Shooting ").append(moveDirection.toString()).append(" ")
+                        .append(distance + " ").append("squares").append("\n");
+                cmd = new Shoot(moveDirection, distance);
+              } else {
+                out.append("No more arrows to shoot.");
+              }
             } else {
-              out.append("Cannot shoot in ").append(move).append(" direction ")
-                      .append(distance + " units");
+              out.append("Cannot shoot in that direction or distance.");
             }
             break;
           default:

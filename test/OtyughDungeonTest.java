@@ -25,7 +25,8 @@ public class OtyughDungeonTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void createInvalidDungeonArrowPercentMax() {
-    new OtyughTreasureDungeon(3, 4, 0, false, 20, Integer.MAX_VALUE+1, 7, 5L);}
+    new OtyughTreasureDungeon(3, 4, 0, false, 20, Integer.MAX_VALUE + 1, 7, 5L);
+  }
 
   @Test(expected = IllegalArgumentException.class)
   public void createInvalidDungeonArrowPercentUnder0() {
@@ -34,7 +35,7 @@ public class OtyughDungeonTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void createInvalidDungeonNumberOtyughMax() {
-    new OtyughTreasureDungeon(3, 4, 0, false, 20, 5, Integer.MAX_VALUE+1, 5L);
+    new OtyughTreasureDungeon(3, 4, 0, false, 20, 5, Integer.MAX_VALUE + 1, 5L);
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -150,7 +151,7 @@ public class OtyughDungeonTest {
     z.takeArrows();
     z.movePlayer(Direction.EAST);
     z.takeArrows();
-    Assert.assertEquals(14,z.getPlayerArrows().size()); // 3(Starting)+12(Squares)-1(Ending)
+    Assert.assertEquals(14, z.getPlayerArrows().size()); // 3(Starting)+12(Squares)-1(Ending)
   }
 
   @Test
@@ -208,9 +209,10 @@ public class OtyughDungeonTest {
   public void checkOtyughIsInCaveNotTunnels() {
     OtyughDungeon z = new OtyughTreasureDungeon(10, 10, 0, false, 20, 200, 7, 5L);
     for (int i = 0; i < 50; i++) {
-      while (z.isGameOver() == false) {
+      while (!z.isGameOver()) {
         Random r = new Random();
-        Direction move = (Direction) z.getDirections().toArray()[r.nextInt(z.getDirections().size())];
+        Direction move = (Direction) z.getDirections()
+                .toArray()[r.nextInt(z.getDirections().size())];
         z.movePlayer(move);
       }
       if (z.getPlayerHealth() == Health.DEAD) {
@@ -244,7 +246,6 @@ public class OtyughDungeonTest {
     Assert.assertEquals(z.getPlayerHealth(), Health.HEALTHY);
   }
 
-
   @Test
   public void testShootingAllDirections() {
     OtyughDungeon z = new OtyughTreasureDungeon(3, 4, 0, false, 20, 10000, 7, 5L);
@@ -253,9 +254,10 @@ public class OtyughDungeonTest {
     z.shootArrow(Direction.WEST, 1);
     z.shootArrow(Direction.EAST, 1);
     z.shootArrow(Direction.NORTH, 1);
+    Assert.assertEquals(z.isGameOver(), false);
   }
 
-  @Test (expected = IllegalArgumentException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void testShootingNegativeDistance() {
     OtyughDungeon z = new OtyughTreasureDungeon(3, 4, 0, false, 20, 10000, 7, 5L);
     z.takeArrows();
@@ -474,8 +476,34 @@ public class OtyughDungeonTest {
   }
 
   @Test
-  public void testControllerGetInformationAfterPickingUp() {
+  public void testControllerPickUpAndGetInformationAfterPickUp() {
     Readable testInput = new StringReader("p i");
+    Appendable outputLog = new StringBuilder();
+    OtyughDungeon m = new OtyughTreasureDungeon(3, 4, 0, false, 200, 200, 1, 5L);
+    DungeonController c = new DungeonConsoleController(testInput, outputLog);
+    c.playGame(m);
+    String test = "\n"
+            + "\n"
+            + "Doors lead to: SOUTH\n"
+            + "The cave you are in holds arrows:  CROOKED CROOKED\n"
+            + "The cave you are in holds treasures: SAPPHIRE SAPPHIRE\n"
+            + "There is no smell in the air\n"
+            + "\n"
+            + "Move, Pickup, Shoot, or Player Information? (M-P-S-I) \n"
+            + "You have picked up any treasures or arrows\n"
+            + "\n"
+            + "\n" + "Doors lead to: SOUTH\n" + "There is no smell in the air\n" + "\n"
+            + "Move, Pickup, Shoot, or Player Information? (M-P-S-I) \n"
+            + "You are holding arrows:  CROOKED CROOKED CROOKED CROOKED CROOKED\n"
+            + "You are holding treasures:  SAPPHIRE SAPPHIRE\n" + "\n" + "\n"
+            + "Doors lead to: SOUTH\n" + "There is no smell in the air\n" + "\n"
+            + "Move, Pickup, Shoot, or Player Information? (M-P-S-I) \n";
+    Assert.assertEquals(outputLog.toString(), test);
+  }
+
+  @Test
+  public void testControllerInvalidMove() {
+    Readable testInput = new StringReader("m o");
     Appendable outputLog = new StringBuilder();
     OtyughDungeon m = new OtyughTreasureDungeon(3, 4, 0, false, 200, 200, 1, 5L);
     DungeonController c = new DungeonConsoleController(testInput, outputLog);
@@ -488,22 +516,44 @@ public class OtyughDungeonTest {
             "There is no smell in the air\n" +
             "\n" +
             "Move, Pickup, Shoot, or Player Information? (M-P-S-I) \n" +
-            "You have picked up any treasures or arrows\n" +
-            "\n" +
-            "\n" +
-            "Doors lead to: SOUTH\n" +
-            "There is no smell in the air\n" +
-            "\n" +
-            "Move, Pickup, Shoot, or Player Information? (M-P-S-I) \n" +
-            "You are holding arrows:  CROOKED CROOKED CROOKED CROOKED CROOKED\n" +
-            "You are holding treasures:  SAPPHIRE SAPPHIRE\n" +
-            "\n" +
+            "Choose direction: \n" +
+            "Cannot move there from this location.\n" +
             "\n" +
             "Doors lead to: SOUTH\n" +
+            "The cave you are in holds arrows:  CROOKED CROOKED\n" +
+            "The cave you are in holds treasures: SAPPHIRE SAPPHIRE\n" +
             "There is no smell in the air\n" +
             "\n" +
             "Move, Pickup, Shoot, or Player Information? (M-P-S-I) \n";
-    Assert.assertEquals(outputLog.toString(),test);
+    Assert.assertEquals(outputLog.toString(), test);
+  }
+
+  @Test
+  public void testControllerInvalidShoot() {
+    Readable testInput = new StringReader("s o 4");
+    Appendable outputLog = new StringBuilder();
+    OtyughDungeon m = new OtyughTreasureDungeon(3, 4, 0, false, 200, 200, 1, 5L);
+    DungeonController c = new DungeonConsoleController(testInput, outputLog);
+    c.playGame(m);
+    String test = "\n" +
+            "\n" +
+            "Doors lead to: SOUTH\n" +
+            "The cave you are in holds arrows:  CROOKED CROOKED\n" +
+            "The cave you are in holds treasures: SAPPHIRE SAPPHIRE\n" +
+            "There is no smell in the air\n" +
+            "\n" +
+            "Move, Pickup, Shoot, or Player Information? (M-P-S-I) \n" +
+            "Choose direction: \n" +
+            "Choose distance: \n" +
+            "Cannot shoot in that direction or distance.\n" +
+            "\n" +
+            "Doors lead to: SOUTH\n" +
+            "The cave you are in holds arrows:  CROOKED CROOKED\n" +
+            "The cave you are in holds treasures: SAPPHIRE SAPPHIRE\n" +
+            "There is no smell in the air\n" +
+            "\n" +
+            "Move, Pickup, Shoot, or Player Information? (M-P-S-I) \n";
+    Assert.assertEquals(outputLog.toString(), test);
   }
 
   @Test
@@ -514,6 +564,7 @@ public class OtyughDungeonTest {
     DungeonController c = new DungeonConsoleController(testInput, outputLog);
     c.playGame(m);
     Assert.assertEquals(m.isGameOver(), true);
+    Assert.assertTrue(outputLog.toString().contains("End square reached, game over!"));
     Assert.assertEquals(m.getPlayerHealth(), Health.HEALTHY);
   }
 
@@ -525,6 +576,7 @@ public class OtyughDungeonTest {
     DungeonController c = new DungeonConsoleController(testInput, outputLog);
     c.playGame(m);
     Assert.assertEquals(m.isGameOver(), true);
+    Assert.assertTrue(outputLog.toString().contains("An Otyugh has eaten you! Game over."));
     Assert.assertEquals(m.getPlayerHealth(), Health.DEAD);
   }
 

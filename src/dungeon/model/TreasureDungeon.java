@@ -149,26 +149,6 @@ public class TreasureDungeon implements Dungeon {
     }
   }
 
-
-  @Override
-  public String toString() { //TODO remove for final
-    StringBuilder b = new StringBuilder();
-    for (int i = 0; i < this.grid.length; i++) {
-      b.append("\n");
-      for (int j = 0; j < this.grid[i].length; j++) {
-        b.append(this.grid[i][j]);
-        b.append(this.grid[i][j].eastStringHelper());
-      }
-      b.append("\n");
-      for (int j = 0; j < this.grid[i].length; j++) {
-        b.append(this.grid[i][j].southStringHelper());
-        b.append(" ");
-      }
-    }
-    b.append("\n");
-    return b.toString();
-  }
-
   protected Location[][] getGrid() {
     return this.grid;
   }
