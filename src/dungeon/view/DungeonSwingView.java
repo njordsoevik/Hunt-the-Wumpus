@@ -1,47 +1,90 @@
 package dungeon.view;
 
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.*;
 
-import dungeon.controller.DungeonController;
 import dungeon.controller.DungeonViewController;
-import dungeon.model.OtyughDungeon;
+import dungeon.controller.Features;
 
 public class DungeonSwingView extends JFrame implements DungeonView {
+  private JMenuBar menuBar;
+  private JMenu menu;
+  private JTextField rows;
+  private JTextField columns;
+  private JTextField interconnectivity;
+  private JTextField percentTreasures;
+  private JTextField percentArrows;
+  private JTextField numberMonsters;
+  private JButton enterButton;
+  private JComboBox<String> wrapped;
 
-    private BoardPanel boardPanel;
+  public DungeonSwingView() {
+    super("Otyugh Dungeon Menu");
+    this.setSize(1100,600);
+    this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-    public DungeonSwingView() {
-        super("Otyugh Dungeon");
-        this.setSize(600,600);
-        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    menuBar = new JMenuBar();
+    menu = new JMenu("File");
+    menuBar.add(new JSeparator());
+    menuBar.add(new JLabel("Rows"));
+    rows = new JTextField("");
+    menuBar.add(rows);
+    menuBar.add(new JLabel("Columns"));
+    columns = new JTextField("");
+    menuBar.add(columns);
+    menuBar.add(new JLabel("Interconnectivity"));
+    interconnectivity = new JTextField("");
+    menuBar.add(interconnectivity);
+    menuBar.add(new JLabel("Treasures (%)"));
+    percentTreasures = new JTextField("");
+    menuBar.add(percentTreasures);
+    menuBar.add(new JLabel("Arrows (%)"));
+    percentArrows = new JTextField("");
+    menuBar.add(percentArrows);
+    menuBar.add(new JLabel("Monsters"));
+    numberMonsters = new JTextField("");
+    menuBar.add(numberMonsters);
+    menuBar.add(new JLabel("Wrapped"));
+    wrapped = new JComboBox(new String[] {"True", "False"});
+    menuBar.add(wrapped);
+    enterButton = new JButton("Enter");
+    enterButton.setActionCommand("Enter Button");
+    menuBar.add(enterButton);
+    this.setJMenuBar(menuBar);
 
-        boardPanel = new BoardPanel();
-        add(boardPanel);
-    }
+    //pack();
+    setVisible(true);
 
-    @Override
-    public void addClickListener(DungeonViewController listener) {
-        // create the MouseAdapter
-        MouseAdapter clickAdapter = new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                listener.handleCellClick(e.getX(), e.getY());
-            }
-        };
-        boardPanel.addMouseListener(clickAdapter);
-    }
+  }
 
-    @Override
-    public void refresh() {
-        repaint();
-    }
+  public void addListener(DungeonViewController listener) {
+    // create the MouseAdapter
+    MouseAdapter clickAdapter = new MouseAdapter() {
+      @Override
+      public void mouseClicked(MouseEvent e) {
+        super.mouseClicked(e);
+        listener.handleCellClick(e.getX(), e.getY());
+      }
+    };
+  }
 
-    @Override
-    public void makeVisible() {
-        setVisible(true);
-    }
+  @Override
+  public void refresh() {
+    repaint();
+  }
+
+  @Override
+  public void makeVisible() {
+    setVisible(true);
+  }
+
+  @Override
+  public void setFeatures(Features f) {
+    enterButton.addActionListener(l -> f.processInput(rows.getText(), columns.getText()
+            , interconnectivity.getText(), (String) wrapped.getSelectedItem()
+            , percentArrows.getText(), percentTreasures.getText(), numberMonsters.getText()));
+  }
 }

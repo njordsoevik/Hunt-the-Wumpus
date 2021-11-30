@@ -1,7 +1,6 @@
 import dungeon.controller.DungeonViewController;
 import dungeon.controller.DungeonViewControllerImpl;
 import dungeon.model.OtyughDungeon;
-import dungeon.model.OtyughTreasureDungeon;
 import dungeon.view.DungeonSwingView;
 import dungeon.view.DungeonView;
 
@@ -15,7 +14,7 @@ public class ViewMain {
    */
   public static void main(String[] args) {
     DungeonView view = new DungeonSwingView();
-    DungeonViewController controller = new DungeonViewControllerImpl(view);
-    controller.createMenu();
+    DungeonViewController controller = new DungeonViewControllerImpl();
+    controller.setView(view);
   }
 }

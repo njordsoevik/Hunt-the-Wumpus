@@ -1,6 +1,8 @@
 package dungeon.controller;
 
-public interface DungeonViewController extends DungeonController{
+import dungeon.view.DungeonView;
+
+public interface DungeonViewController extends DungeonController {
   /**
    * Handle an action in a single cell of the board, such as to make a move.
    *
@@ -10,8 +12,8 @@ public interface DungeonViewController extends DungeonController{
   void handleCellClick(int row, int col);
 
   /**
-   * Create the menu board.
+   * Set the view.
    *
    */
-  void createMenu();
+  void setView(DungeonView view);
 }
