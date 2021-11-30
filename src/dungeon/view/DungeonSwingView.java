@@ -1,5 +1,6 @@
 package dungeon.view;
 
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -11,7 +12,7 @@ import dungeon.controller.Features;
 
 public class DungeonSwingView extends JFrame implements DungeonView {
   private JMenuBar menuBar;
-  private JMenu menu;
+  private JPanel board;
   private JTextField rows;
   private JTextField columns;
   private JTextField interconnectivity;
@@ -23,11 +24,10 @@ public class DungeonSwingView extends JFrame implements DungeonView {
 
   public DungeonSwingView() {
     super("Otyugh Dungeon Menu");
-    this.setSize(1100,600);
+    this.setSize(1100,1000);
     this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
     menuBar = new JMenuBar();
-    menu = new JMenu("File");
     menuBar.add(new JSeparator());
     menuBar.add(new JLabel("Rows"));
     rows = new JTextField("");
@@ -55,9 +55,12 @@ public class DungeonSwingView extends JFrame implements DungeonView {
     menuBar.add(enterButton);
     this.setJMenuBar(menuBar);
 
+
+    board = new BoardPanel();
+    board.setPreferredSize(new Dimension(1000,1000));
+    this.add(board);
     //pack();
     setVisible(true);
-
   }
 
   public void addListener(DungeonViewController listener) {
