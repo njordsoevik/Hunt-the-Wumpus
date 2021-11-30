@@ -31,13 +31,17 @@ public class DungeonViewControllerImpl implements DungeonViewController, Feature
 
     @Override
     public void processInput(String rows, String columns, String connectivity, String wrapped, String treasure, String arrows, String monsters) {
+        OtyughDungeon model;
         try {
-            OtyughDungeon model = new OtyughTreasureDungeon(rows,columns,connectivity,wrapped, treasure,arrows,monsters);
+            model = new OtyughTreasureDungeon(Integer.parseInt(rows)
+                    ,Integer.parseInt(columns),Integer.parseInt(connectivity)
+                    ,Boolean.parseBoolean(wrapped), Integer.parseInt(treasure)
+                    ,Integer.parseInt(arrows),Integer.parseInt(monsters));
+            System.out.println(model);
+        } catch (IllegalArgumentException ex) {
+            System.out.println("Error: "+ ex);
         }
-        System.out.println(rows);
-        System.out.println(columns);
-        System.out.println(connectivity);
-        System.out.println(wrapped);
+
     }
 
     @Override
