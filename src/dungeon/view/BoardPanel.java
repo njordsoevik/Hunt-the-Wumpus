@@ -4,19 +4,23 @@ import java.awt.*;
 
 import javax.swing.*;
 
-import dungeon.model.OtyughDungeon;
+import dungeon.model.ROtyughDungeon;
 
 class BoardPanel extends JPanel {
+
+    private ROtyughDungeon model;
+
+    public BoardPanel(ROtyughDungeon model) {
+        this.model = model;
+    }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         // draw grid lines
-        g2d.drawLine(0,200,600,200);
-        g2d.drawLine(0,400,600,400);
-        g2d.drawLine(200,0,200,600);
-        g2d.drawLine(400,0,400,600);
+        g2d.drawOval(500,500,50,50);
+
 
 //            model.grid[][] board = model.getBoard();
 //            //g2d.setFont();

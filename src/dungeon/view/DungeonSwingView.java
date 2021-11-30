@@ -9,8 +9,10 @@ import javax.swing.*;
 
 import dungeon.controller.DungeonViewController;
 import dungeon.controller.Features;
+import dungeon.model.ROtyughDungeon;
 
 public class DungeonSwingView extends JFrame implements DungeonView {
+  private JPanel container;
   private JMenuBar menuBar;
   private JPanel board;
   private JTextField rows;
@@ -22,11 +24,12 @@ public class DungeonSwingView extends JFrame implements DungeonView {
   private JButton enterButton;
   private JComboBox<String> wrapped;
 
-  public DungeonSwingView() {
+  public DungeonSwingView(ROtyughDungeon model) {
     super("Otyugh Dungeon Menu");
     this.setSize(1100,1000);
     this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
+    // ADD MENU
     menuBar = new JMenuBar();
     menuBar.add(new JSeparator());
     menuBar.add(new JLabel("Rows"));
@@ -55,11 +58,18 @@ public class DungeonSwingView extends JFrame implements DungeonView {
     menuBar.add(enterButton);
     this.setJMenuBar(menuBar);
 
+    // ADD CONTAINER AND SCROLL PANE
+    container = new JPanel();
+    container.setLayout(new FlowLayout());
+    JScrollPane scrollPane = new JScrollPane(container);
+    this.add(scrollPane);
 
-    board = new BoardPanel();
-    board.setPreferredSize(new Dimension(1000,1000));
-    this.add(board);
-    //pack();
+    // ADD BOARD TO SCROLL PANE
+    board = new BoardPanel(model);
+    board.setPreferredSize(new Dimension(1000,1000)); // Allows scrolling
+    container.add(board);
+
+    pack();
     setVisible(true);
   }
 
@@ -72,6 +82,7 @@ public class DungeonSwingView extends JFrame implements DungeonView {
         listener.handleCellClick(e.getX(), e.getY());
       }
     };
+    board.addMouseListener(clickAdapter);
   }
 
   @Override

@@ -16,7 +16,7 @@ public interface Features {
   /**
    * Process the inputs entered by the user.
    * 
-   * @param input the string entered by the user
+   * @param
    */
   void processInput(String rows, String columns, String connectivity, String wrapped
           , String treasure, String arrows, String monsters);
