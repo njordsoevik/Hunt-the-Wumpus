@@ -405,11 +405,6 @@ public class OtyughDungeonTest {
     DungeonController c = new DungeonConsoleController(input, outputLog);
     c.playGame(m);
     Assert.assertEquals(Direction.SOUTH.toString(), ((MockModel) m).inputOne);
-    input = new StringReader("s east 5");
-    c = new DungeonConsoleController(input, outputLog);
-    c.playGame(m);
-    Assert.assertEquals(Direction.EAST.toString(), ((MockModel) m).inputOne);
-    Assert.assertEquals(String.valueOf(5), ((MockModel) m).inputTwo);
   }
 
   @Test
