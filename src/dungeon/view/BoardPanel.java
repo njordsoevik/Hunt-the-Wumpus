@@ -16,6 +16,7 @@ import javax.swing.*;
 import dungeon.model.Direction;
 import dungeon.model.RLocation;
 import dungeon.model.RDungeon;
+import dungeon.model.Smell;
 import dungeon.model.Treasure;
 
 class BoardPanel extends JPanel {
@@ -68,6 +69,19 @@ class BoardPanel extends JPanel {
                 if (locations[i][j]!=null) {
                     RLocation location = locations[i][j];
                     BufferedImage picture = getLocationImage(location);
+                    if (location.getCoordinate().equals(readModel.getCurrentCoordinate())) {
+                        try {
+                            picture = overlay(picture,IMAGE_URL+"player.png",0);
+                            if (readModel.getSmell() == Smell.MORE_PUNGENT) {
+                                picture = overlay(picture,IMAGE_URL+"stench02.png",0);
+                            } else if (readModel.getSmell() == Smell.LESS_PUNGENT) {
+                                picture = overlay(picture,IMAGE_URL+"stench01.png",0);
+                            }
+                        } catch (IOException ioe) {
+                            throw new IllegalStateException("Append failed", ioe);
+                        }
+
+                    }
                     g2d.drawImage(picture,(j)*realBoardSize.width/locations[i].length
                             ,(i)*realBoardSize.height/locations.length,  this);
                 }
@@ -94,10 +108,6 @@ class BoardPanel extends JPanel {
             // Get directions
             picture = ImageIO.read(new File(IMAGE_URL+imageMap.get(directions)+".png"));
             // Get Otyugh
-            if (location.getCoordinate().equals(readModel.getCurrentCoordinate())) {
-                System.out.println("here");
-                picture = overlay(picture,IMAGE_URL+"player.png",50);
-            }
             if (location.getOtyugh() != null) {
                 picture = overlay(picture,IMAGE_URL+"otyugh.png",0);
             }
