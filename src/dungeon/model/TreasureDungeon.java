@@ -106,7 +106,7 @@ public class TreasureDungeon implements Dungeon {
   }
 
   @Override
-  public Location[][] getVisitedLocations() {
+  public RLocation[][] getVisitedLocations() {
     Location[][] visited = new Location[rows][columns];
     for (int i = 0; i < this.grid.length; i++) {
       for (int j = 0; j < this.grid[i].length; j++) {
@@ -384,7 +384,6 @@ public class TreasureDungeon implements Dungeon {
     b.append("\n");
     return b.toString();
   }
-
 
 
 }

@@ -7,7 +7,7 @@ import java.util.List;
  * player can shoot. In addition, dangerous Otyughs exist within the caves that kill players.
  * Players can shoot and kill these Otyughs.
  */
-public interface OtyughDungeon extends Dungeon {
+public interface OtyughDungeon extends Dungeon, RDungeon {
 
   /**
    * Pick up arrows in the current location.

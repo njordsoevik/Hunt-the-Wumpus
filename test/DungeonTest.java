@@ -633,10 +633,9 @@ public class DungeonTest {
   }
 
   @Test
-  public void getVisited() {
+  public void getVisitedStarting() {
     Dungeon z = new TreasureDungeon(3, 4, 0, true, 120, 4L);
-    // Move through all squares, one path
-    System.out.println(z.getVisitedLocations()[0][0].getVisited());
+    Assert.assertTrue(z.getVisitedLocations()[0][0].getVisited());
   }
 
 }

@@ -11,7 +11,7 @@ import javax.swing.*;
 
 import dungeon.controller.Features;
 import dungeon.model.Direction;
-import dungeon.model.ROtyughDungeon;
+import dungeon.model.RDungeon;
 
 public class DungeonSwingView extends JFrame implements DungeonView {
   private JPanel container;
@@ -29,7 +29,7 @@ public class DungeonSwingView extends JFrame implements DungeonView {
   private final int preferredScaleX = 200;
   private final int preferredScaleY = 200;
 
-  public DungeonSwingView(ROtyughDungeon model) {
+  public DungeonSwingView(RDungeon model) {
     super("Otyugh Dungeon Menu");
     this.setSize(900,800);
     this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -80,7 +80,7 @@ public class DungeonSwingView extends JFrame implements DungeonView {
   }
 
   @Override
-  public void setNewDungeon(int x, int y, ROtyughDungeon model) {
+  public void setNewDungeon(int x, int y, RDungeon model) {
     if (board != null) {
       container.remove(board);
       this.board.setModel(new Dimension(x,y),model);

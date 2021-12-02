@@ -1,12 +1,10 @@
 package dungeon.view;
 
-import java.awt.event.ActionListener;
 import java.util.Set;
 
-import dungeon.controller.DungeonViewController;
 import dungeon.controller.Features;
 import dungeon.model.Direction;
-import dungeon.model.ROtyughDungeon;
+import dungeon.model.RDungeon;
 
 /**
  * A view for TicTacToe: display the game board and provide visual interface
@@ -44,7 +42,7 @@ public interface DungeonView {
    */
   void showErrorMessage(String error);
 
-  void setNewDungeon(int x, int y, ROtyughDungeon model);
+  void setNewDungeon(int x, int y, RDungeon model);
 
   void setDirections(Set<Direction> directions);
 }

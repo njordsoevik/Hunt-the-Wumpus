@@ -50,5 +50,5 @@ public interface Dungeon {
    */
   boolean isGameOver();
 
-  Location[][] getVisitedLocations();
+  RLocation[][] getVisitedLocations();
 }

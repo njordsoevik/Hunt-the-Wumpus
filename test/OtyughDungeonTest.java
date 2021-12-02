@@ -12,6 +12,7 @@ import dungeon.controller.DungeonConsoleController;
 import dungeon.controller.DungeonController;
 import dungeon.model.Arrow;
 import dungeon.model.Direction;
+import dungeon.model.Dungeon;
 import dungeon.model.Health;
 import dungeon.model.OtyughDungeon;
 import dungeon.model.OtyughTreasureDungeon;
@@ -375,6 +376,13 @@ public class OtyughDungeonTest {
     z.movePlayer(Direction.EAST);
     // Player stepped in cave with injured Otyugh
     Assert.assertEquals(Smell.MORE_PUNGENT, z.getSmell());
+  }
+
+  @Test
+  public void getVisitedStarting() {
+    Dungeon z = new TreasureDungeon(3, 4, 0, true, 120, 4L);
+    Assert.assertTrue(z.getVisitedLocations()[0][0].getVisited());
+
   }
 
   // Controller Tests

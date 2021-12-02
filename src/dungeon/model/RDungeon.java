@@ -3,7 +3,7 @@ package dungeon.model;
 import java.util.List;
 import java.util.Set;
 
-public interface ROtyughDungeon {
+public interface RDungeon {
 
   /**
    * Get the arrows that the player is currently holding.
@@ -60,4 +60,6 @@ public interface ROtyughDungeon {
    * Check if the game is over by reaching the final square.
    */
   boolean isGameOver();
+
+  RLocation[][] getVisitedLocations();
 }

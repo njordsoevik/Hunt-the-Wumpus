@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * DungeonLocation implements the dungeon.model.Location interface. These navigated by the player to
@@ -52,6 +53,11 @@ public final class DungeonLocation implements Location {
     List<Treasure> copy = new ArrayList<>();
     copy.addAll(this.treasure);
     return copy;
+  }
+
+  @Override
+  public Set<Direction> getDirections() {
+    return this.getPaths().keySet();
   }
 
   @Override

@@ -12,7 +12,7 @@ import java.util.Set;
  * OtyughTreasureDungeon implements the OtyughDungeon interface. OtyughTreasureDungeons store
  * treasure,arrows, and Otyughs. The caves  can be navigated by the player.
  */
-public class OtyughTreasureDungeon extends TreasureDungeon implements OtyughDungeon, ROtyughDungeon {
+public class OtyughTreasureDungeon extends TreasureDungeon implements OtyughDungeon, RDungeon {
   private final int STARTING_ARROWS = 3;
 
   /**
@@ -272,6 +272,22 @@ public class OtyughTreasureDungeon extends TreasureDungeon implements OtyughDung
     } else {
       return Smell.NONE;
     }
+  }
+
+  @Override
+  public RLocation[][] getVisitedLocations() {
+    Location[][] grid = this.getGrid();
+    int rows = grid.length;
+    int columns = grid[0].length;
+    Location[][] visited = new Location[rows][columns];
+    for (int i = 0; i < rows; i++) {
+      for (int j = 0; j < columns; j++) {
+        if (grid[i][j].getVisited()) {
+          visited[i][j] = grid[i][j];
+        }
+      }
+    }
+    return visited;
   }
 
 }

@@ -7,14 +7,7 @@ import java.util.Map;
  * Locations throughout the dungeon are access points. These navigated by the player to move through
  * the dungeon.
  */
-public interface Location {
-
-  /**
-   * Get a list of valid locations this location is connected to.
-   *
-   * @return the list of locations.
-   */
-  Map<Direction, Location> getPaths();
+interface Location extends RLocation {
 
   /**
    * Add to the list of valid locations this location is connected to.
@@ -31,23 +24,9 @@ public interface Location {
   void addTreasure(Treasure t);
 
   /**
-   * Get the treasure this location is holding.
-   *
-   * @return The treasure placed in this location.
-   */
-  List<Treasure> getTreasure();
-
-  /**
    * Remove the treasure this location is holding.
    */
   void removeTreasure();
-
-  /**
-   * Get the coordinate of this location on the grid.
-   *
-   * @return the coordinate.
-   */
-  Coordinate getCoordinate();
 
   /**
    * Helper function for printing east edge of node.
@@ -63,12 +42,6 @@ public interface Location {
    */
   String southStringHelper();
 
-  /**
-   * Get the number of connections to this node, used to check if this is a tunnel or a cave.
-   *
-   * @return the location type of this node.
-   */
-  LocationType getLocationType();
 
   /**
    * Add an Otyugh to this location.
@@ -92,12 +65,6 @@ public interface Location {
    */
   void removeArrows();
 
-  /**
-   * Return an Otyugh if one resides in this location.
-   *
-   * @return An Otyugh if one resides here, else null.
-   */
-  Otyugh getOtyugh();
 
   /**
    * Tag this location as visited by the player.
@@ -105,10 +72,11 @@ public interface Location {
   void setVisited();
 
   /**
-   * Return if location has been visited by the player.
+   * Get a list of valid locations this location is connected to.
    *
-   * @return True if a player has visited here, else false.
+   * @return the list of locations.
    */
-  Boolean getVisited();
+  Map<Direction, Location> getPaths();
+
 
 }

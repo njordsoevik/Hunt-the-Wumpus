@@ -6,7 +6,7 @@ import dungeon.controller.DungeonViewController;
 import dungeon.controller.DungeonViewControllerImpl;
 import dungeon.model.OtyughDungeon;
 import dungeon.model.OtyughTreasureDungeon;
-import dungeon.model.ROtyughDungeon;
+import dungeon.model.RDungeon;
 import dungeon.view.DungeonSwingView;
 import dungeon.view.DungeonView;
 
@@ -52,7 +52,7 @@ public class Main {
       new DungeonConsoleController(input, output).playGame(d);
     } else {
       OtyughDungeon model = new OtyughTreasureDungeon(3, 4, 0, false, 20, 100, 1);
-      DungeonView view = new DungeonSwingView((ROtyughDungeon) model);
+      DungeonView view = new DungeonSwingView((RDungeon) model);
       DungeonViewController controller = new DungeonViewControllerImpl(model, view);
       controller.go();
     }
