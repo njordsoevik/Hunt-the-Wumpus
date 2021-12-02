@@ -2,7 +2,6 @@ package dungeon.controller;
 
 import dungeon.model.OtyughDungeon;
 import dungeon.model.OtyughTreasureDungeon;
-import dungeon.model.RDungeon;
 import dungeon.view.DungeonView;
 
 public class DungeonViewControllerImpl implements DungeonViewController, Features {
@@ -36,7 +35,7 @@ public class DungeonViewControllerImpl implements DungeonViewController, Feature
                     ,Boolean.parseBoolean(wrapped), Integer.parseInt(treasure)
                     ,Integer.parseInt(arrows),Integer.parseInt(monsters));
             view.setNewDungeon(Integer.parseInt(rows),Integer.parseInt(columns)
-                    ,(RDungeon) model);
+                    ,model);
             view.refresh();
         } catch (IllegalArgumentException ex) {
             System.out.println("Error: "+ ex);
