@@ -216,6 +216,7 @@ public class OtyughTreasureDungeon extends TreasureDungeon implements OtyughDung
       Coordinate newSquare = currentLocation.getPaths().get(dir).getCoordinate();
       getPlayer().setCoordinate(newSquare);
       checkOtyugh(getCoordinateLocation(newSquare));
+      getCoordinateLocation(newSquare).setVisited();
     } else {
       throw new IllegalArgumentException("Cannot move there");
     }

@@ -44,5 +44,4 @@ public interface DungeonView {
 
   void setNewDungeon(int x, int y, RDungeon model);
 
-  void setDirections(Set<Direction> directions);
 }

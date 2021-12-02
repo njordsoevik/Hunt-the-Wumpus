@@ -1,5 +1,6 @@
 package dungeon.controller;
 
+import dungeon.model.Direction;
 import dungeon.model.OtyughDungeon;
 import dungeon.model.OtyughTreasureDungeon;
 import dungeon.view.DungeonView;
@@ -15,14 +16,16 @@ public class DungeonViewControllerImpl implements DungeonViewController, Feature
 
     @Override
     public void go() {
-        this.view.setFeatures(this);
-        this.view.makeVisible();
+        view.setFeatures(this);
+        view.makeVisible();
+        view.resetFocus();
     }
 
     @Override
     public void handleCellClick(int row, int col) {
         System.out.println(row);
         System.out.println(col);
+        view.resetFocus();
     }
 
     @Override
@@ -36,7 +39,7 @@ public class DungeonViewControllerImpl implements DungeonViewController, Feature
                     ,Integer.parseInt(arrows),Integer.parseInt(monsters));
             view.setNewDungeon(Integer.parseInt(rows),Integer.parseInt(columns)
                     ,model);
-            view.refresh();
+            updateView();
         } catch (IllegalArgumentException ex) {
             System.out.println("Error: "+ ex);
         }
@@ -44,11 +47,26 @@ public class DungeonViewControllerImpl implements DungeonViewController, Feature
 
     @Override
     public void shootArrow() {
+        System.out.println("Shoot");
+    }
 
+    @Override
+    public void move(Direction d) {
+        execute(new Move(d));
+        updateView();
     }
 
     @Override
     public void exitProgram() {
         System.exit(0);
+    }
+
+    private void execute(OtyughDungeonCommand cmd) {
+        cmd.execute(model);
+    }
+
+    private void updateView() {
+        view.refresh();
+        view.resetFocus();
     }
 }

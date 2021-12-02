@@ -379,10 +379,11 @@ public class OtyughDungeonTest {
   }
 
   @Test
-  public void getVisitedStarting() {
-    Dungeon z = new TreasureDungeon(3, 4, 0, true, 120, 4L);
+  public void getVisitedStartingAndMoving() {
+    Dungeon z = new OtyughTreasureDungeon(3, 4, 0, true, 120, 1,1, 4L);
     Assert.assertTrue(z.getVisitedLocations()[0][0].getVisited());
-
+    z.movePlayer(Direction.SOUTH);
+    Assert.assertTrue(z.getVisitedLocations()[1][0].getVisited());
   }
 
   // Controller Tests

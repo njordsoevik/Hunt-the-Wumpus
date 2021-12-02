@@ -1,5 +1,7 @@
 package dungeon.controller;
 
+import dungeon.model.Direction;
+
 /**
  * This interface represents a set of features that the program offers. Each
  * feature is exposed as a function in this interface. This function is used
@@ -16,7 +18,7 @@ public interface Features {
   /**
    * Process the inputs entered by the user.
    * 
-   * @param input the string entered by the user
+   * @param
    */
   void processInput(String rows, String columns, String connectivity, String wrapped
           , String treasure, String arrows, String monsters);
@@ -25,6 +27,11 @@ public interface Features {
    * Shoot an arrow.
    */
   void shootArrow();
+
+  /**
+   * Shoot an arrow.
+   */
+  void move(Direction d);
 
   /**
    * Handle cell click for movement.

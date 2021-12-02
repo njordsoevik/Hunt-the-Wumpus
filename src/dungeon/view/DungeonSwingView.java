@@ -15,6 +15,7 @@ import dungeon.model.RDungeon;
 
 public class DungeonSwingView extends JFrame implements DungeonView {
   private JPanel container;
+  private JPanel infoPanel;
   private JMenuBar menuBar;
   private BoardPanel board;
   private JTextField rows;
@@ -33,6 +34,7 @@ public class DungeonSwingView extends JFrame implements DungeonView {
     super("Otyugh Dungeon Menu");
     this.setSize(900,800);
     this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    this.setLayout(new BorderLayout());
 
     // ADD MENU
     menuBar = new JMenuBar();
@@ -66,17 +68,24 @@ public class DungeonSwingView extends JFrame implements DungeonView {
     menuBar.add(quitButton);
     this.setJMenuBar(menuBar);
 
+    // ADD INFO BAR
+    infoPanel = new JPanel();
+    infoPanel.add(new JLabel("Directions: "));
+    StringBuilder sb = new StringBuilder();
+    for (Direction p: model.getDirections()) {
+      sb.append(p).append(", ");
+    }
+    infoPanel.add(new JLabel(sb.toString()));
+    this.add(infoPanel, BorderLayout.SOUTH);
+
     // ADD CONTAINER AND SCROLL PANE
     container = new JPanel();
     container.setLayout(new FlowLayout());
     JScrollPane scrollPane = new JScrollPane(container);
-    this.add(scrollPane);
-
+    this.add(scrollPane, BorderLayout.NORTH);
     // ADD BOARD TO SCROLL PANE
     setNewDungeon(3,4,model);
     container.add(board);
-
-    //pack();
   }
 
   @Override
@@ -89,7 +98,6 @@ public class DungeonSwingView extends JFrame implements DungeonView {
     }
     this.board.setPreferredSize(new Dimension(x*preferredScaleX,y*preferredScaleY));
     container.add(board);
-
   }
 
   @Override
@@ -105,10 +113,13 @@ public class DungeonSwingView extends JFrame implements DungeonView {
 
   @Override
   public void setFeatures(Features f) {
+
     enterButton.addActionListener(l -> f.processInput(rows.getText(), columns.getText()
             , interconnectivity.getText(), (String) wrapped.getSelectedItem()
             , percentArrows.getText(), percentTreasures.getText(), numberMonsters.getText()));
+
     quitButton.addActionListener(l -> f.exitProgram());
+
     board.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent e) {
@@ -116,26 +127,30 @@ public class DungeonSwingView extends JFrame implements DungeonView {
         f.handleCellClick(e.getX(), e.getY());
       }
     });
+
     this.addKeyListener(new KeyListener() {
       @Override
       public void keyTyped(KeyEvent e) {
-        if (e.getKeyChar() == 's') {
-          f.shootArrow();
-        }
       }
 
       @Override
       public void keyPressed(KeyEvent e) {
-        if (e.getKeyChar() == 's') {
+        int code = e.getKeyCode();
+        if (code == 83) {
           f.shootArrow();
+        } else if (code == 37) {
+          f.move(Direction.WEST);
+        } else if (code == 38) {
+          f.move(Direction.NORTH);
+        } else if (code == 39) {
+          f.move(Direction.EAST);
+        } else if (code == 40) {
+          f.move(Direction.SOUTH);
         }
       }
 
       @Override
       public void keyReleased(KeyEvent e) {
-        if (e.getKeyChar() == 's') {
-          f.shootArrow();
-        }
       }
     });
   }
@@ -146,18 +161,9 @@ public class DungeonSwingView extends JFrame implements DungeonView {
     JOptionPane.showMessageDialog(this,error,"Error",JOptionPane.ERROR_MESSAGE);
   }
 
-
-  @Override
-  public void setDirections(Set<Direction> directions) {
-    board.setDirections(directions);
-  }
-
   @Override
   public void resetFocus() {
     this.setFocusable(true);
     this.requestFocus();
   }
-
-
-
 }

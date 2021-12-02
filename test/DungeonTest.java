@@ -2,6 +2,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -633,9 +634,10 @@ public class DungeonTest {
   }
 
   @Test
-  public void getVisitedStarting() {
+  public void getVisitedStartingAndMoving() {
     Dungeon z = new TreasureDungeon(3, 4, 0, true, 120, 4L);
     Assert.assertTrue(z.getVisitedLocations()[0][0].getVisited());
+    z.movePlayer(Direction.SOUTH);
+    Assert.assertTrue(z.getVisitedLocations()[1][0].getVisited());
   }
-
 }

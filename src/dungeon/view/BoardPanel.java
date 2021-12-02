@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import javax.imageio.ImageIO;
@@ -68,58 +67,52 @@ class BoardPanel extends JPanel {
 
     private BufferedImage getLocationImage(RLocation location) {
         Set<Direction> directions = location.getDirections();
-
+        BufferedImage picture;
         try {
-            System.out.println(directions);
-            BufferedImage picture = ImageIO.read(new File(IMAGE_URL+imageMap.get(directions)+".png"));
-            return picture;
+            // Get directions
+            picture = ImageIO.read(new File(IMAGE_URL+imageMap.get(directions)+".png"));
+            // Get Otyugh
+//            if (location.getOtyugh() != null) {
+//                overlay(picture,"otyugh.png",0);
+//            }
         } catch (IOException ioe) {
             throw new IllegalStateException("Append failed", ioe);
         }
+        return picture;
+    }
+
+    private BufferedImage overlay(BufferedImage starting, String fpath, int offset) throws IOException {
+        BufferedImage overlay = ImageIO.read(new File(fpath));
+        int w = Math.max(starting.getWidth(), overlay.getWidth());
+        int h = Math.max(starting.getHeight(), overlay.getHeight());
+        BufferedImage combined = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+        Graphics g = combined.getGraphics();
+        g.drawImage(starting, 0, 0, null);
+        g.drawImage(overlay, offset, offset, null);
+        return combined;
     }
 
     @Override
     protected void paintComponent(Graphics g) {
-        // Location[][] l = model.getLocations
-        // l.removeTreasure
-        // l.addMonster
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-        System.out.println(readModel);
+        System.out.println(readModel.getDirections());
         Dimension realBoardSize = convertBoardDimensions(this.boardSize);
         locations = readModel.getVisitedLocations();
+        for (int i = 0; i < readModel.getVisitedLocations().length; i++) {
+            for (int j = 0; j < readModel.getVisitedLocations()[i].length; j++) {
+                if (readModel.getVisitedLocations()[i][j]!=null) {
+                    System.out.println(i + " " + j);
+                }
+            }
+        }
         for (int i = 0; i < locations.length; i++) {
             for (int j = 0; j < locations[i].length; j++) {
                 if (locations[i][j]!=null) {
-                    System.out.println(locations[i][j].getCoordinate());
-                    System.out.println(i+" "+j);
                     BufferedImage picture = getLocationImage(locations[i][j]);
                     g2d.drawImage(picture,j*realBoardSize.width/locations[i].length,i*realBoardSize.height/locations.length,  this);
                 }
             }
         }
-        // draw grid lines
-
-
-//            model.grid[][] board = model.getBoard();
-//            //g2d.setFont();
-//            // iterate over board, draw X and O accordingly
-//
-//            for (int i = 0; i < board.length; i++) {
-//                for (int j = 0; j < board[0].length; j++) {
-//                    int spaceX = (200 * (j) + 100);
-//                    int spaceY = (200 * (i) + 100);
-//                    String p = "";
-//                    if (board[i][j] != null) {
-//                        p = board[i][j].toString();
-//                    }
-//                    g2d.drawString(p, spaceX, spaceY);
-//                }
-//            }
-        System.out.println();
-    }
-
-    public void setDirections(Set<Direction> directions) {
-
     }
 }
