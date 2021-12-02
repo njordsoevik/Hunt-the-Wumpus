@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 
 import dungeon.model.OtyughDungeon;
 import dungeon.model.OtyughTreasureDungeon;
+import dungeon.model.ROtyughDungeon;
 import dungeon.view.DungeonView;
 
 public class DungeonViewControllerImpl implements DungeonViewController, Features {
@@ -37,16 +38,19 @@ public class DungeonViewControllerImpl implements DungeonViewController, Feature
                     ,Integer.parseInt(columns),Integer.parseInt(connectivity)
                     ,Boolean.parseBoolean(wrapped), Integer.parseInt(treasure)
                     ,Integer.parseInt(arrows),Integer.parseInt(monsters));
-            System.out.println(model);
+            view.setNewDungeon(Integer.parseInt(rows),Integer.parseInt(columns)
+                    ,(ROtyughDungeon) model);
+            view.refresh();
         } catch (IllegalArgumentException ex) {
             System.out.println("Error: "+ ex);
         }
+
 
     }
 
     @Override
     public void shootArrow() {
-        System.out.println("shoot");
+
     }
 
     @Override

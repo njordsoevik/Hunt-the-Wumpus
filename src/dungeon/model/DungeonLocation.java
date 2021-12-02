@@ -9,12 +9,13 @@ import java.util.Map;
  * DungeonLocation implements the dungeon.model.Location interface. These navigated by the player to
  * move through the dungeon. Dungeons can also store treasure.
  */
-class DungeonLocation implements Location {
+public final class DungeonLocation implements Location {
   private final Coordinate coordinate;
   private final List<Treasure> treasure;
   private final List<Arrow> arrows;
   private final Map<Direction, Location> connections;
   private Otyugh otyugh;
+  private boolean visited;
 
   /**
    * Constructor for a dungeon location.
@@ -26,6 +27,7 @@ class DungeonLocation implements Location {
     this.treasure = new ArrayList<>();
     this.arrows = new ArrayList<>();
     this.coordinate = c;
+    this.visited = false;
   }
 
   @Override
@@ -120,6 +122,16 @@ class DungeonLocation implements Location {
   @Override
   public Otyugh getOtyugh() {
     return this.otyugh;
+  }
+
+  @Override
+  public void setVisited() {
+    this.visited = true;
+  }
+
+  @Override
+  public Boolean getVisited() {
+    return this.visited;
   }
 
   @Override

@@ -52,7 +52,7 @@ public class Main {
       new DungeonConsoleController(input, output).playGame(d);
     } else {
       OtyughDungeon model = new OtyughTreasureDungeon(3, 4, 0, false, 20, 100, 1);
-      DungeonView view = new DungeonSwingView(model);
+      DungeonView view = new DungeonSwingView((ROtyughDungeon) model);
       DungeonViewController controller = new DungeonViewControllerImpl(model, view);
       controller.go();
     }

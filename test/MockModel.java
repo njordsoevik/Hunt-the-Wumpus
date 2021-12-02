@@ -6,6 +6,7 @@ import java.util.Set;
 import dungeon.model.Arrow;
 import dungeon.model.Direction;
 import dungeon.model.Health;
+import dungeon.model.Location;
 import dungeon.model.OtyughDungeon;
 import dungeon.model.Smell;
 import dungeon.model.Treasure;
@@ -58,6 +59,11 @@ public class MockModel implements OtyughDungeon {
   @Override
   public boolean isGameOver() {
     return false;
+  }
+
+  @Override
+  public Location[][] getVisitedLocations() {
+    return new Location[0][];
   }
 
   @Override

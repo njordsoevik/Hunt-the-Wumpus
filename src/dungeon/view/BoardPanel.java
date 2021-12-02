@@ -1,25 +1,57 @@
 package dungeon.view;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.Set;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
+import dungeon.model.Direction;
+import dungeon.model.Location;
 import dungeon.model.ROtyughDungeon;
 
 class BoardPanel extends JPanel {
+    private Location[][] locations;
+    private final String IMAGE_URL = "C:\\Users\\njord\\Downloads\\Project3-Dungeon\\dungeon-images-bw\\";
+    private Dimension boardSize;
+    private ROtyughDungeon readModel;
+    private final int preferredScaleX = 200;
+    private final int preferredScaleY = 200;
 
-    private ROtyughDungeon model;
+    public BoardPanel(Dimension d, ROtyughDungeon model) {
+        locations = new Location[d.width][d.height];
+        readModel = model;
+        this.boardSize = d;
+        this.setBackground(Color.BLACK);
+    }
 
-    public BoardPanel(ROtyughDungeon model) {
-        this.model = model;
+    public void setModel(Dimension d, ROtyughDungeon model) {
+        locations = new Location[d.width][d.height];
+        readModel = model;
+        this.boardSize = d;
+        this.setPreferredSize(new Dimension(d.width*preferredScaleX,d.height*preferredScaleY));
+    }
+
+    private Dimension convertBoardDimensions(Dimension d) {
+        return new Dimension(d.width*200, d.height*200);
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        Dimension realBoardSize = convertBoardDimensions(this.boardSize);
+        System.out.println(this.boardSize.width);
         Graphics2D g2d = (Graphics2D) g;
         // draw grid lines
-        g2d.drawOval(500,500,50,50);
+        try {
+            BufferedImage myPicture = ImageIO.read(new File(IMAGE_URL+"NSE.png"));
+            g2d.drawImage(myPicture,realBoardSize.width/2, realBoardSize.height/2, this);
+        } catch (IOException ioe) {
+            throw new IllegalStateException("Append failed", ioe);
+        }
 
 
 //            model.grid[][] board = model.getBoard();
@@ -38,5 +70,9 @@ class BoardPanel extends JPanel {
 //                }
 //            }
         System.out.println();
+    }
+
+    public void setDirections(Set<Direction> directions) {
+
     }
 }

@@ -1,9 +1,12 @@
 package dungeon.view;
 
 import java.awt.event.ActionListener;
+import java.util.Set;
 
 import dungeon.controller.DungeonViewController;
 import dungeon.controller.Features;
+import dungeon.model.Direction;
+import dungeon.model.ROtyughDungeon;
 
 /**
  * A view for TicTacToe: display the game board and provide visual interface
@@ -33,4 +36,15 @@ public interface DungeonView {
    * @param f the set of feature callbacks as a Features object
    */
   void setFeatures(Features f);
+
+  /**
+   * Transmit an error message to the view, in case
+   * the command could not be processed correctly
+   * @param error
+   */
+  void showErrorMessage(String error);
+
+  void setNewDungeon(int x, int y, ROtyughDungeon model);
+
+  void setDirections(Set<Direction> directions);
 }

@@ -18,6 +18,8 @@ public class TreasureDungeon implements Dungeon {
   private final List<Edge> usedEdges;
   private final List<Edge> unusedEdges;
   private final Random rand;
+  private final int rows;
+  private final int columns;
   private Coordinate startC;
   private Coordinate endC;
 
@@ -63,6 +65,8 @@ public class TreasureDungeon implements Dungeon {
     if (seed != null) {
       this.rand.setSeed(seed);
     }
+    this.rows = rows;
+    this.columns = columns;
     this.grid = new Location[rows][columns];
     this.forest = new ArrayList<>();
     this.edges = new ArrayList<>();
@@ -92,12 +96,26 @@ public class TreasureDungeon implements Dungeon {
 
     // Create player at starting coordinate
     this.player = new Player(startC);
+    getCoordinateLocation(startC).setVisited();
   }
 
 
   @Override
   public boolean isGameOver() {
     return (isEndSquare(this.player.getCoordinate()) || getPlayer().getHealth() == Health.DEAD);
+  }
+
+  @Override
+  public Location[][] getVisitedLocations() {
+    Location[][] visited = new Location[rows][columns];
+    for (int i = 0; i < this.grid.length; i++) {
+      for (int j = 0; j < this.grid[i].length; j++) {
+        if (this.grid[i][j].getVisited()) {
+          visited[i][j] = this.grid[i][j];
+        }
+      }
+    }
+    return visited;
   }
 
   @Override
@@ -111,6 +129,7 @@ public class TreasureDungeon implements Dungeon {
     if (getDirections().contains(dir)) { // Set player coordinate
       Coordinate newSquare = currentLocation.getPaths().get(dir).getCoordinate();
       player.setCoordinate(newSquare);
+      getCoordinateLocation(newSquare).setVisited();
     } else {
       throw new IllegalArgumentException("Cannot move there");
     }
@@ -365,5 +384,7 @@ public class TreasureDungeon implements Dungeon {
     b.append("\n");
     return b.toString();
   }
+
+
 
 }

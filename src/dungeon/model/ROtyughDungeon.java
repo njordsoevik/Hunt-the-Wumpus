@@ -1,28 +1,9 @@
 package dungeon.model;
 
 import java.util.List;
+import java.util.Set;
 
-/**
- * OtyughDungeon is similar to a regular dungeon, except the locations can hold arrows that the
- * player can shoot. In addition, dangerous Otyughs exist within the caves that kill players.
- * Players can shoot and kill these Otyughs.
- */
-public interface OtyughDungeon extends Dungeon {
-
-  /**
-   * Pick up arrows in the current location.
-   */
-  void takeArrows();
-
-  /**
-   * Shoot an arrow in a specified distance and direction. This hits an Otyugh only if the distance
-   * is exact to the Otyugh's location. Two hits are required to kill an Otyugh. The arrow will
-   * "curve" through a tunnel location
-   *
-   * @param dir      The direction to shoot the arrow.
-   * @param distance The distance to shoot the arrow.
-   */
-  void shootArrow(Direction dir, int distance);
+public interface ROtyughDungeon {
 
   /**
    * Get the arrows that the player is currently holding.
@@ -54,4 +35,29 @@ public interface OtyughDungeon extends Dungeon {
    */
   Smell getSmell();
 
+  /**
+   * Get the treasure placed at the current location.
+   *
+   * @return the treasure in the player's location.
+   */
+  List<Treasure> getCurrentLocationTreasure();
+
+  /**
+   * Get available directions for the player to move, NORTH, SOUTH, EAST, or WEST.
+   *
+   * @return set of directions.
+   */
+  Set<Direction> getDirections();
+
+  /**
+   * Get the treasures that the player is currently holding.
+   *
+   * @return the list of treasures.
+   */
+  List<Treasure> getPlayerTreasure();
+
+  /**
+   * Check if the game is over by reaching the final square.
+   */
+  boolean isGameOver();
 }

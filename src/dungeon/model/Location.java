@@ -7,7 +7,7 @@ import java.util.Map;
  * Locations throughout the dungeon are access points. These navigated by the player to move through
  * the dungeon.
  */
-interface Location {
+public interface Location {
 
   /**
    * Get a list of valid locations this location is connected to.
@@ -98,4 +98,17 @@ interface Location {
    * @return An Otyugh if one resides here, else null.
    */
   Otyugh getOtyugh();
+
+  /**
+   * Tag this location as visited by the player.
+   */
+  void setVisited();
+
+  /**
+   * Return if location has been visited by the player.
+   *
+   * @return True if a player has visited here, else false.
+   */
+  Boolean getVisited();
+
 }

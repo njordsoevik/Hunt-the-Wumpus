@@ -5,16 +5,18 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Set;
 
 import javax.swing.*;
 
 import dungeon.controller.Features;
+import dungeon.model.Direction;
 import dungeon.model.ROtyughDungeon;
 
 public class DungeonSwingView extends JFrame implements DungeonView {
   private JPanel container;
   private JMenuBar menuBar;
-  private JPanel board;
+  private BoardPanel board;
   private JTextField rows;
   private JTextField columns;
   private JTextField interconnectivity;
@@ -24,10 +26,12 @@ public class DungeonSwingView extends JFrame implements DungeonView {
   private JButton enterButton;
   private JButton quitButton;
   private JComboBox<String> wrapped;
+  private final int preferredScaleX = 200;
+  private final int preferredScaleY = 200;
 
   public DungeonSwingView(ROtyughDungeon model) {
     super("Otyugh Dungeon Menu");
-    this.setSize(1100,1000);
+    this.setSize(900,800);
     this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
     // ADD MENU
@@ -69,16 +73,28 @@ public class DungeonSwingView extends JFrame implements DungeonView {
     this.add(scrollPane);
 
     // ADD BOARD TO SCROLL PANE
-    board = new BoardPanel(model);
-    board.setPreferredSize(new Dimension(1000,1000)); // Allows scrolling
+    setNewDungeon(3,4,model);
     container.add(board);
 
-    pack();
+    //pack();
   }
 
+  @Override
+  public void setNewDungeon(int x, int y, ROtyughDungeon model) {
+    if (board != null) {
+      container.remove(board);
+      this.board.setModel(new Dimension(x,y),model);
+    } else {
+      board = new BoardPanel(new Dimension(x,y),model);
+    }
+    this.board.setPreferredSize(new Dimension(x*preferredScaleX,y*preferredScaleY));
+    container.add(board);
+
+  }
 
   @Override
   public void refresh() {
+    validate();
     repaint();
   }
 
@@ -125,9 +141,23 @@ public class DungeonSwingView extends JFrame implements DungeonView {
   }
 
   @Override
+  public void showErrorMessage(String error) {
+    System.out.println("Error: " + error);
+    JOptionPane.showMessageDialog(this,error,"Error",JOptionPane.ERROR_MESSAGE);
+  }
+
+
+  @Override
+  public void setDirections(Set<Direction> directions) {
+    board.setDirections(directions);
+  }
+
+  @Override
   public void resetFocus() {
     this.setFocusable(true);
     this.requestFocus();
   }
+
+
 
 }

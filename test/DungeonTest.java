@@ -613,7 +613,6 @@ public class DungeonTest {
     Assert.assertEquals(treasures, q.getCurrentLocationTreasure()); // Check treasure removed
   }
 
-
   @Test(expected = IllegalArgumentException.class)
   public void takeTreasureAfterGameOver() {
     Dungeon z = new TreasureDungeon(3, 4, 0, true, 120, 4L);
@@ -631,6 +630,13 @@ public class DungeonTest {
     z.movePlayer(Direction.NORTH);
     z.movePlayer(Direction.NORTH);
     z.takeTreasure();
+  }
+
+  @Test
+  public void getVisited() {
+    Dungeon z = new TreasureDungeon(3, 4, 0, true, 120, 4L);
+    // Move through all squares, one path
+    System.out.println(z.getVisitedLocations()[0][0].getVisited());
   }
 
 }
