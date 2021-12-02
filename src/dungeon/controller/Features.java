@@ -22,7 +22,20 @@ public interface Features {
           , String treasure, String arrows, String monsters);
 
   /**
+   * Shoot an arrow.
+   */
+  void shootArrow();
+
+  /**
+   * Handle cell click for movement.
+   */
+  void handleCellClick(int x, int y);
+
+
+  /**
    * Exit the program.
    */
   void exitProgram();
+
+
 }

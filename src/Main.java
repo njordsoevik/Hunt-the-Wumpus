@@ -2,8 +2,13 @@ import java.io.InputStreamReader;
 import java.util.Scanner;
 
 import dungeon.controller.DungeonConsoleController;
+import dungeon.controller.DungeonViewController;
+import dungeon.controller.DungeonViewControllerImpl;
 import dungeon.model.OtyughDungeon;
 import dungeon.model.OtyughTreasureDungeon;
+import dungeon.model.ROtyughDungeon;
+import dungeon.view.DungeonSwingView;
+import dungeon.view.DungeonView;
 
 /**
  * Driver for the command-line sample runs.
@@ -31,7 +36,7 @@ public class Main {
     int n_monsters;
     boolean wrapped;
     OtyughDungeon d;
-    if (args != null) {
+    if (args.length>0) {
       rows = Integer.parseInt(args[0]);
       columns = Integer.parseInt(args[1]);
       wrapped = Boolean.parseBoolean(args[2]);
@@ -39,35 +44,18 @@ public class Main {
       t_percent = Integer.parseInt(args[4]);
       a_percent = Integer.parseInt(args[5]);
       n_monsters = Integer.parseInt(args[6]);
+      d = new OtyughTreasureDungeon(rows, columns, interconnectivity, wrapped
+              , t_percent, a_percent, n_monsters);
+      Readable input = new InputStreamReader(System.in);
+      Appendable output = System.out;
+      System.out.println("Input will be from System.in and the output will be to System.out. \n");
+      new DungeonConsoleController(input, output).playGame(d);
     } else {
-      System.out.println("Create a dungeon! \n");
-      System.out.println("Specify number of rows:");
-      rows = Integer.parseInt(scan.nextLine());
-      System.out.println("Specify number of columns:");
-      columns = Integer.parseInt(scan.nextLine());
-      System.out.println("Specify wrapped (T/F):");
-      String temp = scan.nextLine();
-      if (temp.equalsIgnoreCase("t")) {
-        wrapped = true;
-      } else if (temp.equalsIgnoreCase("f")) {
-        wrapped = false;
-      } else {
-        throw new IllegalArgumentException("Not a valid input!");
-      }
-      System.out.println("Specify interconnectivity:");
-      interconnectivity = Integer.parseInt(scan.nextLine());
-      System.out.println("Treasure percent:");
-      t_percent = Integer.parseInt(scan.nextLine());
-      System.out.println("Arrow percent:");
-      a_percent = Integer.parseInt(scan.nextLine());
-      System.out.println("Number of Otyughs:");
-      n_monsters = Integer.parseInt(scan.nextLine());
+      OtyughDungeon model = new OtyughTreasureDungeon(3, 4, 0, false, 20, 100, 1);
+      DungeonView view = new DungeonSwingView(model);
+      DungeonViewController controller = new DungeonViewControllerImpl(model, view);
+      controller.go();
     }
-    d = new OtyughTreasureDungeon(rows, columns, interconnectivity, wrapped
-            , t_percent, a_percent, n_monsters);
-    Readable input = new InputStreamReader(System.in);
-    Appendable output = System.out;
-    System.out.println("Input will be from System.in and the output will be to System.out. \n");
-    new DungeonConsoleController(input, output).playGame(d);
+
   }
 }

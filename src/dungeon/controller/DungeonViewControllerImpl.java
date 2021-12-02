@@ -11,9 +11,15 @@ public class DungeonViewControllerImpl implements DungeonViewController, Feature
     private OtyughDungeon model;
     private DungeonView view;
 
+    public DungeonViewControllerImpl(OtyughDungeon m, DungeonView v) {
+        this.model = m;
+        this.view = v;
+    }
+
     @Override
-    public void playGame(OtyughDungeon m) {
-        this.view.addListener(this);
+    public void go() {
+        this.view.setFeatures(this);
+        this.view.makeVisible();
     }
 
     @Override
@@ -23,14 +29,8 @@ public class DungeonViewControllerImpl implements DungeonViewController, Feature
     }
 
     @Override
-    public void setView(DungeonView view) {
-        this.view = view;
-        this.view.setFeatures(this);
-    }
-
-
-    @Override
-    public void processInput(String rows, String columns, String connectivity, String wrapped, String treasure, String arrows, String monsters) {
+    public void processInput(String rows, String columns, String connectivity, String wrapped
+            , String treasure, String arrows, String monsters) {
         OtyughDungeon model;
         try {
             model = new OtyughTreasureDungeon(Integer.parseInt(rows)
@@ -42,6 +42,11 @@ public class DungeonViewControllerImpl implements DungeonViewController, Feature
             System.out.println("Error: "+ ex);
         }
 
+    }
+
+    @Override
+    public void shootArrow() {
+        System.out.println("shoot");
     }
 
     @Override

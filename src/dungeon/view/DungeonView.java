@@ -12,11 +12,10 @@ import dungeon.controller.Features;
 public interface DungeonView {
 
   /**
-   * Set up the controller to handle events in this view.
-   * 
-   * @param listener the controller
+   * Reset the focus on the appropriate part of the view that has the keyboard
+   * listener attached to it, so that keyboard events will still flow through.
    */
-  void addListener(DungeonViewController listener);
+  void resetFocus();
 
   /**
    * Refresh the view to reflect any changes in the game state.
