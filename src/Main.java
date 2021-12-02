@@ -51,7 +51,7 @@ public class Main {
       System.out.println("Input will be from System.in and the output will be to System.out. \n");
       new DungeonConsoleController(input, output).playGame(d);
     } else {
-      OtyughDungeon model = new OtyughTreasureDungeon(3, 4, 0, false, 20, 100, 1);
+      OtyughDungeon model = new OtyughTreasureDungeon(4, 4, 0, false, 200, 100, 1);
       DungeonView view = new DungeonSwingView(model);
       DungeonViewController controller = new DungeonViewControllerImpl(model, view);
       controller.go();

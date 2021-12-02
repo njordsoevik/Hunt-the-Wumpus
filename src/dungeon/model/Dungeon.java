@@ -51,4 +51,6 @@ public interface Dungeon {
   boolean isGameOver();
 
   RLocation[][] getVisitedLocations();
+
+  Coordinate getCurrentCoordinate();
 }

@@ -42,6 +42,6 @@ public interface DungeonView {
    */
   void showErrorMessage(String error);
 
-  void setNewDungeon(int x, int y, RDungeon model);
+  void setBoard(int x, int y, RDungeon model);
 
 }

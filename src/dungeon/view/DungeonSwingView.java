@@ -5,7 +5,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Set;
 
 import javax.swing.*;
 
@@ -14,8 +13,10 @@ import dungeon.model.Direction;
 import dungeon.model.RDungeon;
 
 public class DungeonSwingView extends JFrame implements DungeonView {
+  private RDungeon model;
   private JPanel container;
   private JPanel infoPanel;
+  private JLabel directionsLabel;
   private JMenuBar menuBar;
   private BoardPanel board;
   private JTextField rows;
@@ -27,11 +28,12 @@ public class DungeonSwingView extends JFrame implements DungeonView {
   private JButton enterButton;
   private JButton quitButton;
   private JComboBox<String> wrapped;
-  private final int preferredScaleX = 200;
-  private final int preferredScaleY = 200;
+  private final int SCALE_X = 200;
+  private final int SCALE_Y = 200;
 
-  public DungeonSwingView(RDungeon model) {
+  public DungeonSwingView(RDungeon m) {
     super("Otyugh Dungeon Menu");
+    this.model = m;
     this.setSize(900,800);
     this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     this.setLayout(new BorderLayout());
@@ -68,42 +70,51 @@ public class DungeonSwingView extends JFrame implements DungeonView {
     menuBar.add(quitButton);
     this.setJMenuBar(menuBar);
 
-    // ADD INFO BAR
+//    // ADD INFO BAR
     infoPanel = new JPanel();
-    infoPanel.add(new JLabel("Directions: "));
-    StringBuilder sb = new StringBuilder();
-    for (Direction p: model.getDirections()) {
-      sb.append(p).append(", ");
-    }
-    infoPanel.add(new JLabel(sb.toString()));
-    this.add(infoPanel, BorderLayout.SOUTH);
+    infoPanel.setBackground(Color.BLUE);
+    directionsLabel = new JLabel("");
+    directionsLabel.setForeground(Color.WHITE);
+    updateInfoPanel();
+    this.add(infoPanel, BorderLayout.NORTH);
 
     // ADD CONTAINER AND SCROLL PANE
     container = new JPanel();
     container.setLayout(new FlowLayout());
     JScrollPane scrollPane = new JScrollPane(container);
-    this.add(scrollPane, BorderLayout.NORTH);
     // ADD BOARD TO SCROLL PANE
-    setNewDungeon(3,4,model);
-    container.add(board);
+    setBoard(3,4,model);
+
+    this.add(scrollPane);
   }
 
   @Override
-  public void setNewDungeon(int x, int y, RDungeon model) {
+  public void setBoard(int x, int y, RDungeon model) {
     if (board != null) {
       container.remove(board);
       this.board.setModel(new Dimension(x,y),model);
     } else {
       board = new BoardPanel(new Dimension(x,y),model);
     }
-    this.board.setPreferredSize(new Dimension(x*preferredScaleX,y*preferredScaleY));
+    this.board.setPreferredSize(new Dimension(x* SCALE_X,y* SCALE_Y));
     container.add(board);
   }
 
   @Override
   public void refresh() {
     validate();
+    updateInfoPanel();
     repaint();
+  }
+
+  private void updateInfoPanel() {
+    StringBuilder sb = new StringBuilder();
+    for (Direction p: model.getDirections()) {
+      sb.append(p).append(", ");
+    }
+    directionsLabel.setText(sb.toString());
+    System.out.println(directionsLabel.getText());
+    infoPanel.add(directionsLabel);
   }
 
   @Override

@@ -37,7 +37,7 @@ public class DungeonViewControllerImpl implements DungeonViewController, Feature
                     ,Integer.parseInt(columns),Integer.parseInt(connectivity)
                     ,Boolean.parseBoolean(wrapped), Integer.parseInt(treasure)
                     ,Integer.parseInt(arrows),Integer.parseInt(monsters));
-            view.setNewDungeon(Integer.parseInt(rows),Integer.parseInt(columns)
+            view.setBoard(Integer.parseInt(rows),Integer.parseInt(columns)
                     ,model);
             updateView();
         } catch (IllegalArgumentException ex) {

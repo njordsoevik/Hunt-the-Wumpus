@@ -62,4 +62,6 @@ public interface RDungeon {
   boolean isGameOver();
 
   RLocation[][] getVisitedLocations();
+
+  Coordinate getCurrentCoordinate();
 }

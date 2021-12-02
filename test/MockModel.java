@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import dungeon.model.Arrow;
+import dungeon.model.Coordinate;
 import dungeon.model.Direction;
 import dungeon.model.Health;
 import dungeon.model.RLocation;
@@ -64,6 +65,11 @@ public class MockModel implements OtyughDungeon {
   @Override
   public RLocation[][] getVisitedLocations() {
     return new RLocation[0][];
+  }
+
+  @Override
+  public Coordinate getCurrentCoordinate() {
+    return null;
   }
 
   @Override

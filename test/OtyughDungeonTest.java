@@ -208,7 +208,7 @@ public class OtyughDungeonTest {
 
   @Test
   public void checkOtyughIsInCaveNotTunnels() {
-    OtyughDungeon z = new OtyughTreasureDungeon(10, 10, 0, false, 20, 200, 7, 5L);
+    OtyughDungeon z = new OtyughTreasureDungeon(10, 10, 0, false, 20, 200, 7);
     for (int i = 0; i < 50; i++) {
       while (!z.isGameOver()) {
         Random r = new Random();

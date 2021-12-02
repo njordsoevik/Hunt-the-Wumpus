@@ -71,7 +71,8 @@ public class OtyughTreasureDungeon extends TreasureDungeon implements OtyughDung
       List<Integer[]> places = new ArrayList<>();
       for (int i = 0; i < rows; i++) {
         for (int j = 0; j < columns; j++) {
-          if (i != getEnd().getI() || j != getEnd().getJ()) {
+          if (!(i == getEnd().getI() && j == getEnd().getJ())
+                  && !(i == getStart().getI() && j == getStart().getJ())) {
             Integer[] z = new Integer[2];
             z[0] = i;
             z[1] = j;
@@ -83,9 +84,7 @@ public class OtyughTreasureDungeon extends TreasureDungeon implements OtyughDung
       for (int k = 0; k < places.size(); k++) {
         int x = places.get(k)[0];
         int y = places.get(k)[1];
-        if (!(getGrid()[x][y].getCoordinate().equals(getStart()))
-                && !(getGrid()[x][y].getCoordinate().equals(getEnd()))
-                && (getGrid()[x][y].getLocationType() == LocationType.CAVE)
+        if ((getGrid()[x][y].getLocationType() == LocationType.CAVE)
                 && leftToPlace > 0) {
           getGrid()[x][y].addOtyugh();
           leftToPlace--;

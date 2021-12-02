@@ -119,6 +119,11 @@ public class TreasureDungeon implements Dungeon {
   }
 
   @Override
+  public Coordinate getCurrentCoordinate() {
+    return this.player.getCoordinate();
+  }
+
+  @Override
   public void movePlayer(Direction dir) {
     if (isGameOver()) {
       throw new IllegalArgumentException("Game is over!");
@@ -311,8 +316,10 @@ public class TreasureDungeon implements Dungeon {
     Coordinate randEnd = new Coordinate(rand.nextInt(this.grid.length),
             rand.nextInt(this.grid[0].length));
     int attempts = 0;
-    while ((Math.abs(randEnd.getI() - randStart.getI()) + Math.abs(randEnd.getJ()
-            - randStart.getJ())) < 5) {
+    while (((Math.abs(randEnd.getI() - randStart.getI()) + Math.abs(randEnd.getJ()
+            - randStart.getJ())) < 5)
+            || getCoordinateLocation(randStart).getLocationType()==LocationType.TUNNEL
+            || getCoordinateLocation(randEnd).getLocationType()==LocationType.TUNNEL) {
       randStart = new Coordinate(rand.nextInt(this.grid.length),
               rand.nextInt(this.grid[0].length));
       randEnd = new Coordinate(rand.nextInt(this.grid.length),

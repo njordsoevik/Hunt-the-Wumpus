@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -15,14 +16,15 @@ import javax.swing.*;
 import dungeon.model.Direction;
 import dungeon.model.RLocation;
 import dungeon.model.RDungeon;
+import dungeon.model.Treasure;
 
 class BoardPanel extends JPanel {
     private RLocation[][] locations;
     private final String IMAGE_URL = "C:\\Users\\njord\\Downloads\\Project3-Dungeon\\dungeon-images-bw\\";
     private Dimension boardSize;
     private RDungeon readModel;
-    private final int preferredScaleX = 200;
-    private final int preferredScaleY = 200;
+    private final int SCALE_X = 100;
+    private final int SCALE_Y = 75;
     private HashMap<Set, String> imageMap;
 
     public BoardPanel(Dimension d, RDungeon model) {
@@ -54,15 +56,35 @@ class BoardPanel extends JPanel {
         imageMap.put(new HashSet<>(Arrays.asList(Direction.WEST)),"W");
     }
 
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g;
+        Dimension realBoardSize = convertBoardDimensions(this.boardSize);
+        locations = readModel.getVisitedLocations();
+        for (int i = 0; i < locations.length; i++) {
+            for (int j = 0; j < locations[i].length; j++) {
+                if (locations[i][j]!=null) {
+                    RLocation location = locations[i][j];
+                    BufferedImage picture = getLocationImage(location);
+                    g2d.drawImage(picture,(j)*realBoardSize.width/locations[i].length
+                            ,(i)*realBoardSize.height/locations.length,  this);
+                }
+            }
+        }
+        System.out.println(readModel);
+    }
+
     public void setModel(Dimension d, RDungeon model) {
         locations = new RLocation[d.height][d.width];
         readModel = model;
         this.boardSize = d;
-        this.setPreferredSize(new Dimension(d.width*preferredScaleX,d.height*preferredScaleY));
+        this.setPreferredSize(convertBoardDimensions(d));
     }
 
     private Dimension convertBoardDimensions(Dimension d) {
-        return new Dimension(d.width*200, d.height*200);
+        return new Dimension(d.width*SCALE_X, d.height*SCALE_Y);
     }
 
     private BufferedImage getLocationImage(RLocation location) {
@@ -72,12 +94,30 @@ class BoardPanel extends JPanel {
             // Get directions
             picture = ImageIO.read(new File(IMAGE_URL+imageMap.get(directions)+".png"));
             // Get Otyugh
-//            if (location.getOtyugh() != null) {
-//                overlay(picture,"otyugh.png",0);
-//            }
+            if (location.getCoordinate().equals(readModel.getCurrentCoordinate())) {
+                System.out.println("here");
+                picture = overlay(picture,IMAGE_URL+"player.png",0);
+            }
+            if (location.getOtyugh() != null) {
+                picture = overlay(picture,IMAGE_URL+"otyugh.png",0);
+            }
+            if (location.getTreasure()!=null) {
+                List<Treasure> treasures = location.getTreasure();
+                System.out.println(treasures);
+                if (treasures.contains(Treasure.RUBY)) {
+                    picture = overlay(picture,IMAGE_URL+"ruby.png",0);
+                }
+                if (treasures.contains(Treasure.SAPPHIRE)) {
+                    picture = overlay(picture,IMAGE_URL+"emerald.png",5);
+                }
+                if (treasures.contains(Treasure.DIAMOND)) {
+                    picture = overlay(picture,IMAGE_URL+"diamond.png",10);
+                }
+            }
         } catch (IOException ioe) {
             throw new IllegalStateException("Append failed", ioe);
         }
+
         return picture;
     }
 
@@ -92,27 +132,4 @@ class BoardPanel extends JPanel {
         return combined;
     }
 
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g;
-        System.out.println(readModel.getDirections());
-        Dimension realBoardSize = convertBoardDimensions(this.boardSize);
-        locations = readModel.getVisitedLocations();
-        for (int i = 0; i < readModel.getVisitedLocations().length; i++) {
-            for (int j = 0; j < readModel.getVisitedLocations()[i].length; j++) {
-                if (readModel.getVisitedLocations()[i][j]!=null) {
-                    System.out.println(i + " " + j);
-                }
-            }
-        }
-        for (int i = 0; i < locations.length; i++) {
-            for (int j = 0; j < locations[i].length; j++) {
-                if (locations[i][j]!=null) {
-                    BufferedImage picture = getLocationImage(locations[i][j]);
-                    g2d.drawImage(picture,j*realBoardSize.width/locations[i].length,i*realBoardSize.height/locations.length,  this);
-                }
-            }
-        }
-    }
 }

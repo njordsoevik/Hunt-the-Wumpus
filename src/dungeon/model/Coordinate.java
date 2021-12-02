@@ -5,7 +5,7 @@ import java.util.Objects;
 /**
  * Coordinates keep track of the physical location of each cave, tunnel and player.
  */
-class Coordinate {
+public class Coordinate {
   int i;
   int j;
 
