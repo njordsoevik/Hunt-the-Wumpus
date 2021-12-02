@@ -96,7 +96,7 @@ class BoardPanel extends JPanel {
             // Get Otyugh
             if (location.getCoordinate().equals(readModel.getCurrentCoordinate())) {
                 System.out.println("here");
-                picture = overlay(picture,IMAGE_URL+"player.png",0);
+                picture = overlay(picture,IMAGE_URL+"player.png",50);
             }
             if (location.getOtyugh() != null) {
                 picture = overlay(picture,IMAGE_URL+"otyugh.png",0);
