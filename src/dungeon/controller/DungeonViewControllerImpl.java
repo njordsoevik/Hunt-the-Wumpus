@@ -52,8 +52,22 @@ public class DungeonViewControllerImpl implements DungeonViewController, Feature
 
     @Override
     public void move(Direction d) {
-        execute(new Move(d));
-        updateView();
+        try {
+            execute(new Move(d));
+            updateView();
+        } catch (IllegalArgumentException ex) {
+            view.showErrorMessage(ex.toString());
+        }
+    }
+
+    @Override
+    public void pickUp() {
+        try {
+            execute(new PickUp());
+            updateView();
+        } catch (IllegalArgumentException ex) {
+            view.showErrorMessage(ex.toString());
+        }
     }
 
     @Override

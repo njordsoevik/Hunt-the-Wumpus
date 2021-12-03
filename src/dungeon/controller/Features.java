@@ -29,9 +29,14 @@ public interface Features {
   void shootArrow();
 
   /**
-   * Shoot an arrow.
+   * Move in a direction.
    */
   void move(Direction d);
+
+  /**
+   * Pick up any items.
+   */
+  void pickUp();
 
   /**
    * Handle cell click for movement.

@@ -11,12 +11,18 @@ import javax.swing.*;
 import dungeon.controller.Features;
 import dungeon.model.Direction;
 import dungeon.model.RDungeon;
+import dungeon.model.Treasure;
+
+import java.util.List;
 
 public class DungeonSwingView extends JFrame implements DungeonView {
   private RDungeon model;
   private JPanel container;
   private JPanel infoPanel;
   private JLabel directionsLabel;
+  private JLabel smellLabel;
+  private JLabel treasureLabel;
+  private JLabel arrowLabel;
   private JMenuBar menuBar;
   private BoardPanel board;
   private JTextField rows;
@@ -75,6 +81,12 @@ public class DungeonSwingView extends JFrame implements DungeonView {
     infoPanel.setBackground(Color.BLUE);
     directionsLabel = new JLabel("");
     directionsLabel.setForeground(Color.WHITE);
+    smellLabel = new JLabel("");
+    smellLabel.setForeground(Color.WHITE);
+    treasureLabel = new JLabel("");
+    treasureLabel.setForeground(Color.WHITE);
+    arrowLabel = new JLabel("");
+    arrowLabel.setForeground(Color.WHITE);
     updateInfoPanel();
     this.add(infoPanel, BorderLayout.NORTH);
 
@@ -108,13 +120,26 @@ public class DungeonSwingView extends JFrame implements DungeonView {
   }
 
   private void updateInfoPanel() {
+    // ADD DIRECTIONS
     StringBuilder sb = new StringBuilder();
     for (Direction p: model.getDirections()) {
       sb.append(p).append(", ");
     }
     directionsLabel.setText(sb.toString());
-    System.out.println(directionsLabel.getText());
+
+    // ADD SMELL
+    smellLabel.setText(model.getSmell().toString());
+
+    // ADD TREASURES
+    treasureLabel.setText(model.getCurrentLocationTreasure().toString());
+
+    // ADD ARROWS
+    arrowLabel.setText(model.getCurrentLocationArrows().toString());
+
     infoPanel.add(directionsLabel);
+    infoPanel.add(smellLabel);
+    infoPanel.add(treasureLabel);
+    infoPanel.add(arrowLabel);
   }
 
   @Override
@@ -149,6 +174,8 @@ public class DungeonSwingView extends JFrame implements DungeonView {
         int code = e.getKeyCode();
         if (code == 83) {
           f.shootArrow();
+        } else if (code == 80) {
+          f.pickUp();
         } else if (code == 37) {
           f.move(Direction.WEST);
         } else if (code == 38) {
