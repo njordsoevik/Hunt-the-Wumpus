@@ -29,11 +29,11 @@ public class Coordinate {
     return c.i == i && c.j == j;
   }
 
-  int getI() {
+  public int getI() {
     return this.i;
   }
 
-  int getJ() {
+  public int getJ() {
     return this.j;
   }
 

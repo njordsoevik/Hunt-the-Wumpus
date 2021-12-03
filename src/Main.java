@@ -26,7 +26,6 @@ public class Main {
    *             7. Number of Otyughs.
    */
   public static void main(String[] args) {
-    Scanner scan = new Scanner(System.in);
     int rows;
     int columns;
     int interconnectivity;
@@ -50,7 +49,7 @@ public class Main {
       System.out.println("Input will be from System.in and the output will be to System.out. \n");
       new DungeonConsoleController(input, output).playGame(d);
     } else {
-      OtyughDungeon model = new OtyughTreasureDungeon(5, 5, 0, false, 200, 100, 1);
+      OtyughDungeon model = new OtyughTreasureDungeon(5, 5, 0, false, 150, 50, 1);
       DungeonView view = new DungeonSwingView(model);
       DungeonViewController controller = new DungeonViewControllerImpl(model, view);
       controller.go();

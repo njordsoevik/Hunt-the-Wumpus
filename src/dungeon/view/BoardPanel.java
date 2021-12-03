@@ -25,7 +25,7 @@ class BoardPanel extends JPanel {
     private Dimension boardSize;
     private RDungeon readModel;
     private final int SCALE_X = 100;
-    private final int SCALE_Y = 75;
+    private final int SCALE_Y = 100;
     private HashMap<Set, String> imageMap;
 
     public BoardPanel(Dimension d, RDungeon model) {
@@ -80,14 +80,19 @@ class BoardPanel extends JPanel {
                         } catch (IOException ioe) {
                             throw new IllegalStateException("Append failed", ioe);
                         }
-
                     }
+                    int xCoordinate = (j)*realBoardSize.width/boardSize.width;
+                    int yCoordinate = (i)*realBoardSize.height/boardSize.height;
+                    System.out.println(i +" "+j+"ARRAY index");
+                    System.out.println(i + " i index");
+                    System.out.println(realBoardSize.height + " real height");
+                    System.out.println(boardSize.height + " board height");
+                    System.out.println(xCoordinate + " " + yCoordinate+ " picture printed");
                     g2d.drawImage(picture,(j)*realBoardSize.width/locations[i].length
                             ,(i)*realBoardSize.height/locations.length,  this);
                 }
             }
         }
-        System.out.println(readModel);
     }
 
     public void setModel(Dimension d, RDungeon model) {
@@ -113,7 +118,6 @@ class BoardPanel extends JPanel {
             }
             if (location.getTreasure()!=null) {
                 List<Treasure> treasures = location.getTreasure();
-                System.out.println(treasures);
                 if (treasures.contains(Treasure.RUBY)) {
                     picture = overlay(picture,IMAGE_URL+"ruby.png",0);
                 }
@@ -123,6 +127,9 @@ class BoardPanel extends JPanel {
                 if (treasures.contains(Treasure.DIAMOND)) {
                     picture = overlay(picture,IMAGE_URL+"diamond.png",10);
                 }
+            }
+            if (!location.getArrows().isEmpty()) {
+                picture = overlay(picture,IMAGE_URL+"arrow-black.png",10);
             }
         } catch (IOException ioe) {
             throw new IllegalStateException("Append failed", ioe);

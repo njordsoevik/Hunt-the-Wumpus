@@ -49,4 +49,11 @@ public interface RLocation {
    * @return the list of locations.
    */
   Set<Direction> getDirections();
+
+  /**
+   * Get the arrows this location is holding.
+   *
+   * @return The arrows placed in this location.
+   */
+  List<Arrow> getArrows();
 }

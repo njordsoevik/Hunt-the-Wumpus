@@ -13,10 +13,10 @@ import dungeon.controller.Features;
 import dungeon.model.Arrow;
 import dungeon.model.Direction;
 import dungeon.model.RDungeon;
+import dungeon.model.RLocation;
 import dungeon.model.Treasure;
 
 import java.util.List;
-import java.util.Scanner;
 
 public class DungeonSwingView extends JFrame implements DungeonView {
   private RDungeon model;
@@ -40,8 +40,8 @@ public class DungeonSwingView extends JFrame implements DungeonView {
   private JButton enterButton;
   private JButton quitButton;
   private JComboBox<String> wrapped;
-  private final int SCALE_X = 200;
-  private final int SCALE_Y = 200;
+  private final int SCALE_X = 100;
+  private final int SCALE_Y = 100;
 
   public DungeonSwingView(RDungeon m) {
     super("Otyugh Dungeon Menu");
@@ -210,7 +210,7 @@ public class DungeonSwingView extends JFrame implements DungeonView {
     container.setLayout(new FlowLayout());
     JScrollPane scrollPane = new JScrollPane(container);
     // ADD BOARD TO SCROLL PANE
-    setBoard(3,4,model);
+    setBoard(5,5,model);
 
     this.add(scrollPane);
   }
@@ -326,7 +326,17 @@ public class DungeonSwingView extends JFrame implements DungeonView {
       @Override
       public void mouseClicked(MouseEvent e) {
         super.mouseClicked(e);
-        f.handleCellClick(e.getX(), e.getY());
+        RLocation[][] locations = model.getVisitedLocations();
+        int currentX = model.getCurrentCoordinate().getJ() * SCALE_X / (locations[0].length);
+        int currentY = model.getCurrentCoordinate().getI() * SCALE_Y / (locations.length);
+        int scaleClickX = e.getX()/ locations[0].length;
+        int scaleClickY = e.getY()/ locations.length;
+        System.out.println(currentX + " " + currentY + "Current");
+        System.out.println(scaleClickX + " " + scaleClickY);
+        if (scaleClickX>(currentX+8) && scaleClickX<(currentX+23)) {
+          //f.move(Direction.EAST);
+        }
+        //f.handleCellClick(currentX, currentY);
       }
     });
 
