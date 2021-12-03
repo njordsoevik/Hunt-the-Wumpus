@@ -2,7 +2,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -13,6 +12,7 @@ import dungeon.model.Direction;
 import dungeon.model.Dungeon;
 import dungeon.model.Treasure;
 import dungeon.model.TreasureDungeon;
+import jdk.swing.interop.SwingInterOpUtils;
 
 /**
  * A testing class for the dungeon interface.
@@ -69,20 +69,6 @@ public class DungeonTest {
     p = new TreasureDungeon(4, 0, 1, true, 120);
   }
 
-  @Test
-  public void getDirectionsWrapped() {
-    Set<Direction> d = new HashSet<>();
-    d.add(Direction.NORTH);
-    d.add(Direction.WEST);
-    Assert.assertEquals(d, q.getDirections());
-  }
-
-  @Test
-  public void getDirectionsNonWrapped() {
-    Set<Direction> d = new HashSet<>();
-    d.add(Direction.EAST);
-    Assert.assertEquals(d, p.getDirections());
-  }
 
   @Test
   public void testMinimumPathDistanceMinimumSize() {
@@ -111,29 +97,6 @@ public class DungeonTest {
   }
 
   @Test
-  public void movePlayerMaxInterconnectivityUnWrappedAllSquares() {
-    Dungeon z = new TreasureDungeon(3, 4, 100, false, 120, 4L);
-    // Move through all 9 squares, one path
-    z.movePlayer(Direction.SOUTH);
-    z.movePlayer(Direction.SOUTH);
-    z.movePlayer(Direction.WEST);
-    z.movePlayer(Direction.NORTH);
-    z.movePlayer(Direction.NORTH);
-    z.movePlayer(Direction.WEST);
-    z.movePlayer(Direction.WEST);
-    z.movePlayer(Direction.SOUTH);
-    z.movePlayer(Direction.EAST);
-    z.movePlayer(Direction.SOUTH);
-    z.movePlayer(Direction.WEST);
-    Assert.assertTrue(z.isGameOver());
-    try {
-      z.movePlayer(Direction.EAST);
-    } catch (IllegalArgumentException e) {
-      System.out.println("Expected error:" + e);
-    }
-  }
-
-  @Test
   public void movePlayerZeroInterconnectivityUnWrappedAllSquares() {
     Dungeon z = new TreasureDungeon(3, 4, 0, false, 120, 4L);
     // Move through all squares, one path
@@ -155,30 +118,6 @@ public class DungeonTest {
     Assert.assertTrue(z.isGameOver());
     try {
       z.movePlayer(Direction.NORTH);
-    } catch (IllegalArgumentException e) {
-      System.out.println(e + " expected.");
-    }
-  }
-
-  @Test
-  public void movePlayerZeroInterconnectivityWrappedAllSquares() {
-    Dungeon z = new TreasureDungeon(3, 4, 0, true, 120, 4L);
-    // Move through all squares, one path
-    z.movePlayer(Direction.SOUTH);
-    z.movePlayer(Direction.EAST);
-    z.movePlayer(Direction.NORTH);
-    z.movePlayer(Direction.SOUTH);
-    z.movePlayer(Direction.EAST);
-    z.movePlayer(Direction.NORTH);
-    z.movePlayer(Direction.SOUTH);
-    z.movePlayer(Direction.WEST);
-    z.movePlayer(Direction.WEST);
-    z.movePlayer(Direction.WEST);
-    z.movePlayer(Direction.NORTH);
-    z.movePlayer(Direction.NORTH);
-    Assert.assertTrue(z.isGameOver());
-    try {
-      z.movePlayer(Direction.EAST);
     } catch (IllegalArgumentException e) {
       System.out.println(e + " expected.");
     }
@@ -226,39 +165,6 @@ public class DungeonTest {
     z2.movePlayer(Direction.SOUTH);
     Assert.assertTrue(z2.isGameOver());
 
-  }
-
-  @Test
-  public void checkOverMaxInterconnectivityChangesNothing() {
-    Dungeon z = new TreasureDungeon(3, 4, 50, false, 120, 4L);
-    // Move through all 9 squares, one path
-    z.movePlayer(Direction.SOUTH);
-    z.movePlayer(Direction.SOUTH);
-    z.movePlayer(Direction.WEST);
-    z.movePlayer(Direction.NORTH);
-    z.movePlayer(Direction.NORTH);
-    z.movePlayer(Direction.WEST);
-    z.movePlayer(Direction.WEST);
-    z.movePlayer(Direction.SOUTH);
-    z.movePlayer(Direction.EAST);
-    z.movePlayer(Direction.SOUTH);
-    z.movePlayer(Direction.WEST);
-    Assert.assertTrue(z.isGameOver());
-
-    Dungeon z2 = new TreasureDungeon(3, 4, 100, false, 120, 4L);
-    // Move through all 9 squares, one path
-    z2.movePlayer(Direction.SOUTH);
-    z2.movePlayer(Direction.SOUTH);
-    z2.movePlayer(Direction.WEST);
-    z2.movePlayer(Direction.NORTH);
-    z2.movePlayer(Direction.NORTH);
-    z2.movePlayer(Direction.WEST);
-    z2.movePlayer(Direction.WEST);
-    z2.movePlayer(Direction.SOUTH);
-    z2.movePlayer(Direction.EAST);
-    z2.movePlayer(Direction.SOUTH);
-    z2.movePlayer(Direction.WEST);
-    Assert.assertTrue(z2.isGameOver());
   }
 
   @Test
@@ -339,163 +245,86 @@ public class DungeonTest {
 
   @Test
   public void correctTreasurePercentZero() {
-    Dungeon z = new TreasureDungeon(3, 4, 100, false, 0, 4L);
+    Dungeon z = new TreasureDungeon(3, 4, 0, false, 0, 4L);
+    System.out.println(z);
     z.movePlayer(Direction.SOUTH);
     z.takeTreasure();
-    z.movePlayer(Direction.SOUTH);
-    z.takeTreasure();
-    z.movePlayer(Direction.WEST);
+    z.movePlayer(Direction.EAST);
     z.takeTreasure();
     z.movePlayer(Direction.NORTH);
     z.takeTreasure();
-    z.movePlayer(Direction.NORTH);
-    z.takeTreasure();
-    z.movePlayer(Direction.WEST);
-    z.takeTreasure();
-    z.movePlayer(Direction.WEST);
-    z.takeTreasure();
-    z.movePlayer(Direction.SOUTH);
+    z.movePlayer(Direction.EAST);
     z.takeTreasure();
     z.movePlayer(Direction.EAST);
     z.takeTreasure();
     z.movePlayer(Direction.SOUTH);
     z.takeTreasure();
-    z.movePlayer(Direction.WEST);
-    try {
-      z.movePlayer(Direction.EAST);
-    } catch (IllegalArgumentException e) {
-      System.out.println(e + " expected.");
-    }
-    // Expect 1 less than 50% because of ending square holding a treasure
+    z.movePlayer(Direction.SOUTH);
+
     Assert.assertEquals(0, z.getPlayerTreasure().size());
   }
 
   @Test
   public void correctTreasurePercent50() {
-    Dungeon z = new TreasureDungeon(3, 4, 100, false, 50, 4L);
-    z.movePlayer(Direction.SOUTH);
-    z.takeTreasure();
-    z.movePlayer(Direction.SOUTH);
-    z.takeTreasure();
-    z.movePlayer(Direction.WEST);
-    z.takeTreasure();
-    z.movePlayer(Direction.NORTH);
-    z.takeTreasure();
-    z.movePlayer(Direction.NORTH);
-    z.takeTreasure();
-    z.movePlayer(Direction.WEST);
-    z.takeTreasure();
-    z.movePlayer(Direction.WEST);
+    Dungeon z = new TreasureDungeon(3, 4, 0, false, 50, 4L);
+    System.out.println(z);
     z.takeTreasure();
     z.movePlayer(Direction.SOUTH);
     z.takeTreasure();
     z.movePlayer(Direction.EAST);
     z.takeTreasure();
-    z.movePlayer(Direction.SOUTH);
-    z.takeTreasure();
-    z.movePlayer(Direction.WEST);
-    try {
-      z.movePlayer(Direction.EAST);
-    } catch (IllegalArgumentException e) {
-      System.out.println(e + " expected.");
-    }
-    // Expect 1 less than 50% because of ending square holding a treasure
-    Assert.assertEquals(5, z.getPlayerTreasure().size());
-  }
-
-  @Test
-  public void correctTreasurePercent100() {
-    Dungeon z = new TreasureDungeon(3, 4, 100, false, 100, 4L);
-    z.movePlayer(Direction.SOUTH);
-    z.takeTreasure();
-    z.movePlayer(Direction.SOUTH);
-    z.takeTreasure();
-    z.movePlayer(Direction.WEST);
-    z.takeTreasure();
     z.movePlayer(Direction.NORTH);
     z.takeTreasure();
-    z.movePlayer(Direction.NORTH);
-    z.takeTreasure();
-    z.movePlayer(Direction.WEST);
-    z.takeTreasure();
-    z.movePlayer(Direction.WEST);
-    z.takeTreasure();
-    z.movePlayer(Direction.SOUTH);
+    z.movePlayer(Direction.EAST);
     z.takeTreasure();
     z.movePlayer(Direction.EAST);
     z.takeTreasure();
     z.movePlayer(Direction.SOUTH);
     z.takeTreasure();
-    z.movePlayer(Direction.WEST);
-    try {
-      z.movePlayer(Direction.EAST);
-    } catch (IllegalArgumentException e) {
-      System.out.println(e + " expected.");
-    }
-    // Expect 12 - 4 = 8 because of tunnels
-    Assert.assertEquals(8, z.getPlayerTreasure().size());
+    z.movePlayer(Direction.SOUTH);
+    Assert.assertEquals(1, z.getPlayerTreasure().size());
   }
 
   @Test
   public void correctTreasurePercentOver100() {
-    Dungeon z = new TreasureDungeon(3, 4, 100, false, 200, 4L);
-    z.movePlayer(Direction.SOUTH);
-    z.takeTreasure();
-    z.movePlayer(Direction.SOUTH);
-    z.takeTreasure();
-    z.movePlayer(Direction.WEST);
-    z.takeTreasure();
-    z.movePlayer(Direction.NORTH);
-    z.takeTreasure();
-    z.movePlayer(Direction.NORTH);
-    z.takeTreasure();
-    z.movePlayer(Direction.WEST);
-    z.takeTreasure();
-    z.movePlayer(Direction.WEST);
+    Dungeon z = new TreasureDungeon(3, 4, 0, false, 500, 4L);
+    System.out.println(z);
     z.takeTreasure();
     z.movePlayer(Direction.SOUTH);
     z.takeTreasure();
     z.movePlayer(Direction.EAST);
     z.takeTreasure();
+    z.movePlayer(Direction.NORTH);
+    z.takeTreasure();
+    z.movePlayer(Direction.EAST);
+    z.takeTreasure();
+    z.movePlayer(Direction.EAST);
+    z.takeTreasure();
     z.movePlayer(Direction.SOUTH);
     z.takeTreasure();
-    z.movePlayer(Direction.WEST);
-    try {
-      z.movePlayer(Direction.EAST);
-    } catch (IllegalArgumentException e) {
-      System.out.println(e + " expected.");
-    }
-    // Expect 12 - 4 = 8 because of tunnels
-    Assert.assertEquals(16, z.getPlayerTreasure().size());
+    z.movePlayer(Direction.SOUTH);
+    Assert.assertEquals(15, z.getPlayerTreasure().size());
   }
 
   @Test
   public void correctTreasureTypes() {
-    Dungeon z = new TreasureDungeon(3, 4, 100, false, 200, 4L);
-    z.movePlayer(Direction.SOUTH);
-    z.takeTreasure();
-    z.movePlayer(Direction.SOUTH);
-    z.takeTreasure();
-    z.movePlayer(Direction.WEST);
-    z.takeTreasure();
-    z.movePlayer(Direction.NORTH);
-    z.takeTreasure();
-    z.movePlayer(Direction.NORTH);
-    z.takeTreasure();
-    z.movePlayer(Direction.WEST);
-    z.takeTreasure();
-    z.movePlayer(Direction.WEST);
+    Dungeon z = new TreasureDungeon(3, 4, 0, false, 50, 4L);
+    System.out.println(z);
     z.takeTreasure();
     z.movePlayer(Direction.SOUTH);
     z.takeTreasure();
     z.movePlayer(Direction.EAST);
     z.takeTreasure();
+    z.movePlayer(Direction.NORTH);
+    z.takeTreasure();
+    z.movePlayer(Direction.EAST);
+    z.takeTreasure();
+    z.movePlayer(Direction.EAST);
+    z.takeTreasure();
     z.movePlayer(Direction.SOUTH);
     z.takeTreasure();
-    z.movePlayer(Direction.WEST);
-    Assert.assertTrue(z.getPlayerTreasure().contains(Treasure.DIAMOND)
-            && z.getPlayerTreasure().contains(Treasure.RUBY)
-            && z.getPlayerTreasure().contains(Treasure.SAPPHIRE));
+    z.movePlayer(Direction.SOUTH);
+    Assert.assertTrue(z.getPlayerTreasure().contains(Treasure.DIAMOND));
   }
 
   @Test
@@ -525,14 +354,14 @@ public class DungeonTest {
 
   @Test
   public void checkTunnelVsCaveTreasure() {
-    Dungeon d = new TreasureDungeon(3, 4, 3, false, 300, 4L);
+    Dungeon d = new TreasureDungeon(3, 4, 0, false, 300, 4L);
     Assert.assertEquals(1, d.getDirections().size()); // check cave size 1
     Assert.assertTrue(!d.getCurrentLocationTreasure().isEmpty()); // has treasure
     d.movePlayer(Direction.SOUTH);
     Assert.assertEquals(3, d.getDirections().size()); // check cave size 3
     Assert.assertTrue(!d.getCurrentLocationTreasure().isEmpty()); // has treasure
     d.movePlayer(Direction.EAST);
-    Assert.assertEquals(4, d.getDirections().size());// check cave size 4
+    Assert.assertEquals(3, d.getDirections().size());// check cave size 4
     Assert.assertTrue(!d.getCurrentLocationTreasure().isEmpty());// has treasure
     d.movePlayer(Direction.NORTH);
     Assert.assertEquals(2, d.getDirections().size());// check cave size 4
@@ -566,29 +395,6 @@ public class DungeonTest {
     Assert.assertEquals(player_treasures, q.getPlayerTreasure()); // Check treasure added
     Assert.assertEquals(treasures, q.getCurrentLocationTreasure()); // Check treasure removed
   }
-
-  @Test
-  public void takeAndGetTreasureMultipleIncludingDuplicatesStack() {
-    Dungeon k = new TreasureDungeon(14, 15, 2, true, 400, 4L);
-    List<Treasure> player_treasures = new ArrayList<>();
-    Assert.assertEquals(player_treasures, k.getPlayerTreasure()); // Check start no treasure
-    List<Treasure> treasures = new ArrayList<>();
-    treasures.add(Treasure.DIAMOND);
-    treasures.add(Treasure.DIAMOND);
-    treasures.add(Treasure.SAPPHIRE);
-    treasures.add(Treasure.DIAMOND);
-    Assert.assertEquals(treasures, k.getCurrentLocationTreasure());
-    k.takeTreasure();
-    Assert.assertEquals(treasures, k.getPlayerTreasure()); // Check treasure added
-    k.movePlayer(Direction.SOUTH);
-    k.takeTreasure();
-    treasures.add(Treasure.DIAMOND);
-    treasures.add(Treasure.DIAMOND);
-    treasures.add(Treasure.DIAMOND);
-    treasures.add(Treasure.RUBY);
-    Assert.assertEquals(treasures, k.getPlayerTreasure()); // Check treasure added
-  }
-
   @Test
   public void takeAndGetTreasureTwoTakesStack() {
     Dungeon q = new TreasureDungeon(14, 15, 100, true, 100, 4L);
@@ -614,30 +420,13 @@ public class DungeonTest {
     Assert.assertEquals(treasures, q.getCurrentLocationTreasure()); // Check treasure removed
   }
 
-  @Test(expected = IllegalArgumentException.class)
-  public void takeTreasureAfterGameOver() {
-    Dungeon z = new TreasureDungeon(3, 4, 0, true, 120, 4L);
-    // Move through all squares, one path
-    z.movePlayer(Direction.SOUTH);
-    z.movePlayer(Direction.EAST);
-    z.movePlayer(Direction.NORTH);
-    z.movePlayer(Direction.SOUTH);
-    z.movePlayer(Direction.EAST);
-    z.movePlayer(Direction.NORTH);
-    z.movePlayer(Direction.SOUTH);
-    z.movePlayer(Direction.WEST);
-    z.movePlayer(Direction.WEST);
-    z.movePlayer(Direction.WEST);
-    z.movePlayer(Direction.NORTH);
-    z.movePlayer(Direction.NORTH);
-    z.takeTreasure();
-  }
-
   @Test
   public void getVisitedStartingAndMoving() {
-    Dungeon z = new TreasureDungeon(3, 4, 0, true, 120, 4L);
-    Assert.assertTrue(z.getVisitedLocations()[0][0].getVisited());
-    z.movePlayer(Direction.SOUTH);
-    Assert.assertTrue(z.getVisitedLocations()[1][0].getVisited());
+    Dungeon z = new TreasureDungeon(4, 4, 0, false, 120, 4L);
+    System.out.println(z);
+    System.out.println(z.getDirections());
+    Assert.assertTrue(z.getVisitedLocations()[3][3].getVisited());
+    z.movePlayer(Direction.WEST);
+    Assert.assertTrue(z.getVisitedLocations()[3][2].getVisited());
   }
 }

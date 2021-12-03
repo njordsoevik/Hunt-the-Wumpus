@@ -225,7 +225,7 @@ public class OtyughDungeonTest {
   @Test
   public void checkOtyughNotInStart() {
     for (int i = 0; i < 100; i++) {
-      OtyughDungeon z = new OtyughTreasureDungeon(3, 4, 0, false, 20, 200, 1);
+      OtyughDungeon z = new OtyughTreasureDungeon(5, 5, 0, false, 20, 200, 1);
       Direction move = (Direction) z.getDirections().toArray()[0];
       z.movePlayer(move);
       z.movePlayer(move.getInverse());
@@ -335,55 +335,26 @@ public class OtyughDungeonTest {
 
   @Test
   public void smellOtyughs() {
-    OtyughDungeon z = new OtyughTreasureDungeon(3, 4, 0, false, 20, 1000, 5, 5L);
+    OtyughDungeon z = new OtyughTreasureDungeon(4, 4, 0, false, 20, 1000, 5, 5L);
     z.takeArrows();
     // One in next room, two in two room away
     Assert.assertEquals(Smell.MORE_PUNGENT, z.getSmell());
-    z.shootArrow(Direction.SOUTH, 1);
+    z.shootArrow(Direction.EAST, 1);
     // One injured in next room, two in two room away
     Assert.assertEquals(Smell.MORE_PUNGENT, z.getSmell());
-    z.shootArrow(Direction.SOUTH, 1);
+    z.shootArrow(Direction.EAST, 1);
     // One dead in next room, two in two room away
-    Assert.assertEquals(Smell.MORE_PUNGENT, z.getSmell());
-    z.shootArrow(Direction.SOUTH, 2);
-    z.shootArrow(Direction.SOUTH, 2);
-    // One dead in next room, one alive two rooms away
-    Assert.assertEquals(Smell.LESS_PUNGENT, z.getSmell());
-    // Move closer to the alive one
-    z.movePlayer(Direction.SOUTH);
-    Assert.assertEquals(Smell.MORE_PUNGENT, z.getSmell());
-    // Kill last nearby one
-    z.shootArrow(Direction.EAST, 1);
-    z.shootArrow(Direction.EAST, 1);
     Assert.assertEquals(Smell.NONE, z.getSmell());
   }
 
   @Test
-  public void smellOtyughNoOverlapInDiagonal() {
-    OtyughDungeon z = new OtyughTreasureDungeon(3, 4, 100, false, 20, 1000, 2, 5L);
-    z.takeArrows();
-    z.movePlayer(Direction.NORTH);
-    // One diagonally away from player, two spaces away
-    Assert.assertEquals(Smell.LESS_PUNGENT, z.getSmell());
-  }
-
-  @Test
   public void smellOtyughWhenInSameCave() {
-    OtyughDungeon z = new OtyughTreasureDungeon(3, 4, 100, false, 20, 1000, 2, 5L);
+    OtyughDungeon z = new OtyughTreasureDungeon(3, 4, 0, false, 20, 1000, 2, 5L);
     z.takeArrows();
-    z.movePlayer(Direction.NORTH);
-    z.movePlayer(Direction.NORTH);
-    z.movePlayer(Direction.EAST);
+    z.shootArrow(Direction.SOUTH, 1);
+    z.movePlayer(Direction.SOUTH);
     // Player stepped in cave with injured Otyugh
     Assert.assertEquals(Smell.MORE_PUNGENT, z.getSmell());
-  }
-
-  @Test
-  public void getVisitedStartingAndMoving() {
-    Dungeon z = new OtyughTreasureDungeon(3, 4, 0, true, 120, 1,1, 4L);
-    Assert.assertTrue(z.getVisitedLocations()[0][0].getVisited());
-    z.movePlayer(Direction.SOUTH);
-    Assert.assertTrue(z.getVisitedLocations()[1][0].getVisited());
   }
 
   // Controller Tests

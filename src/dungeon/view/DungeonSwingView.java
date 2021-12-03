@@ -339,9 +339,6 @@ public class DungeonSwingView extends JFrame implements DungeonView {
       public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
         if (code == 83) {
-          Scanner scan = new Scanner(System.in);
-          int p = scan.nextInt();
-          System.out.println(p);
           f.shootArrow();
         } else if (code == 80) {
           f.pickUp();

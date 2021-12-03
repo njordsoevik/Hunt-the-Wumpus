@@ -6,7 +6,6 @@ import dungeon.controller.DungeonViewController;
 import dungeon.controller.DungeonViewControllerImpl;
 import dungeon.model.OtyughDungeon;
 import dungeon.model.OtyughTreasureDungeon;
-import dungeon.model.RDungeon;
 import dungeon.view.DungeonSwingView;
 import dungeon.view.DungeonView;
 
@@ -51,7 +50,7 @@ public class Main {
       System.out.println("Input will be from System.in and the output will be to System.out. \n");
       new DungeonConsoleController(input, output).playGame(d);
     } else {
-      OtyughDungeon model = new OtyughTreasureDungeon(4, 4, 0, false, 200, 100, 1);
+      OtyughDungeon model = new OtyughTreasureDungeon(5, 5, 0, false, 200, 100, 1);
       DungeonView view = new DungeonSwingView(model);
       DungeonViewController controller = new DungeonViewControllerImpl(model, view);
       controller.go();

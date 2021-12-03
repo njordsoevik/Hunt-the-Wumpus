@@ -142,9 +142,6 @@ public class TreasureDungeon implements Dungeon {
 
   @Override
   public List<Treasure> getCurrentLocationTreasure() {
-    if (isGameOver()) {
-      throw new IllegalArgumentException("Game is over!");
-    }
     return getCoordinateLocation(player.getCoordinate()).getTreasure();
   }
 
@@ -316,19 +313,20 @@ public class TreasureDungeon implements Dungeon {
     Coordinate randEnd = new Coordinate(rand.nextInt(this.grid.length),
             rand.nextInt(this.grid[0].length));
     int attempts = 0;
-    while (((Math.abs(randEnd.getI() - randStart.getI()) + Math.abs(randEnd.getJ()
+    while ((((Math.abs(randEnd.getI() - randStart.getI()) + Math.abs(randEnd.getJ()
             - randStart.getJ())) < 5)
             || getCoordinateLocation(randStart).getLocationType()==LocationType.TUNNEL
-            || getCoordinateLocation(randEnd).getLocationType()==LocationType.TUNNEL) {
+            || getCoordinateLocation(randEnd).getLocationType()==LocationType.TUNNEL)
+            && attempts < 1000) {
       randStart = new Coordinate(rand.nextInt(this.grid.length),
               rand.nextInt(this.grid[0].length));
       randEnd = new Coordinate(rand.nextInt(this.grid.length),
               rand.nextInt(this.grid[0].length));
       attempts++;
     }
-    if (attempts == 500) {
-      throw new IllegalStateException("Could not create start and end with distance "
-              + "greater than 5");
+    if (attempts == 1000) {
+      throw new IllegalStateException("This randomized dungeon could not generate a dungeon" +
+              " with start and end distance greater than 5.");
     }
     this.startC = randStart;
     this.endC = randEnd;

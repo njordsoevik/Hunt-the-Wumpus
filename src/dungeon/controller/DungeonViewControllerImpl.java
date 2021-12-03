@@ -8,6 +8,8 @@ import dungeon.view.DungeonView;
 public class DungeonViewControllerImpl implements DungeonViewController, Features {
     private OtyughDungeon model;
     private DungeonView view;
+    private int shootDistance;
+    private Direction shootDirection;
 
     public DungeonViewControllerImpl(OtyughDungeon m, DungeonView v) {
         this.model = m;
@@ -31,7 +33,6 @@ public class DungeonViewControllerImpl implements DungeonViewController, Feature
     @Override
     public void processInput(String rows, String columns, String connectivity, String wrapped
             , String treasure, String arrows, String monsters) {
-        OtyughDungeon model;
         try {
             model = new OtyughTreasureDungeon(Integer.parseInt(rows)
                     ,Integer.parseInt(columns),Integer.parseInt(connectivity)
@@ -42,12 +43,15 @@ public class DungeonViewControllerImpl implements DungeonViewController, Feature
             updateView();
         } catch (IllegalArgumentException ex) {
             System.out.println("Error: "+ ex);
+        } catch (IllegalStateException ex) {
+            System.out.println("Error: "+ ex + " Please run again or choose a bigger dungeon " +
+                    "size!");
         }
     }
 
     @Override
     public void shootArrow() {
-        System.out.println("Shoot");
+
     }
 
     @Override
