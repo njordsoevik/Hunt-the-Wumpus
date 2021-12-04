@@ -4,8 +4,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
-import dungeon.controller.DungeonViewController;
-
 public class MenuPanel extends JPanel {
   private JPanel rowsPanel;
   private JPanel columnsPanel;

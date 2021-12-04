@@ -192,9 +192,6 @@ public class OtyughTreasureDungeon extends TreasureDungeon implements OtyughDung
 
   @Override
   public List<Arrow> getCurrentLocationArrows() {
-    if (isGameOver()) {
-      throw new IllegalArgumentException("Game is over!");
-    }
     return getCoordinateLocation(getPlayer().getCoordinate()).getArrows();
   }
 

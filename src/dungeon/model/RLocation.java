@@ -1,7 +1,6 @@
 package dungeon.model;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public interface RLocation {
@@ -33,7 +32,6 @@ public interface RLocation {
    * @return An Otyugh if one resides here, else null.
    */
   Otyugh getOtyugh();
-
 
   /**
    * Get the treasure this location is holding.

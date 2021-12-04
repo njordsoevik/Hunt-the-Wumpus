@@ -5,6 +5,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -16,37 +17,37 @@ import dungeon.model.RDungeon;
 import dungeon.model.RLocation;
 import dungeon.model.Treasure;
 
-import java.util.List;
-
 public class DungeonSwingView extends JFrame implements DungeonView {
-  private RDungeon model;
-  private JPanel container;
-  private JPanel infoPanel;
-  private JLabel directionsLabel;
-  private JLabel smellLabel;
-  private JLabel treasureLabel;
-  private JLabel arrowLabel;
-  private JLabel healthLabel;
-  private JLabel playerArrowLabel;
-  private JLabel playerTreasureLabel;
-  private JMenuBar menuBar;
-  private BoardPanel board;
-  private JTextField rows;
-  private JTextField columns;
-  private JTextField interconnectivity;
-  private JTextField percentTreasures;
-  private JTextField percentArrows;
-  private JTextField numberMonsters;
-  private JButton enterButton;
-  private JButton quitButton;
-  private JComboBox<String> wrapped;
   private final int SCALE_X = 100;
   private final int SCALE_Y = 100;
+  private RDungeon model;
+  private final JPanel container;
+  private final JPanel infoPanel;
+  private final JLabel directionsLabel;
+  private final JLabel smellLabel;
+  private final JLabel treasureLabel;
+  private final JLabel arrowLabel;
+  private final JLabel healthLabel;
+  private final JLabel playerArrowLabel;
+  private final JLabel playerTreasureLabel;
+  private final JMenuBar menuBar;
+  private BoardPanel board;
+  private final JTextField rows;
+  private final JTextField columns;
+  private final JTextField interconnectivity;
+  private final JTextField percentTreasures;
+  private final JTextField percentArrows;
+  private final JTextField numberMonsters;
+  private final JButton enterButton;
+  private final JButton quitButton;
+  private final JComboBox<String> wrapped;
+  private boolean controlModifierPressed;
 
   public DungeonSwingView(RDungeon m) {
     super("Otyugh Dungeon Menu");
     this.model = m;
-    this.setSize(900,800);
+    this.controlModifierPressed = false;
+    this.setSize(900, 800);
     this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     this.setLayout(new BorderLayout());
 
@@ -54,25 +55,25 @@ public class DungeonSwingView extends JFrame implements DungeonView {
     menuBar = new JMenuBar();
     menuBar.add(new JSeparator());
     menuBar.add(new JLabel("Rows"));
-    rows = new JTextField("");
+    rows = new JTextField("5");
     menuBar.add(rows);
     menuBar.add(new JLabel("Columns"));
-    columns = new JTextField("");
+    columns = new JTextField("5");
     menuBar.add(columns);
     menuBar.add(new JLabel("Interconnectivity"));
-    interconnectivity = new JTextField("");
+    interconnectivity = new JTextField("0");
     menuBar.add(interconnectivity);
     menuBar.add(new JLabel("Treasures (%)"));
-    percentTreasures = new JTextField("");
+    percentTreasures = new JTextField("150");
     menuBar.add(percentTreasures);
     menuBar.add(new JLabel("Arrows (%)"));
-    percentArrows = new JTextField("");
+    percentArrows = new JTextField("50");
     menuBar.add(percentArrows);
     menuBar.add(new JLabel("Monsters"));
-    numberMonsters = new JTextField("");
+    numberMonsters = new JTextField("1");
     menuBar.add(numberMonsters);
     menuBar.add(new JLabel("Wrapped"));
-    wrapped = new JComboBox(new String[] {"True", "False"});
+    wrapped = new JComboBox(new String[]{"False", "True"});
     menuBar.add(wrapped);
     enterButton = new JButton("Enter");
     enterButton.setActionCommand("Enter Button");
@@ -89,25 +90,27 @@ public class DungeonSwingView extends JFrame implements DungeonView {
 
     // ADD INSTRUCTIONS
     JPanel instructions = new JPanel();
-    instructions.setPreferredSize(new Dimension(300,150));
+    instructions.setPreferredSize(new Dimension(300, 150));
     instructions.setLayout(new BoxLayout(instructions, BoxLayout.Y_AXIS));
     instructions.setBackground(Color.BLACK);
     TitledBorder title = new TitledBorder("Instructions");
     title.setTitleColor(Color.WHITE);
     instructions.setBorder(title);
-    JLabel moveInstructions = new JLabel("Move: Arrow keys OR clicking adjacent" +
-            " cells");
+    JLabel moveInstructions = new JLabel("Move: ARROW KEY or CLICK cells");
     moveInstructions.setForeground(Color.white);
-    JLabel shootInstructions = new JLabel("Shoot: Press S + ARROW KEY + DISTANCE");
+    JLabel shootInstructions = new JLabel("Shoot: Hold CONTROL + ARROW KEY");
     shootInstructions.setForeground(Color.white);
+    JLabel pickInstructions = new JLabel("Pick Up: P");
+    pickInstructions.setForeground(Color.white);
     instructions.add(moveInstructions);
     instructions.add(shootInstructions);
+    instructions.add(pickInstructions);
 
     // ADD PLAYER INFO
     JPanel playerInfo = new JPanel();
     playerInfo.setLayout(new BoxLayout(playerInfo, BoxLayout.Y_AXIS));
     playerInfo.setBackground(Color.BLACK);
-    playerInfo.setPreferredSize(new Dimension(200,150));
+    playerInfo.setPreferredSize(new Dimension(200, 150));
     TitledBorder playerTitle = new TitledBorder("Player");
     playerTitle.setTitleColor(Color.WHITE);
     playerInfo.setBorder(playerTitle);
@@ -147,7 +150,7 @@ public class DungeonSwingView extends JFrame implements DungeonView {
     infoPanel = new JPanel();
     infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
     infoPanel.setBackground(Color.black);
-    infoPanel.setPreferredSize(new Dimension(300,150));
+    infoPanel.setPreferredSize(new Dimension(300, 150));
     TitledBorder titleInfo = new TitledBorder("Game Information");
     titleInfo.setTitleColor(Color.WHITE);
     infoPanel.setBorder(titleInfo);
@@ -210,34 +213,35 @@ public class DungeonSwingView extends JFrame implements DungeonView {
     container.setLayout(new FlowLayout());
     JScrollPane scrollPane = new JScrollPane(container);
     // ADD BOARD TO SCROLL PANE
-    setBoard(5,5,model); // TODO this cause issues , maybe now fixed
+    setBoard(5, 5, model);
 
     this.add(scrollPane);
   }
 
   @Override
+  public void updateModel(int x, int y, RDungeon model) {
+    this.model = model;
+    setBoard(x, y, model);
+    updateInfoPanels();
+  }
+
+
   public void setBoard(int x, int y, RDungeon model) {
     if (board != null) {
       container.remove(board);
-      this.board.setModel(new Dimension(x,y),model);
+      this.board.setModel(new Dimension(x, y), model);
     } else {
-      board = new BoardPanel(new Dimension(x,y),model);
+      board = new BoardPanel(new Dimension(x, y), model);
     }
-    this.board.setPreferredSize(new Dimension(x* SCALE_X,y* SCALE_Y));
+    this.board.setPreferredSize(new Dimension(y * SCALE_Y, x * SCALE_X));
     container.add(board);
   }
 
-  @Override
-  public void refresh() {
-    validate();
-    updateInfoPanels();
-    repaint();
-  }
 
   private void updateInfoPanels() {
     // ADD DIRECTIONS
     StringBuilder sb = new StringBuilder();
-    for (Direction p: model.getDirections()) {
+    for (Direction p : model.getDirections()) {
       sb.append(p).append(", ");
     }
     directionsLabel.setText(sb.toString());
@@ -247,7 +251,7 @@ public class DungeonSwingView extends JFrame implements DungeonView {
 
     // ADD PLAYER TREASURES
     List<Treasure> treasuresPlayer = model.getPlayerTreasure();
-    if (treasuresPlayer.isEmpty()){
+    if (treasuresPlayer.isEmpty()) {
       treasureLabel.setText("NONE");
     } else {
       treasureLabel.setText(treasuresPlayer.toString());
@@ -255,7 +259,7 @@ public class DungeonSwingView extends JFrame implements DungeonView {
 
     // ADD TREASURES
     List<Treasure> treasures = model.getCurrentLocationTreasure();
-    if (treasures.isEmpty()){
+    if (treasures.isEmpty()) {
       treasureLabel.setText("NONE");
     } else {
       treasureLabel.setText(labelTreasures(treasures));
@@ -263,7 +267,7 @@ public class DungeonSwingView extends JFrame implements DungeonView {
 
     // ADD ARROWS
     List<Arrow> arrows = model.getCurrentLocationArrows();
-    if (arrows.isEmpty()){
+    if (arrows.isEmpty()) {
       arrowLabel.setText("0");
     } else {
       arrowLabel.setText(String.valueOf(arrows.size()));
@@ -274,7 +278,7 @@ public class DungeonSwingView extends JFrame implements DungeonView {
 
     // ADD PLAYER TREASURE
     List<Treasure> playerTreasure = model.getPlayerTreasure();
-    if (playerTreasure.isEmpty()){
+    if (playerTreasure.isEmpty()) {
       playerTreasureLabel.setText("NONE");
     } else {
       playerTreasureLabel.setText(labelTreasures(playerTreasure));
@@ -282,24 +286,32 @@ public class DungeonSwingView extends JFrame implements DungeonView {
 
     // ADD PLAYER ARROWS
     List<Arrow> playerArrows = model.getPlayerArrows();
-    if (playerArrows.isEmpty()){
+    if (playerArrows.isEmpty()) {
       playerArrowLabel.setText("0");
     } else {
       playerArrowLabel.setText(String.valueOf(playerArrows.size()));
     }
   }
 
+  @Override
+  public void refresh() {
+    validate();
+    updateInfoPanels();
+    repaint();
+  }
+
+
   private String labelTreasures(List<Treasure> treasures) {
     StringBuilder sb = new StringBuilder();
     int s = 0;
     int r = 0;
     int d = 0;
-    for (Treasure t:treasures) {
-      if (t==Treasure.RUBY) {
+    for (Treasure t : treasures) {
+      if (t == Treasure.RUBY) {
         r++;
-      } else if (t==Treasure.DIAMOND) {
+      } else if (t == Treasure.DIAMOND) {
         d++;
-      } else if (t==Treasure.SAPPHIRE) {
+      } else if (t == Treasure.SAPPHIRE) {
         s++;
       }
     }
@@ -329,14 +341,19 @@ public class DungeonSwingView extends JFrame implements DungeonView {
         RLocation[][] locations = model.getVisitedLocations();
         int currentX = model.getCurrentCoordinate().getJ() * SCALE_X / (locations[0].length);
         int currentY = model.getCurrentCoordinate().getI() * SCALE_Y / (locations.length);
-        int scaleClickX = e.getX()/ locations[0].length;
-        int scaleClickY = e.getY()/ locations.length;
-        System.out.println(currentX + " " + currentY + "Current");
-        System.out.println(scaleClickX + " " + scaleClickY);
-        if (scaleClickX>(currentX+8) && scaleClickX<(currentX+23)) {
-          //f.move(Direction.EAST);
+        int lengthCellX = SCALE_X / (locations[0].length);
+        int lengthCellY = SCALE_Y / (locations.length);
+        int scaleClickX = e.getX() / locations[0].length;
+        int scaleClickY = e.getY() / locations.length;
+        if (scaleClickX > (currentX + lengthCellX) && scaleClickX < (currentX + (3 * lengthCellX))) {
+          f.move(Direction.EAST);
+        } else if (scaleClickY > (currentY + lengthCellY) && scaleClickY < (currentY + (3 * lengthCellY))) {
+          f.move(Direction.SOUTH);
+        } else if (scaleClickX < (currentX) && scaleClickX > (currentX - (3 * lengthCellX))) {
+          f.move(Direction.WEST);
+        } else if (scaleClickY < (currentY) && scaleClickY > (currentY - (3 * lengthCellY))) {
+          f.move(Direction.NORTH);
         }
-        //f.handleCellClick(currentX, currentY);
       }
     });
 
@@ -348,23 +365,58 @@ public class DungeonSwingView extends JFrame implements DungeonView {
       @Override
       public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
-        if (code == 83) {
-          f.shootArrow();
+        Direction direction = null;
+        String result = null;
+        if (code == 17) {
+          controlModifierPressed = true;
         } else if (code == 80) {
           f.pickUp();
         } else if (code == 37) {
-          f.move(Direction.WEST);
+          direction = Direction.WEST;
+          if (controlModifierPressed) {
+            result = JOptionPane.showInputDialog("Enter distance: ", "");
+            controlModifierPressed = false;
+          }
         } else if (code == 38) {
-          f.move(Direction.NORTH);
+          direction = Direction.NORTH;
+          if (controlModifierPressed) {
+            result = JOptionPane.showInputDialog("Enter distance: ", "");
+            controlModifierPressed = false;
+          }
         } else if (code == 39) {
-          f.move(Direction.EAST);
+          direction = Direction.EAST;
+          if (controlModifierPressed) {
+            result = JOptionPane.showInputDialog("Enter distance: ", "");
+            controlModifierPressed = false;
+          }
         } else if (code == 40) {
-          f.move(Direction.SOUTH);
+          direction = Direction.SOUTH;
+          if (controlModifierPressed) {
+            result = JOptionPane.showInputDialog("Enter distance: ", "");
+            controlModifierPressed = false;
+          }
         }
+        if (direction != null) {
+          if (result != null) {
+            try {
+              int shootingDistance = Integer.parseInt(result);
+              f.shootArrow(direction, shootingDistance);
+            } catch (NumberFormatException nfe) {
+              System.out.println("Cannot shoot " + result + " distance.");
+            }
+          } else {
+            f.move(direction);
+          }
+        }
+
       }
 
       @Override
       public void keyReleased(KeyEvent e) {
+        int code = e.getKeyCode();
+        if (code == 17) {
+          controlModifierPressed = false;
+        }
       }
     });
   }
@@ -372,7 +424,7 @@ public class DungeonSwingView extends JFrame implements DungeonView {
   @Override
   public void showErrorMessage(String error) {
     System.out.println("Error: " + error);
-    JOptionPane.showMessageDialog(this,error,"Error",JOptionPane.ERROR_MESSAGE);
+    JOptionPane.showMessageDialog(this, error, "Error", JOptionPane.ERROR_MESSAGE);
   }
 
   @Override

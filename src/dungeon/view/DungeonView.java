@@ -1,9 +1,6 @@
 package dungeon.view;
 
-import java.util.Set;
-
 import dungeon.controller.Features;
-import dungeon.model.Direction;
 import dungeon.model.RDungeon;
 
 /**
@@ -38,10 +35,11 @@ public interface DungeonView {
   /**
    * Transmit an error message to the view, in case
    * the command could not be processed correctly
+   *
    * @param error
    */
   void showErrorMessage(String error);
 
-  void setBoard(int x, int y, RDungeon model);
+  void updateModel(int x, int y, RDungeon model);
 
 }

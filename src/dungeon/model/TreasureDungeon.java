@@ -315,8 +315,8 @@ public class TreasureDungeon implements Dungeon {
     int attempts = 0;
     while ((((Math.abs(randEnd.getI() - randStart.getI()) + Math.abs(randEnd.getJ()
             - randStart.getJ())) < 5)
-            || getCoordinateLocation(randStart).getLocationType()==LocationType.TUNNEL
-            || getCoordinateLocation(randEnd).getLocationType()==LocationType.TUNNEL)
+            || getCoordinateLocation(randStart).getLocationType() == LocationType.TUNNEL
+            || getCoordinateLocation(randEnd).getLocationType() == LocationType.TUNNEL)
             && attempts < 1000) {
       randStart = new Coordinate(rand.nextInt(this.grid.length),
               rand.nextInt(this.grid[0].length));
@@ -371,6 +371,7 @@ public class TreasureDungeon implements Dungeon {
       }
     }
   }
+
   @Override
   public String toString() {
     StringBuilder b = new StringBuilder();

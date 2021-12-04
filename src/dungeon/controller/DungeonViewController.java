@@ -1,7 +1,5 @@
 package dungeon.controller;
 
-import dungeon.view.DungeonView;
-
 public interface DungeonViewController {
   /**
    * Handle an action in a single cell of the board, such as to make a move.

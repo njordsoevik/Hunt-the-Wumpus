@@ -17,7 +17,7 @@ import dungeon.model.Direction;
 public interface Features {
   /**
    * Process the inputs entered by the user.
-   * 
+   *
    * @param
    */
   void processInput(String rows, String columns, String connectivity, String wrapped
@@ -26,7 +26,7 @@ public interface Features {
   /**
    * Shoot an arrow.
    */
-  void shootArrow();
+  void shootArrow(Direction direction, int distance);
 
   /**
    * Move in a direction.
