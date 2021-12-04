@@ -210,7 +210,7 @@ public class DungeonSwingView extends JFrame implements DungeonView {
     container.setLayout(new FlowLayout());
     JScrollPane scrollPane = new JScrollPane(container);
     // ADD BOARD TO SCROLL PANE
-    setBoard(5,5,model);
+    setBoard(5,5,model); // TODO this cause issues , maybe now fixed
 
     this.add(scrollPane);
   }
