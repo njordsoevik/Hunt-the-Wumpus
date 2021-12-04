@@ -1,9 +1,8 @@
 import java.io.InputStreamReader;
-import java.util.Scanner;
 
 import dungeon.controller.DungeonConsoleController;
+import dungeon.controller.DungeonController;
 import dungeon.controller.DungeonViewController;
-import dungeon.controller.DungeonViewControllerImpl;
 import dungeon.model.OtyughDungeon;
 import dungeon.model.OtyughTreasureDungeon;
 import dungeon.view.DungeonSwingView;
@@ -33,7 +32,7 @@ public class Main {
     int a_percent;
     int n_monsters;
     boolean wrapped;
-    OtyughDungeon d;
+    OtyughDungeon model;
     if (args.length>0) {
       rows = Integer.parseInt(args[0]);
       columns = Integer.parseInt(args[1]);
@@ -42,16 +41,17 @@ public class Main {
       t_percent = Integer.parseInt(args[4]);
       a_percent = Integer.parseInt(args[5]);
       n_monsters = Integer.parseInt(args[6]);
-      d = new OtyughTreasureDungeon(rows, columns, interconnectivity, wrapped
+      model = new OtyughTreasureDungeon(rows, columns, interconnectivity, wrapped
               , t_percent, a_percent, n_monsters);
       Readable input = new InputStreamReader(System.in);
       Appendable output = System.out;
       System.out.println("Input will be from System.in and the output will be to System.out. \n");
-      new DungeonConsoleController(input, output).playGame(d);
+      DungeonController controller = new DungeonConsoleController(model,input,output);
+      controller.go();
     } else {
-      OtyughDungeon model = new OtyughTreasureDungeon(5, 5, 0, false, 150, 50, 1);
+      model = new OtyughTreasureDungeon(5, 5, 0, false, 150, 50, 1);
       DungeonView view = new DungeonSwingView(model);
-      DungeonViewController controller = new DungeonViewControllerImpl(model, view);
+      DungeonController controller = new DungeonViewController(model, view);
       controller.go();
     }
 

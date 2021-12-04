@@ -34,6 +34,13 @@ public interface RLocation {
   Otyugh getOtyugh();
 
   /**
+   * Return if a thief resides in this location.
+   *
+   * @return True if a thief resides here, else False.
+   */
+  Thief getThief();
+
+  /**
    * Get the treasure this location is holding.
    *
    * @return The treasure placed in this location.

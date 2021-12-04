@@ -17,6 +17,7 @@ public final class DungeonLocation implements Location {
   private final Map<Direction, Location> connections;
   private Otyugh otyugh;
   private boolean visited;
+  private Thief thief;
 
   /**
    * Constructor for a dungeon location.
@@ -106,6 +107,21 @@ public final class DungeonLocation implements Location {
       throw new IllegalStateException("Cannot contain two Otyughs");
     }
     this.otyugh = new Otyugh();
+  }
+
+  @Override
+  public void addThief(Thief t) {
+    this.thief = t;
+  }
+
+  @Override
+  public void setThiefStolen(Boolean b) {
+    this.thief.setStolen(b);
+  }
+
+  @Override
+  public Thief getThief() {
+    return this.thief;
   }
 
   @Override

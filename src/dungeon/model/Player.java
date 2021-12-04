@@ -70,6 +70,13 @@ class Player {
   }
 
   /**
+   * Removes treasures from the players inventory, used after a thief steals them.
+   */
+  void removeTreasures() {
+    this.treasures.clear();
+  }
+
+  /**
    * Adds arrows to the players inventory.
    */
   void addArrow(List<Arrow> a) {

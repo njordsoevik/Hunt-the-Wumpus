@@ -48,6 +48,16 @@ interface Location extends RLocation {
   void addOtyugh();
 
   /**
+   * Add a Thief to this location.
+   */
+  void addThief(Thief t);
+
+  /**
+   * Label this location's thief as having stolen treasure.
+   */
+  void setThiefStolen(Boolean b);
+
+  /**
    * Add arrows to this location.
    */
   void addArrows(Arrow arrow);

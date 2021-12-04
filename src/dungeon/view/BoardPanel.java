@@ -21,14 +21,13 @@ import dungeon.model.Smell;
 import dungeon.model.Treasure;
 
 class BoardPanel extends JPanel {
-  private final String IMAGE_URL = "C:\\Users\\njord\\Downloads\\Project3-Dungeon\\dungeon-images-bw\\";
+  private final String IMAGE_URL = "C:\\Users\\njord\\Downloads\\Project3-Dungeon\\dungeon-images\\";
   private final int SCALE_X = 100;
   private final int SCALE_Y = 100;
   private RLocation[][] locations;
   private Dimension boardSize;
   private RDungeon readModel;
   private final HashMap<Set, String> imageMap;
-  private int gameOverPaints;
 
   public BoardPanel(Dimension d, RDungeon model) {
     locations = new RLocation[d.height][d.width];
@@ -42,23 +41,22 @@ class BoardPanel extends JPanel {
     imageMap.put(new HashSet<>(Arrays.asList(Direction.NORTH, Direction.WEST
             , Direction.EAST)), "NEW");
     imageMap.put(new HashSet<>(Arrays.asList(Direction.NORTH, Direction.SOUTH
-            , Direction.EAST)), "NES");
+            , Direction.EAST)), "NSE");
     imageMap.put(new HashSet<>(Arrays.asList(Direction.NORTH, Direction.SOUTH
             , Direction.WEST)), "NSW");
     imageMap.put(new HashSet<>(Arrays.asList(Direction.WEST, Direction.SOUTH
-            , Direction.EAST)), "ESW");
+            , Direction.EAST)), "SEW");
     imageMap.put(new HashSet<>(Arrays.asList(Direction.NORTH, Direction.EAST)), "NE");
     imageMap.put(new HashSet<>(Arrays.asList(Direction.NORTH, Direction.SOUTH)), "NS");
-    imageMap.put(new HashSet<>(Arrays.asList(Direction.SOUTH, Direction.EAST)), "ES");
+    imageMap.put(new HashSet<>(Arrays.asList(Direction.SOUTH, Direction.EAST)), "SE");
     imageMap.put(new HashSet<>(Arrays.asList(Direction.WEST, Direction.EAST)), "EW");
-    imageMap.put(new HashSet<>(Arrays.asList(Direction.NORTH, Direction.WEST)), "WN");
+    imageMap.put(new HashSet<>(Arrays.asList(Direction.NORTH, Direction.WEST)), "NW");
     imageMap.put(new HashSet<>(Arrays.asList(Direction.SOUTH, Direction.WEST)), "SW");
     imageMap.put(new HashSet<>(Arrays.asList(Direction.SOUTH)), "S");
     imageMap.put(new HashSet<>(Arrays.asList(Direction.NORTH)), "N");
     imageMap.put(new HashSet<>(Arrays.asList(Direction.EAST)), "E");
     imageMap.put(new HashSet<>(Arrays.asList(Direction.WEST)), "W");
   }
-
 
   @Override
   protected void paintComponent(Graphics g) {
@@ -85,20 +83,13 @@ class BoardPanel extends JPanel {
           }
           int xCoordinate = (j) * realBoardSize.width / boardSize.width;
           int yCoordinate = (i) * realBoardSize.height / boardSize.height;
-//                    System.out.println(i +" "+j+" ARRAY index");
-//                    System.out.println(realBoardSize.height + " real height");
-//                    System.out.println(boardSize.height + " board height");
-//                    System.out.println(xCoordinate + " " + yCoordinate+ " picture printed");
           g2d.drawImage(picture, xCoordinate
                   , yCoordinate, this);
         }
       }
     }
     if (readModel.isGameOver()) {
-      gameOverPaints++;
       BufferedImage picture;
-      System.out.println("popup");
-      if (gameOverPaints == 1) {
         try {
           if (readModel.getPlayerHealth() == Health.HEALTHY) {
             picture = ImageIO.read(new File(IMAGE_URL + "win.png"));
@@ -110,7 +101,6 @@ class BoardPanel extends JPanel {
         }
         g2d.drawImage(picture, 0, 0, this);
       }
-    }
   }
 
   public void setModel(Dimension d, RDungeon model) {
@@ -147,7 +137,10 @@ class BoardPanel extends JPanel {
         }
       }
       if (!location.getArrows().isEmpty()) {
-        picture = overlay(picture, IMAGE_URL + "arrow-black.png", 10);
+        picture = overlay(picture, IMAGE_URL + "arrow-black.png", 15);
+      }
+      if (location.getThief() != null) {
+        picture = overlay(picture, IMAGE_URL + "thief.png", 20);
       }
     } catch (IOException ioe) {
       throw new IllegalStateException("Append failed", ioe);

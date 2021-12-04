@@ -3,7 +3,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -12,7 +11,6 @@ import dungeon.model.Direction;
 import dungeon.model.Dungeon;
 import dungeon.model.Treasure;
 import dungeon.model.TreasureDungeon;
-import jdk.swing.interop.SwingInterOpUtils;
 
 /**
  * A testing class for the dungeon interface.

@@ -21,6 +21,7 @@ public class DungeonConsoleController implements DungeonController {
 
   private final Appendable out;
   private final Scanner scan;
+  private OtyughDungeon m;
 
   /**
    * Constructor for the controller.
@@ -28,16 +29,17 @@ public class DungeonConsoleController implements DungeonController {
    * @param in  the source to read from
    * @param out the target to print to
    */
-  public DungeonConsoleController(Readable in, Appendable out) {
+  public DungeonConsoleController(OtyughDungeon model, Readable in, Appendable out) {
     if (in == null || out == null) {
       throw new IllegalArgumentException("Readable and Appendable can't be null");
     }
+    this.m = model;
     this.out = out;
     scan = new Scanner(in);
   }
 
   @Override
-  public void playGame(OtyughDungeon m) {
+  public void go() {
     String element = "";
     Direction moveDirection;
     int distance;

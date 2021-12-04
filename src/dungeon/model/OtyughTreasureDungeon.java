@@ -58,8 +58,8 @@ public class OtyughTreasureDungeon extends TreasureDungeon implements OtyughDung
     placeOtyugh(rows, columns, numberOtyugh);
     placeArrows(rows, columns, arrowPercent);
     addStartingArrows(STARTING_ARROWS);
+    addThief(rows, columns);
   }
-
 
   private void placeOtyugh(int rows, int columns, int number) {
     int leftToPlace = number;
@@ -120,6 +120,15 @@ public class OtyughTreasureDungeon extends TreasureDungeon implements OtyughDung
       arrowIndex = this.getRandom().nextInt(Arrow.values().length);
       this.getGrid()[x][y].addArrows(Arrow.values()[arrowIndex]);
     }
+  }
+
+  private void addThief(int rows, int columns) {
+    Coordinate c = new Coordinate(getRandom().nextInt(rows), getRandom().nextInt(columns));
+    while (c == this.getStart()) {
+      c = new Coordinate(getRandom().nextInt(rows), getRandom().nextInt(columns));
+    }
+    getGrid()[c.getI()][c.getJ()].addThief(new Thief());
+    System.out.println(c);
   }
 
   private void addStartingArrows(int arrows) {
@@ -211,7 +220,9 @@ public class OtyughTreasureDungeon extends TreasureDungeon implements OtyughDung
     if (getDirections().contains(dir)) { // Set player coordinate
       Coordinate newSquare = currentLocation.getPaths().get(dir).getCoordinate();
       getPlayer().setCoordinate(newSquare);
-      checkOtyugh(getCoordinateLocation(newSquare));
+      Location l = getCoordinateLocation(newSquare);
+      checkOtyugh(l);
+      checkThief(l);
       getCoordinateLocation(newSquare).setVisited();
     } else {
       throw new IllegalArgumentException("Cannot move there");
@@ -228,6 +239,16 @@ public class OtyughTreasureDungeon extends TreasureDungeon implements OtyughDung
         if (hit == 1) {
           getPlayer().reduceHealth();
         }
+      }
+    }
+  }
+
+  private void checkThief(Location l) {
+    Thief t = l.getThief();
+    if (t != null) {
+      if (!t.hasStolen()) {
+        getPlayer().removeTreasures();
+        t.setStolen(true);
       }
     }
   }
