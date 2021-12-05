@@ -106,24 +106,6 @@ public class TreasureDungeon implements Dungeon {
   }
 
   @Override
-  public RLocation[][] getVisitedLocations() {
-    Location[][] visited = new Location[rows][columns];
-    for (int i = 0; i < this.grid.length; i++) {
-      for (int j = 0; j < this.grid[i].length; j++) {
-        if (this.grid[i][j].getVisited()) {
-          visited[i][j] = this.grid[i][j];
-        }
-      }
-    }
-    return visited;
-  }
-
-  @Override
-  public Coordinate getCurrentCoordinate() {
-    return this.player.getCoordinate();
-  }
-
-  @Override
   public void movePlayer(Direction dir) {
     if (isGameOver()) {
       throw new IllegalArgumentException("Game is over!");

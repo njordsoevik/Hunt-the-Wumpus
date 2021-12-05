@@ -22,16 +22,18 @@ import dungeon.model.Treasure;
 
 class BoardPanel extends JPanel {
   private final String IMAGE_URL = "C:\\Users\\njord\\Downloads\\Project3-Dungeon\\dungeon-images\\";
-  private final int SCALE_X = 100;
-  private final int SCALE_Y = 100;
-  private final HashMap<Set, String> imageMap;
+  private int scaleX;
+  private int scaleY;
+  private HashMap<Set, String> imageMap;
   private RLocation[][] locations;
   private Dimension boardSize;
   private RDungeon readModel;
 
-  public BoardPanel(Dimension d, RDungeon model) {
+  public BoardPanel(Dimension d, RDungeon model, int scaleX, int scaleY) {
     locations = new RLocation[d.height][d.width];
     readModel = model;
+    this.scaleX = scaleX;
+    this.scaleY = scaleY;
     this.boardSize = d;
     this.setBackground(Color.BLACK);
 
@@ -110,7 +112,7 @@ class BoardPanel extends JPanel {
   }
 
   private Dimension convertBoardDimensions(Dimension d) {
-    return new Dimension(d.width * SCALE_X, d.height * SCALE_Y);
+    return new Dimension(d.width * scaleX, d.height * scaleY);
   }
 
   private BufferedImage getLocationImage(RLocation location) {

@@ -61,4 +61,5 @@ public interface RLocation {
    * @return The arrows placed in this location.
    */
   List<Arrow> getArrows();
+
 }

@@ -194,6 +194,11 @@ public class OtyughTreasureDungeon extends TreasureDungeon implements OtyughDung
   }
 
   @Override
+  public Coordinate getCurrentCoordinate() {
+    return getPlayer().getCoordinate();
+  }
+
+  @Override
   public List<Arrow> getPlayerArrows() {
     return getPlayer().getArrows();
   }

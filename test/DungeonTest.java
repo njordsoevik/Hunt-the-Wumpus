@@ -418,14 +418,4 @@ public class DungeonTest {
     Assert.assertEquals(player_treasures, q.getPlayerTreasure()); // Check treasure added
     Assert.assertEquals(treasures, q.getCurrentLocationTreasure()); // Check treasure removed
   }
-
-  @Test
-  public void getVisitedStartingAndMoving() {
-    Dungeon z = new TreasureDungeon(4, 4, 0, false, 120, 4L);
-    System.out.println(z);
-    System.out.println(z.getDirections());
-    Assert.assertTrue(z.getVisitedLocations()[3][3].getVisited());
-    z.movePlayer(Direction.WEST);
-    Assert.assertTrue(z.getVisitedLocations()[3][2].getVisited());
-  }
 }

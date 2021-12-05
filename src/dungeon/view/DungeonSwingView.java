@@ -18,8 +18,8 @@ import dungeon.model.RLocation;
 import dungeon.model.Treasure;
 
 public class DungeonSwingView extends JFrame implements DungeonView {
-  private final int SCALE_X = 100;
-  private final int SCALE_Y = 100;
+  private static final int SCALE_X = 100;
+  private static final int SCALE_Y = 100;
   private final JPanel container;
   private final JPanel infoPanel;
   private final JLabel directionsLabel;
@@ -231,7 +231,7 @@ public class DungeonSwingView extends JFrame implements DungeonView {
       container.remove(board);
       this.board.setModel(new Dimension(x, y), model);
     } else {
-      board = new BoardPanel(new Dimension(x, y), model);
+      board = new BoardPanel(new Dimension(x, y), model, SCALE_X, SCALE_Y);
     }
     this.board.setPreferredSize(new Dimension(y * SCALE_Y, x * SCALE_X));
     container.add(board);

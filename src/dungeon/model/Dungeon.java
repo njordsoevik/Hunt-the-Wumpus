@@ -49,8 +49,4 @@ public interface Dungeon {
    * Check if the game is over by reaching the final square.
    */
   boolean isGameOver();
-
-  RLocation[][] getVisitedLocations();
-
-  Coordinate getCurrentCoordinate();
 }

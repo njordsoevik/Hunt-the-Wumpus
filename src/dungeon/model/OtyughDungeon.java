@@ -20,6 +20,8 @@ public interface OtyughDungeon extends Dungeon, RDungeon {
    *
    * @param dir      The direction to shoot the arrow.
    * @param distance The distance to shoot the arrow.
+   * @throws IllegalArgumentException If the direction is not available to move, or distance is
+   * below zero.
    */
   void shootArrow(Direction dir, int distance);
 
