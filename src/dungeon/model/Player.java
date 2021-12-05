@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Player to access and navigate the dungeon. Players can also store treasure.
+ * Player represents the person to access and navigate the dungeon.
+ * Players can pick up and store treasure. Players can also pick up and shoot arrows.
  */
 class Player {
   private final List<Treasure> treasures;

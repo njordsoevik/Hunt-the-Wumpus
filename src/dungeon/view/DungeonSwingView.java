@@ -424,7 +424,6 @@ public class DungeonSwingView extends JFrame implements DungeonView {
   @Override
   public void showErrorMessage(String error) {
     System.out.println("Error: " + error);
-    JOptionPane.showMessageDialog(this, error, "Error", JOptionPane.ERROR_MESSAGE);
   }
 
   @Override

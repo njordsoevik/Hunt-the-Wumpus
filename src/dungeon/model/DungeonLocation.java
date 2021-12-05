@@ -147,6 +147,15 @@ public final class DungeonLocation implements Location {
   }
 
   @Override
+  public Health getOtyughHealth() {
+    if (this.otyugh != null) {
+      return this.otyugh.getHealth();
+    } else {
+      return null;
+    }
+  }
+
+  @Override
   public void setVisited() {
     this.visited = true;
   }

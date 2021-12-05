@@ -58,6 +58,13 @@ interface Location extends RLocation {
   void setThiefStolen(Boolean b);
 
   /**
+   * Return an Otyugh if one resides in this location.
+   *
+   * @return An Otyugh if one resides here, else null.
+   */
+  Otyugh getOtyugh();
+
+  /**
    * Add arrows to this location.
    */
   void addArrows(Arrow arrow);

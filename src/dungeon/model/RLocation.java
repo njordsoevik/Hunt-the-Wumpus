@@ -27,11 +27,11 @@ public interface RLocation {
   Coordinate getCoordinate();
 
   /**
-   * Return an Otyugh if one resides in this location.
+   * Return an Otyugh's health if one resides in this location.
    *
-   * @return An Otyugh if one resides here, else null.
+   * @return An Otyugh's health if one resides here, else null.
    */
-  Otyugh getOtyugh();
+  Health getOtyughHealth();
 
   /**
    * Return if a thief resides in this location.

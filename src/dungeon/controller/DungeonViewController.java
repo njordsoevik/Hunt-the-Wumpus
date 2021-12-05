@@ -33,9 +33,9 @@ public class DungeonViewController implements DungeonController, Features {
               , model);
       updateView();
     } catch (IllegalArgumentException ex) {
-      view.showErrorMessage("Error: " + ex);
+      view.showErrorMessage(ex.toString());
     } catch (IllegalStateException ex) {
-      view.showErrorMessage("Error: " + ex + " Please run again or choose a bigger dungeon " +
+      view.showErrorMessage(ex+ " Please run again or choose a bigger dungeon " +
               "size!");
     }
   }

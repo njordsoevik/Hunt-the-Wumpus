@@ -247,7 +247,7 @@ public class OtyughTreasureDungeon extends TreasureDungeon implements OtyughDung
     if (t != null) {
       if (!t.hasStolen()) {
         getPlayer().removeTreasures();
-        t.setStolen(true);
+        l.setThiefStolen(true);
       }
     }
   }

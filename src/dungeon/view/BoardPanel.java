@@ -83,8 +83,7 @@ class BoardPanel extends JPanel {
           }
           int xCoordinate = (j) * realBoardSize.width / boardSize.width;
           int yCoordinate = (i) * realBoardSize.height / boardSize.height;
-          g2d.drawImage(picture, xCoordinate
-                  , yCoordinate, this);
+          g2d.drawImage(picture, xCoordinate, yCoordinate, this);
         }
       }
     }
@@ -121,7 +120,8 @@ class BoardPanel extends JPanel {
       // Get directions
       picture = ImageIO.read(new File(IMAGE_URL + imageMap.get(directions) + ".png"));
       // Get Otyugh
-      if (location.getOtyugh() != null) {
+      if (location.getOtyughHealth() == Health.HEALTHY
+              || location.getOtyughHealth() == Health.INJURED) {
         picture = overlay(picture, IMAGE_URL + "otyugh.png", 0);
       }
       if (location.getTreasure() != null) {
