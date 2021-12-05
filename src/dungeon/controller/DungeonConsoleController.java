@@ -21,7 +21,7 @@ public class DungeonConsoleController implements DungeonController {
 
   private final Appendable out;
   private final Scanner scan;
-  private OtyughDungeon m;
+  private final OtyughDungeon m;
 
   /**
    * Constructor for the controller.

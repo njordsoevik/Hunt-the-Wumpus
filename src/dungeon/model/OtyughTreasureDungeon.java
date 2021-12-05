@@ -58,7 +58,7 @@ public class OtyughTreasureDungeon extends TreasureDungeon implements OtyughDung
     placeOtyugh(rows, columns, numberOtyugh);
     placeArrows(rows, columns, arrowPercent);
     addStartingArrows(STARTING_ARROWS);
-    addThief(rows, columns);
+    placeThief(rows, columns);
   }
 
   private void placeOtyugh(int rows, int columns, int number) {
@@ -122,13 +122,12 @@ public class OtyughTreasureDungeon extends TreasureDungeon implements OtyughDung
     }
   }
 
-  private void addThief(int rows, int columns) {
+  private void placeThief(int rows, int columns) {
     Coordinate c = new Coordinate(getRandom().nextInt(rows), getRandom().nextInt(columns));
     while (c == this.getStart()) {
       c = new Coordinate(getRandom().nextInt(rows), getRandom().nextInt(columns));
     }
     getGrid()[c.getI()][c.getJ()].addThief(new Thief());
-    System.out.println(c);
   }
 
   private void addStartingArrows(int arrows) {

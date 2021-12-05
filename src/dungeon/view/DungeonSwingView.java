@@ -20,7 +20,6 @@ import dungeon.model.Treasure;
 public class DungeonSwingView extends JFrame implements DungeonView {
   private final int SCALE_X = 100;
   private final int SCALE_Y = 100;
-  private RDungeon model;
   private final JPanel container;
   private final JPanel infoPanel;
   private final JLabel directionsLabel;
@@ -31,7 +30,6 @@ public class DungeonSwingView extends JFrame implements DungeonView {
   private final JLabel playerArrowLabel;
   private final JLabel playerTreasureLabel;
   private final JMenuBar menuBar;
-  private BoardPanel board;
   private final JTextField rows;
   private final JTextField columns;
   private final JTextField interconnectivity;
@@ -41,6 +39,8 @@ public class DungeonSwingView extends JFrame implements DungeonView {
   private final JButton enterButton;
   private final JButton quitButton;
   private final JComboBox<String> wrapped;
+  private RDungeon model;
+  private BoardPanel board;
   private boolean controlModifierPressed;
 
   public DungeonSwingView(RDungeon m) {

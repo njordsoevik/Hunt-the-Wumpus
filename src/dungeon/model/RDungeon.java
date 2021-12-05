@@ -61,7 +61,17 @@ public interface RDungeon {
    */
   boolean isGameOver();
 
+  /**
+   * Get the list of visited locations, for mapping.
+   *
+   * @return the list of locations.
+   */
   RLocation[][] getVisitedLocations();
 
+  /**
+   * Get coordinate of the current location.
+   *
+   * @return the coordinate of the current location.
+   */
   Coordinate getCurrentCoordinate();
 }

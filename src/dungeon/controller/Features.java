@@ -39,12 +39,6 @@ public interface Features {
   void pickUp();
 
   /**
-   * Handle cell click for movement.
-   */
-  void handleCellClick(int x, int y);
-
-
-  /**
    * Exit the program.
    */
   void exitProgram();

@@ -24,10 +24,10 @@ class BoardPanel extends JPanel {
   private final String IMAGE_URL = "C:\\Users\\njord\\Downloads\\Project3-Dungeon\\dungeon-images\\";
   private final int SCALE_X = 100;
   private final int SCALE_Y = 100;
+  private final HashMap<Set, String> imageMap;
   private RLocation[][] locations;
   private Dimension boardSize;
   private RDungeon readModel;
-  private final HashMap<Set, String> imageMap;
 
   public BoardPanel(Dimension d, RDungeon model) {
     locations = new RLocation[d.height][d.width];
@@ -90,17 +90,17 @@ class BoardPanel extends JPanel {
     }
     if (readModel.isGameOver()) {
       BufferedImage picture;
-        try {
-          if (readModel.getPlayerHealth() == Health.HEALTHY) {
-            picture = ImageIO.read(new File(IMAGE_URL + "win.png"));
-          } else {
-            picture = ImageIO.read(new File(IMAGE_URL + "lose.png"));
-          }
-        } catch (IOException ioe) {
-          throw new IllegalStateException("Append failed", ioe);
+      try {
+        if (readModel.getPlayerHealth() == Health.HEALTHY) {
+          picture = ImageIO.read(new File(IMAGE_URL + "win.png"));
+        } else {
+          picture = ImageIO.read(new File(IMAGE_URL + "lose.png"));
         }
-        g2d.drawImage(picture, 0, 0, this);
+      } catch (IOException ioe) {
+        throw new IllegalStateException("Append failed", ioe);
       }
+      g2d.drawImage(picture, 0, 0, this);
+    }
   }
 
   public void setModel(Dimension d, RDungeon model) {

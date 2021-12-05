@@ -393,6 +393,7 @@ public class DungeonTest {
     Assert.assertEquals(player_treasures, q.getPlayerTreasure()); // Check treasure added
     Assert.assertEquals(treasures, q.getCurrentLocationTreasure()); // Check treasure removed
   }
+
   @Test
   public void takeAndGetTreasureTwoTakesStack() {
     Dungeon q = new TreasureDungeon(14, 15, 100, true, 100, 4L);

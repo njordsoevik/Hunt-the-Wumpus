@@ -36,10 +36,17 @@ public interface DungeonView {
    * Transmit an error message to the view, in case
    * the command could not be processed correctly
    *
-   * @param error
+   * @param error the error message
    */
   void showErrorMessage(String error);
 
+  /**
+   * Update the model the board is displaying, used when the menu creates a new dungeon.
+   *
+   * @param x     rows of the model
+   * @param y     columns of the model
+   * @param model the model
+   */
   void updateModel(int x, int y, RDungeon model);
 
 }

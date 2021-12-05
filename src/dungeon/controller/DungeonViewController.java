@@ -6,8 +6,8 @@ import dungeon.model.OtyughTreasureDungeon;
 import dungeon.view.DungeonView;
 
 public class DungeonViewController implements DungeonController, Features {
-  private OtyughDungeon model;
   private final DungeonView view;
+  private OtyughDungeon model;
 
   public DungeonViewController(OtyughDungeon m, DungeonView v) {
     this.model = m;
@@ -18,13 +18,6 @@ public class DungeonViewController implements DungeonController, Features {
   public void go() {
     view.setFeatures(this);
     view.makeVisible();
-    view.resetFocus();
-  }
-
-  @Override
-  public void handleCellClick(int row, int col) {
-    System.out.println(row);
-    System.out.println(col);
     view.resetFocus();
   }
 

@@ -7,8 +7,8 @@ import dungeon.model.Arrow;
 import dungeon.model.Coordinate;
 import dungeon.model.Direction;
 import dungeon.model.Health;
-import dungeon.model.RLocation;
 import dungeon.model.OtyughDungeon;
+import dungeon.model.RLocation;
 import dungeon.model.Smell;
 import dungeon.model.Treasure;
 

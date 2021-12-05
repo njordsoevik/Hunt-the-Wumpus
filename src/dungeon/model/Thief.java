@@ -3,11 +3,11 @@ package dungeon.model;
 public class Thief {
   private Boolean stolen;
 
-  public Thief () {
+  public Thief() {
     stolen = false;
   }
 
-  public void setStolen (Boolean b) {
+  public void setStolen(Boolean b) {
     stolen = b;
   }
 

@@ -15,6 +15,7 @@ public class Main {
 
   /**
    * Main method for the driver, starts the dungeon input generation and game.
+   *
    * @param args List of arguments:
    *             1. Rows.
    *             2. Columns.
@@ -33,7 +34,7 @@ public class Main {
     int n_monsters;
     boolean wrapped;
     OtyughDungeon model;
-    if (args.length>0) {
+    if (args.length > 0) {
       rows = Integer.parseInt(args[0]);
       columns = Integer.parseInt(args[1]);
       wrapped = Boolean.parseBoolean(args[2]);
@@ -46,7 +47,7 @@ public class Main {
       Readable input = new InputStreamReader(System.in);
       Appendable output = System.out;
       System.out.println("Input will be from System.in and the output will be to System.out. \n");
-      DungeonController controller = new DungeonConsoleController(model,input,output);
+      DungeonController controller = new DungeonConsoleController(model, input, output);
       controller.go();
     } else {
       model = new OtyughTreasureDungeon(5, 5, 0, false, 150, 50, 1);
