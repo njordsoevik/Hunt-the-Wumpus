@@ -375,7 +375,7 @@ public class OtyughDungeonTest {
     Appendable outputLog = new StringBuilder();
     OtyughDungeon m = null;
     DungeonController c = new DungeonConsoleController(m, testInput, outputLog);
-    c.go();
+    c.playGame();
   }
 
 
@@ -385,7 +385,7 @@ public class OtyughDungeonTest {
     StringReader input = new StringReader("m south");
     Appendable gameLog = new FailingAppendable();
     DungeonController c = new DungeonConsoleController(m, input, gameLog);
-    c.go();
+    c.playGame();
   }
 
   @Test
@@ -394,7 +394,7 @@ public class OtyughDungeonTest {
     StringReader input = new StringReader("m south");
     Appendable outputLog = new StringBuilder();
     DungeonController c = new DungeonConsoleController(m, input, outputLog);
-    c.go();
+    c.playGame();
     Assert.assertEquals(Direction.SOUTH.toString(), ((MockModel) m).inputOne);
   }
 
@@ -404,7 +404,7 @@ public class OtyughDungeonTest {
     Appendable outputLog = new StringBuilder();
     OtyughDungeon m = new OtyughTreasureDungeon(10, 10, 1000, true, 120, 50, 1, 5L);
     DungeonController c = new DungeonConsoleController(m, testInput, outputLog);
-    c.go();
+    c.playGame();
     Set directions = new HashSet();
     directions.add(Direction.SOUTH);
     directions.add(Direction.EAST);
@@ -419,7 +419,7 @@ public class OtyughDungeonTest {
     Appendable outputLog = new StringBuilder();
     OtyughDungeon m = new OtyughTreasureDungeon(10, 10, 1000, true, 120, 200, 1, 5L);
     DungeonController c = new DungeonConsoleController(m, testInput, outputLog);
-    c.go();
+    c.playGame();
     Assert.assertEquals(m.isGameOver(), false);
   }
 
@@ -429,7 +429,7 @@ public class OtyughDungeonTest {
     Appendable outputLog = new StringBuilder();
     OtyughDungeon m = new OtyughTreasureDungeon(3, 4, 0, false, 120, 50, 2, 5L);
     DungeonController c = new DungeonConsoleController(m, testInput, outputLog);
-    c.go();
+    c.playGame();
     Set directions = new HashSet();
     directions.add(Direction.SOUTH);
     directions.add(Direction.EAST);
@@ -443,21 +443,21 @@ public class OtyughDungeonTest {
     Appendable outputLog = new StringBuilder();
     OtyughDungeon m = new OtyughTreasureDungeon(3, 4, 0, false, 20, 10000, 7, 5L);
     DungeonController c = new DungeonConsoleController(m, testInput, outputLog);
-    c.go();
+    c.playGame();
     Assert.assertEquals(m.getSmell(), Smell.MORE_PUNGENT);
     // test pick-up/shooting with upper-case letters, abbreviated direction and full direction
     testInput = new StringReader("P S s 1 s south 1");
     c = new DungeonConsoleController(m, testInput, outputLog);
-    c.go();
+    c.playGame();
     // test pick-up/shooting with under-case letters, abbreviated direction and full direction
     Assert.assertEquals(m.getSmell(), Smell.MORE_PUNGENT);
     testInput = new StringReader("s s 2 s south 2");
     c = new DungeonConsoleController(m, testInput, outputLog);
-    c.go();
+    c.playGame();
     Assert.assertEquals(m.getSmell(), Smell.LESS_PUNGENT);
     testInput = new StringReader("m s s e 1 s e 1");
     c = new DungeonConsoleController(m, testInput, outputLog);
-    c.go();
+    c.playGame();
     Assert.assertEquals(m.getSmell(), Smell.NONE);
   }
 
@@ -467,7 +467,7 @@ public class OtyughDungeonTest {
     Appendable outputLog = new StringBuilder();
     OtyughDungeon m = new OtyughTreasureDungeon(3, 4, 0, false, 200, 200, 1, 5L);
     DungeonController c = new DungeonConsoleController(m, testInput, outputLog);
-    c.go();
+    c.playGame();
     String test = "\n"
             + "\n"
             + "Doors lead to: SOUTH\n"
@@ -493,7 +493,7 @@ public class OtyughDungeonTest {
     Appendable outputLog = new StringBuilder();
     OtyughDungeon m = new OtyughTreasureDungeon(3, 4, 0, false, 200, 200, 1, 5L);
     DungeonController c = new DungeonConsoleController(m, testInput, outputLog);
-    c.go();
+    c.playGame();
     String test = "\n" +
             "\n" +
             "Doors lead to: SOUTH\n" +
@@ -520,7 +520,7 @@ public class OtyughDungeonTest {
     Appendable outputLog = new StringBuilder();
     OtyughDungeon m = new OtyughTreasureDungeon(3, 4, 0, false, 200, 200, 1, 5L);
     DungeonController c = new DungeonConsoleController(m, testInput, outputLog);
-    c.go();
+    c.playGame();
     String test = "\n" +
             "\n" +
             "Doors lead to: SOUTH\n" +
@@ -548,7 +548,7 @@ public class OtyughDungeonTest {
     Appendable outputLog = new StringBuilder();
     OtyughDungeon m = new OtyughTreasureDungeon(3, 4, 0, false, 20, 10, 1, 5L);
     DungeonController c = new DungeonConsoleController(m, testInput, outputLog);
-    c.go();
+    c.playGame();
     Assert.assertEquals(m.isGameOver(), true);
     Assert.assertTrue(outputLog.toString().contains("End square reached, game over!"));
     Assert.assertEquals(m.getPlayerHealth(), Health.HEALTHY);
@@ -560,7 +560,7 @@ public class OtyughDungeonTest {
     Appendable outputLog = new StringBuilder();
     OtyughDungeon m = new OtyughTreasureDungeon(3, 4, 0, false, 20, 10, 1, 5L);
     DungeonController c = new DungeonConsoleController(m, testInput, outputLog);
-    c.go();
+    c.playGame();
     Assert.assertEquals(m.isGameOver(), true);
     Assert.assertTrue(outputLog.toString().contains("An Otyugh has eaten you! Game over."));
     Assert.assertEquals(m.getPlayerHealth(), Health.DEAD);

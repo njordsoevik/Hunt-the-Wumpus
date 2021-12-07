@@ -7,7 +7,18 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.JComboBox;
+import javax.swing.JMenuBar;
+import javax.swing.WindowConstants;
+import javax.swing.JSeparator;
+import javax.swing.JScrollPane;
+import javax.swing.BoxLayout;
+import javax.swing.JOptionPane;
+import javax.swing.JButton;
 import javax.swing.border.TitledBorder;
 
 import dungeon.controller.Features;
@@ -17,11 +28,14 @@ import dungeon.model.RDungeon;
 import dungeon.model.RLocation;
 import dungeon.model.Treasure;
 
+/**
+ * This is the view for the dungeon graphical user interface (GUI). Players will interact with
+ * this GUI to generate and play games.
+ */
 public class DungeonSwingView extends JFrame implements DungeonView {
   private static final int SCALE_X = 100;
   private static final int SCALE_Y = 100;
   private final JPanel container;
-  private final JPanel infoPanel;
   private final JLabel directionsLabel;
   private final JLabel smellLabel;
   private final JLabel treasureLabel;
@@ -29,7 +43,6 @@ public class DungeonSwingView extends JFrame implements DungeonView {
   private final JLabel healthLabel;
   private final JLabel playerArrowLabel;
   private final JLabel playerTreasureLabel;
-  private final JMenuBar menuBar;
   private final JTextField rows;
   private final JTextField columns;
   private final JTextField interconnectivity;
@@ -45,7 +58,7 @@ public class DungeonSwingView extends JFrame implements DungeonView {
   private boolean controlModifierPressed;
 
   public DungeonSwingView(RDungeon m) {
-    super("Otyugh Dungeon Menu");
+    super("Otyugh Dungeon");
     this.model = m;
     this.controlModifierPressed = false;
     this.setSize(900, 800);
@@ -53,7 +66,7 @@ public class DungeonSwingView extends JFrame implements DungeonView {
     this.setLayout(new BorderLayout());
 
     // ADD MENU
-    menuBar = new JMenuBar();
+    JMenuBar menuBar = new JMenuBar();
     menuBar.add(new JSeparator());
     menuBar.add(new JLabel("Rows"));
     rows = new JTextField("5");
@@ -150,7 +163,7 @@ public class DungeonSwingView extends JFrame implements DungeonView {
     playerInfo.add(playerArrowPanel);
 
     // ADD INFO BAR
-    infoPanel = new JPanel();
+    JPanel infoPanel = new JPanel();
     infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
     infoPanel.setBackground(Color.black);
     infoPanel.setPreferredSize(new Dimension(300, 150));
@@ -229,7 +242,7 @@ public class DungeonSwingView extends JFrame implements DungeonView {
   }
 
 
-  public void setBoard(int x, int y, RDungeon model) {
+  private void setBoard(int x, int y, RDungeon model) {
     if (board != null) {
       container.remove(board);
       this.board.setModel(new Dimension(x, y), model);
@@ -331,9 +344,9 @@ public class DungeonSwingView extends JFrame implements DungeonView {
   @Override
   public void setFeatures(Features f) {
 
-    enterButton.addActionListener(l -> f.processInput(rows.getText(), columns.getText()
-            , interconnectivity.getText(), (String) wrapped.getSelectedItem()
-            , percentTreasures.getText(), percentArrows.getText(), numberMonsters.getText()));
+    enterButton.addActionListener(l -> f.processInput(rows.getText(), columns.getText(),
+            interconnectivity.getText(), (String) wrapped.getSelectedItem(),
+            percentTreasures.getText(), percentArrows.getText(), numberMonsters.getText()));
 
     restartButton.addActionListener(l -> f.restartProgram());
     quitButton.addActionListener(l -> f.exitProgram());
@@ -349,9 +362,11 @@ public class DungeonSwingView extends JFrame implements DungeonView {
         int lengthCellY = SCALE_Y / (locations.length);
         int scaleClickX = e.getX() / locations[0].length;
         int scaleClickY = e.getY() / locations.length;
-        if (scaleClickX > (currentX + lengthCellX) && scaleClickX < (currentX + (3 * lengthCellX))) {
+        if (scaleClickX > (currentX + lengthCellX)
+                && scaleClickX < (currentX + (3 * lengthCellX))) {
           f.move(Direction.EAST);
-        } else if (scaleClickY > (currentY + lengthCellY) && scaleClickY < (currentY + (3 * lengthCellY))) {
+        } else if (scaleClickY > (currentY + lengthCellY)
+                && scaleClickY < (currentY + (3 * lengthCellY))) {
           f.move(Direction.SOUTH);
         } else if (scaleClickX < (currentX) && scaleClickX > (currentX - (3 * lengthCellX))) {
           f.move(Direction.WEST);
@@ -364,6 +379,7 @@ public class DungeonSwingView extends JFrame implements DungeonView {
     this.addKeyListener(new KeyListener() {
       @Override
       public void keyTyped(KeyEvent e) {
+        // keyPressed handles all user key input
       }
 
       @Override

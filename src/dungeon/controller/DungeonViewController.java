@@ -45,7 +45,7 @@ public class DungeonViewController implements DungeonController, Features {
   }
 
   @Override
-  public void go() {
+  public void playGame() {
     view.setFeatures(this);
     view.makeVisible();
     view.resetFocus();

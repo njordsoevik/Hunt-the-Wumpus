@@ -49,14 +49,14 @@ public class Main {
       Appendable output = System.out;
       System.out.println("Input will be from System.in and the output will be to System.out. \n");
       DungeonController controller = new DungeonConsoleController(model, input, output);
-      controller.go();
+      controller.playGame();
     } else {
       Random rand = new Random();
       Long seed = rand.nextLong();
       model = new OtyughTreasureDungeon(5, 5, 0, false, 150, 50, 1, seed);
       DungeonView view = new DungeonSwingView(model);
       DungeonController controller = new DungeonViewController(model, view, 5, 5, 0, false, 150, 50, 1, seed);
-      controller.go();
+      controller.playGame();
     }
 
   }

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
+import javax.swing.JPanel;
 
 import dungeon.model.Direction;
 import dungeon.model.Health;

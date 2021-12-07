@@ -39,7 +39,7 @@ public class DungeonConsoleController implements DungeonController {
   }
 
   @Override
-  public void go() {
+  public void playGame() {
     String element = "";
     Direction moveDirection;
     int distance;

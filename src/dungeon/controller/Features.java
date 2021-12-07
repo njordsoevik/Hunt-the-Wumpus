@@ -51,6 +51,4 @@ public interface Features {
    * Restart the program.
    */
   void restartProgram();
-
-
 }

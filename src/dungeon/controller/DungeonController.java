@@ -10,5 +10,5 @@ public interface DungeonController {
    * Execute a single game of the dungeon given a dungeon Model. When the game is over,
    * the playGame method ends.
    */
-  void go();
+  void playGame();
 }
