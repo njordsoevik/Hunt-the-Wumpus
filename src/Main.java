@@ -1,4 +1,5 @@
 import java.io.InputStreamReader;
+import java.util.Random;
 
 import dungeon.controller.DungeonConsoleController;
 import dungeon.controller.DungeonController;
@@ -50,9 +51,11 @@ public class Main {
       DungeonController controller = new DungeonConsoleController(model, input, output);
       controller.go();
     } else {
-      model = new OtyughTreasureDungeon(5, 5, 0, false, 150, 50, 1);
+      Random rand = new Random();
+      Long seed = rand.nextLong();
+      model = new OtyughTreasureDungeon(5, 5, 0, false, 150, 50, 1, seed);
       DungeonView view = new DungeonSwingView(model);
-      DungeonController controller = new DungeonViewController(model, view);
+      DungeonController controller = new DungeonViewController(model, view, seed);
       controller.go();
     }
 

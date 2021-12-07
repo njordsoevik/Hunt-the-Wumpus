@@ -37,6 +37,7 @@ public class DungeonSwingView extends JFrame implements DungeonView {
   private final JTextField percentArrows;
   private final JTextField numberMonsters;
   private final JButton enterButton;
+  private final JButton restartButton;
   private final JButton quitButton;
   private final JComboBox<String> wrapped;
   private RDungeon model;
@@ -75,10 +76,12 @@ public class DungeonSwingView extends JFrame implements DungeonView {
     menuBar.add(new JLabel("Wrapped"));
     wrapped = new JComboBox(new String[]{"False", "True"});
     menuBar.add(wrapped);
-    enterButton = new JButton("Enter");
+    enterButton = new JButton("Generate");
     enterButton.setActionCommand("Enter Button");
     menuBar.add(enterButton);
-    //quit button
+    restartButton = new JButton("Restart");
+    restartButton.setActionCommand("Restart Button");
+    menuBar.add(restartButton);
     quitButton = new JButton("Quit");
     menuBar.add(quitButton);
     this.setJMenuBar(menuBar);
@@ -330,8 +333,9 @@ public class DungeonSwingView extends JFrame implements DungeonView {
 
     enterButton.addActionListener(l -> f.processInput(rows.getText(), columns.getText()
             , interconnectivity.getText(), (String) wrapped.getSelectedItem()
-            , percentArrows.getText(), percentTreasures.getText(), numberMonsters.getText()));
+            , percentTreasures.getText(), percentArrows.getText(),  numberMonsters.getText()));
 
+    restartButton.addActionListener(l -> f.restartProgram());
     quitButton.addActionListener(l -> f.exitProgram());
 
     board.addMouseListener(new MouseAdapter() {

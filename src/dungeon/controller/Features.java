@@ -43,5 +43,10 @@ public interface Features {
    */
   void exitProgram();
 
+  /**
+   * Restart the program.
+   */
+  void restartProgram();
+
 
 }

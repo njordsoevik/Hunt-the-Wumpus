@@ -18,8 +18,6 @@ public class TreasureDungeon implements Dungeon {
   private final List<Edge> usedEdges;
   private final List<Edge> unusedEdges;
   private final Random rand;
-  private final int rows;
-  private final int columns;
   private Coordinate startC;
   private Coordinate endC;
 
@@ -65,8 +63,6 @@ public class TreasureDungeon implements Dungeon {
     if (seed != null) {
       this.rand.setSeed(seed);
     }
-    this.rows = rows;
-    this.columns = columns;
     this.grid = new Location[rows][columns];
     this.forest = new ArrayList<>();
     this.edges = new ArrayList<>();
