@@ -3,6 +3,10 @@ package dungeon.model;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * The read interface for locations. Read methods for locations return useful information
+ * about items that are held within, and any useful effects.
+ */
 public interface RLocation {
 
   /**

@@ -303,8 +303,8 @@ public class TreasureDungeon implements Dungeon {
       attempts++;
     }
     if (attempts == 1000) {
-      throw new IllegalStateException("This randomized dungeon could not generate a dungeon" +
-              " with start and end distance greater than 5.");
+      throw new IllegalStateException("This randomized dungeon could not generate a dungeon"
+              + " with start and end distance greater than 5.");
     }
     this.startC = randStart;
     this.endC = randEnd;

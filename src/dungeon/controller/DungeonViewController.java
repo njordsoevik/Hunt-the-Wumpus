@@ -7,6 +7,10 @@ import dungeon.model.OtyughDungeon;
 import dungeon.model.OtyughTreasureDungeon;
 import dungeon.view.DungeonView;
 
+/**
+ * Allows players to interact with the dungeon through the graphical user interface. Dungeon is
+ * generated through graphical user interface input fields.
+ */
 public class DungeonViewController implements DungeonController, Features {
   private final DungeonView view;
   private OtyughDungeon model;
@@ -19,17 +23,25 @@ public class DungeonViewController implements DungeonController, Features {
   private int arrowsParse;
   private int monstersParse;
 
-  public DungeonViewController(OtyughDungeon m, DungeonView v, Long seed) {
+  /**
+   * Constructor for the view controller.
+   *
+   * @param m the model to pass information to.
+   * @param v the view to make updates to.
+   */
+  public DungeonViewController(OtyughDungeon m, DungeonView v, int rows, int columns,
+                               int connectivity, boolean wrapped, int treasure, int arrows,
+                               int monsters, Long seed) {
     this.model = m;
     this.view = v;
     this.seed = seed;
-    rowsParse = 5;
-    colsParse = 5;
-    connectivityParse = 0;
-    wrappedParse = false;
-    treasureParse = 150;
-    arrowsParse = 50;
-    monstersParse = 1;
+    rowsParse = rows;
+    colsParse = columns;
+    connectivityParse = connectivity;
+    wrappedParse = wrapped;
+    treasureParse = treasure;
+    arrowsParse = arrows;
+    monstersParse = monsters;
   }
 
   @Override
@@ -40,8 +52,8 @@ public class DungeonViewController implements DungeonController, Features {
   }
 
   @Override
-  public void processInput(String rows, String columns, String connectivity, String wrapped
-          , String treasure, String arrows, String monsters) {
+  public void processInput(String rows, String columns, String connectivity, String wrapped,
+                           String treasure, String arrows, String monsters) {
     Random rand = new Random();
     Long backupSeed = seed.longValue();
     try {
@@ -61,16 +73,13 @@ public class DungeonViewController implements DungeonController, Features {
     }
   }
 
-  private void passInput(int rows, int columns, int connectivity, boolean wrapped
-          , int treasure, int arrows, int monsters, Long seed) {
+  private void passInput(int rows, int columns, int connectivity, boolean wrapped,
+                         int treasure, int arrows, int monsters, Long seed) {
     Long backupSeed = seed.longValue();
     try {
-      model = new OtyughTreasureDungeon(rows
-              , columns, connectivity
-              , wrapped, treasure
-              , arrows, monsters, seed);
-      view.updateModel(rows, columns
-              , model);
+      model = new OtyughTreasureDungeon(rows, columns, connectivity, wrapped, treasure, arrows,
+              monsters, seed);
+      view.updateModel(rows, columns, model);
       updateView();
     } catch (IllegalArgumentException ex) {
       this.seed = backupSeed;
@@ -115,7 +124,8 @@ public class DungeonViewController implements DungeonController, Features {
 
   @Override
   public void restartProgram() {
-    passInput(rowsParse, colsParse, connectivityParse, wrappedParse, treasureParse, arrowsParse, monstersParse, seed);
+    passInput(rowsParse, colsParse, connectivityParse, wrappedParse, treasureParse, arrowsParse,
+            monstersParse, seed);
   }
 
   private void execute(OtyughDungeonCommand cmd) {

@@ -9,16 +9,20 @@ import dungeon.model.Direction;
  * the view uses them as callbacks is completely up to how the view is designed
  * (e.g. it could use them as a callback for a button, or a callback for a
  * dialog box, or a set of text inputs, etc.)
- *
- * <p>Each function is designed to take in the necessary data to complete that
- * functionality.
  */
 
 public interface Features {
   /**
    * Process the inputs entered by the user.
    *
-   * @param
+   * @param rows              The number of rows in the dungeon.
+   * @param columns           The number of columns in the dungeon.
+   * @param connectivity The interconnectivity for kruskal's algorithm.
+   * @param wrapped           If the dungeon should wrap around the edges.
+   * @param treasure   Percent of caves with treasure.
+   * @param arrows      Percent of caves with arrows.
+   * @param monsters      The number of Otyughs to inhabit the caves. If zero is inputted, one
+   *                          Otyugh will be placed at the final cave.
    */
   void processInput(String rows, String columns, String connectivity, String wrapped
           , String treasure, String arrows, String monsters);

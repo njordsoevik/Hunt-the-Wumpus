@@ -22,9 +22,9 @@ import dungeon.model.Treasure;
 
 class BoardPanel extends JPanel {
   private final String IMAGE_URL = "C:\\Users\\njord\\Downloads\\Project3-Dungeon\\dungeon-images\\";
-  private int scaleX;
-  private int scaleY;
-  private HashMap<Set, String> imageMap;
+  private final int scaleX;
+  private final int scaleY;
+  private final HashMap<Set, String> imageMap;
   private RLocation[][] locations;
   private Dimension boardSize;
   private RDungeon readModel;

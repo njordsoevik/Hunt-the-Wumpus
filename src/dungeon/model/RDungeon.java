@@ -3,6 +3,10 @@ package dungeon.model;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * The read interface for dungeons. Read methods for the dungeon return useful information
+ * about the player and the locations the player is visiting.
+ */
 public interface RDungeon {
 
   /**

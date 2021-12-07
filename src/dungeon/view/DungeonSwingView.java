@@ -333,7 +333,7 @@ public class DungeonSwingView extends JFrame implements DungeonView {
 
     enterButton.addActionListener(l -> f.processInput(rows.getText(), columns.getText()
             , interconnectivity.getText(), (String) wrapped.getSelectedItem()
-            , percentTreasures.getText(), percentArrows.getText(),  numberMonsters.getText()));
+            , percentTreasures.getText(), percentArrows.getText(), numberMonsters.getText()));
 
     restartButton.addActionListener(l -> f.restartProgram());
     quitButton.addActionListener(l -> f.exitProgram());

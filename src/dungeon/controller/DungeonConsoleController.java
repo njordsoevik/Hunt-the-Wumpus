@@ -14,8 +14,8 @@ import dungeon.model.Smell;
 import dungeon.model.Treasure;
 
 /**
- * This starter files is for students to implement a console controller for the
- * TicTacToe MVC assignment.
+ * Allows players to interact with the dungeon through the command line. Dungeon is generated
+ * through command line arguments.
  */
 public class DungeonConsoleController implements DungeonController {
 

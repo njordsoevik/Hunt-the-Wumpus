@@ -55,7 +55,7 @@ public class Main {
       Long seed = rand.nextLong();
       model = new OtyughTreasureDungeon(5, 5, 0, false, 150, 50, 1, seed);
       DungeonView view = new DungeonSwingView(model);
-      DungeonController controller = new DungeonViewController(model, view, seed);
+      DungeonController controller = new DungeonViewController(model, view, 5, 5, 0, false, 150, 50, 1, seed);
       controller.go();
     }
 
