@@ -43,8 +43,8 @@ public class Main {
       t_percent = Integer.parseInt(args[4]);
       a_percent = Integer.parseInt(args[5]);
       n_monsters = Integer.parseInt(args[6]);
-      model = new OtyughTreasureDungeon(rows, columns, interconnectivity, wrapped
-              , t_percent, a_percent, n_monsters);
+      model = new OtyughTreasureDungeon(rows, columns, interconnectivity, wrapped, t_percent,
+              a_percent, n_monsters);
       Readable input = new InputStreamReader(System.in);
       Appendable output = System.out;
       System.out.println("Input will be from System.in and the output will be to System.out. \n");
@@ -55,7 +55,8 @@ public class Main {
       Long seed = rand.nextLong();
       model = new OtyughTreasureDungeon(5, 5, 0, false, 150, 50, 1, seed);
       DungeonView view = new DungeonSwingView(model);
-      DungeonController controller = new DungeonViewController(model, view, 5, 5, 0, false, 150, 50, 1, seed);
+      DungeonController controller = new DungeonViewController(model, view, 5, 5,
+              0, false, 150, 50, 1, seed);
       controller.playGame();
     }
 

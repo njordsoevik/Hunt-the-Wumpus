@@ -10,6 +10,8 @@ import java.util.Set;
 
 import dungeon.controller.DungeonConsoleController;
 import dungeon.controller.DungeonController;
+import dungeon.controller.DungeonViewController;
+import dungeon.controller.Features;
 import dungeon.model.Arrow;
 import dungeon.model.Direction;
 import dungeon.model.Health;
@@ -18,6 +20,8 @@ import dungeon.model.OtyughTreasureDungeon;
 import dungeon.model.Smell;
 import dungeon.model.Treasure;
 import dungeon.model.TreasureDungeon;
+import dungeon.view.DungeonSwingView;
+import dungeon.view.DungeonView;
 
 /**
  * A testing class for the OtyughDungeon interface.
@@ -566,4 +570,131 @@ public class OtyughDungeonTest {
     Assert.assertEquals(m.getPlayerHealth(), Health.DEAD);
   }
 
+
+  // View Controller Tests
+  @Test (expected = IllegalArgumentException.class)
+  public void invalidModelViewController() {
+    OtyughDungeon m = null;
+    DungeonView view = new DungeonSwingView(m);
+    DungeonController controller = new DungeonViewController(m, view, 5, 5,
+            0, false, 150, 50, 1);
+    controller.playGame();
+  }
+
+  @Test
+  public void testViewInitializes() {
+    OtyughDungeon m = new OtyughTreasureDungeon(10, 10,
+            10, false, 150, 50, 1, 5L);
+    MockView view = new MockView();
+    DungeonController controller = new DungeonViewController(m, view, 10, 10,
+            10, false, 150, 50, 1, 5L);
+    controller.playGame();
+    StringBuilder testBuilder = new StringBuilder();
+    testBuilder.append("setFeatures").append("makeVisible").append("resetFocus");
+
+    Assert.assertEquals(testBuilder.toString(), view.methodCalled.toString());
+  }
+
+  @Test
+  public void testViewMoveFeatures() {
+    OtyughDungeon m = new OtyughTreasureDungeon(10, 10,
+            10, false, 150, 50, 1, 5L);
+    MockView view = new MockView();
+    Features controller = new DungeonViewController(m, view, 10, 10,
+            10, false, 150, 50, 1, 5L);
+    StringBuilder testBuilder = new StringBuilder();
+
+    // INVALID DIRECTION
+    controller.move(Direction.NORTH);
+    testBuilder.append("showErrorMessage");
+    // VALID DIRECTION
+    controller.move(Direction.SOUTH);
+    testBuilder.append("refreshresetFocus");
+
+    Assert.assertEquals(testBuilder.toString(), view.methodCalled.toString());
+  }
+
+  @Test
+  public void testViewShootFeatures() {
+    OtyughDungeon m = new OtyughTreasureDungeon(10, 10,
+            10, false, 150, 50, 1, 5L);
+    MockView view = new MockView();
+    Features controller = new DungeonViewController(m, view, 10, 10,
+            10, false, 150, 50, 1, 5L);
+    StringBuilder testBuilder = new StringBuilder();
+
+    // INVALID DIRECTION
+    controller.shootArrow(null, 5);
+    testBuilder.append("showErrorMessage");
+    // INVALID DISTANCE
+    controller.shootArrow(Direction.NORTH, -5);
+    testBuilder.append("showErrorMessage");
+    // VALID DIRECTION
+    controller.shootArrow(Direction.NORTH, 5);
+    testBuilder.append("refreshresetFocus");
+
+    Assert.assertEquals(testBuilder.toString(), view.methodCalled.toString());
+  }
+
+  @Test
+  public void testViewPickUpFeatures() {
+    OtyughDungeon m = new OtyughTreasureDungeon(10, 10,
+            10, false, 150, 50, 1, 5L);
+    MockView view = new MockView();
+    Features controller = new DungeonViewController(m, view, 10, 10,
+            10, false, 150, 50, 1, 5L);
+    StringBuilder testBuilder = new StringBuilder();
+
+    controller.pickUp();
+    testBuilder.append("refreshresetFocus");
+
+    Assert.assertEquals(testBuilder.toString(), view.methodCalled.toString());
+  }
+
+  @Test
+  public void testViewRestartAndExitFeatures() {
+    OtyughDungeon m = new OtyughTreasureDungeon(10, 10,
+            10, false, 150, 50, 1, 5L);
+    MockView view = new MockView();
+    Features controller = new DungeonViewController(m, view, 10, 10,
+            10, false, 150, 50, 1, 5L);
+    StringBuilder testBuilder = new StringBuilder();
+
+    controller.restartProgram();
+    testBuilder.append("updateModelrefreshresetFocus");
+    Assert.assertEquals(testBuilder.toString(), view.methodCalled.toString());
+    controller.exitProgram();
+    // Exit adds no method calls
+    Assert.assertEquals(testBuilder.toString(), view.methodCalled.toString());
+  }
+
+  @Test
+  public void testViewValidProcessInputFeatures() {
+    OtyughDungeon m = new OtyughTreasureDungeon(10, 10,
+            10, false, 150, 50, 1, 5L);
+    MockView view = new MockView();
+    Features controller = new DungeonViewController(m, view, 10, 10,
+            10, false, 150, 50, 1, 5L);
+    StringBuilder testBuilder = new StringBuilder();
+
+    controller.processInput("10", "10",
+            "10", "false", "150", "50", "1");
+    testBuilder.append("updateModelrefreshresetFocus");
+    Assert.assertEquals(testBuilder.toString(), view.methodCalled.toString());
+  }
+
+  @Test
+  public void testViewInvalidProcessInputFeatures() {
+    OtyughDungeon m = new OtyughTreasureDungeon(10, 10,
+            10, false, 150, 50, 1, 5L);
+    MockView view = new MockView();
+    Features controller = new DungeonViewController(m, view, 10, 10,
+            10, false, 150, 50, 1, 5L);
+    StringBuilder testBuilder = new StringBuilder();
+
+    controller.processInput("-10", "10",
+            "10", "false", "150", "50", "1");
+    testBuilder.append("showErrorMessage");
+    Assert.assertEquals(testBuilder.toString(), view.methodCalled.toString());
+  }
 }

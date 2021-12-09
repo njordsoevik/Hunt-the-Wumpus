@@ -8,6 +8,7 @@ import dungeon.model.Coordinate;
 import dungeon.model.Direction;
 import dungeon.model.Health;
 import dungeon.model.OtyughDungeon;
+import dungeon.model.RDungeon;
 import dungeon.model.RLocation;
 import dungeon.model.Smell;
 import dungeon.model.Treasure;
@@ -15,7 +16,7 @@ import dungeon.model.Treasure;
 /**
  * A mock to simulate a model to check controller input to model.
  */
-public class MockModel implements OtyughDungeon {
+public class MockModel implements OtyughDungeon, RDungeon {
   public String inputOne;
   public String inputTwo;
   public Set<Direction> d;

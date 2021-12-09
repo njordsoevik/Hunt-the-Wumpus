@@ -12,7 +12,7 @@ import java.util.Set;
  * OtyughTreasureDungeon implements the OtyughDungeon interface. OtyughTreasureDungeons store
  * treasure,arrows, and Otyughs. The caves  can be navigated by the player.
  */
-public class OtyughTreasureDungeon extends TreasureDungeon implements OtyughDungeon, RDungeon {
+public class OtyughTreasureDungeon extends TreasureDungeon implements OtyughDungeon {
   private final int STARTING_ARROWS = 3;
 
   /**

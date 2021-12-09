@@ -1,9 +1,13 @@
 package dungeon.view;
 
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -12,6 +16,7 @@ import java.util.Set;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+import javax.swing.text.html.ImageView;
 
 import dungeon.model.Direction;
 import dungeon.model.Health;
@@ -20,16 +25,30 @@ import dungeon.model.RLocation;
 import dungeon.model.Smell;
 import dungeon.model.Treasure;
 
+/**
+ * The view for the dungeon graphical user interface (GUI) dungeon board. Players will use the
+ * board to understand where they are in the dungeon, and what features surround them.
+ */
 class BoardPanel extends JPanel {
-  private final String IMAGE_URL = "C:\\Users\\njord\\Downloads\\Project3-Dungeon\\dungeon-images\\";
   private final int scaleX;
   private final int scaleY;
-  private final HashMap<Set, String> imageMap;
+  private final HashMap<Set, URL> imageMap;
   private RLocation[][] locations;
   private Dimension boardSize;
   private RDungeon readModel;
+  private BufferedImage player;
+  private BufferedImage win;
+  private BufferedImage lose;
+  private BufferedImage stenchOne;
+  private BufferedImage stenchTwo;
+  private BufferedImage thief;
+  private BufferedImage otyugh;
+  private BufferedImage ruby;
+  private BufferedImage sapphire;
+  private BufferedImage diamond;
+  private BufferedImage arrow;
 
-  public BoardPanel(Dimension d, RDungeon model, int scaleX, int scaleY) {
+  BoardPanel(Dimension d, RDungeon model, int scaleX, int scaleY) {
     locations = new RLocation[d.height][d.width];
     readModel = model;
     this.scaleX = scaleX;
@@ -37,27 +56,74 @@ class BoardPanel extends JPanel {
     this.boardSize = d;
     this.setBackground(Color.BLACK);
 
+    try {
+      player = ImageIO.read(getClass().getClassLoader()
+              .getResource("player.png"));
+      win = ImageIO.read(getClass().getClassLoader()
+              .getResource("win.png"));
+      lose = ImageIO.read(getClass().getClassLoader()
+              .getResource("lose.png"));
+      stenchOne = ImageIO.read(getClass().getClassLoader()
+              .getResource("stench01.png"));
+      stenchTwo = ImageIO.read(getClass().getClassLoader()
+              .getResource("stench02.png"));
+      thief = ImageIO.read(getClass().getClassLoader()
+              .getResource("thief.png"));
+      otyugh = ImageIO.read(getClass().getClassLoader()
+              .getResource("otyugh.png"));
+      ruby = ImageIO.read(getClass().getClassLoader()
+              .getResource("ruby.png"));
+      sapphire = ImageIO.read(getClass().getClassLoader()
+              .getResource("emerald.png"));
+      diamond = ImageIO.read(getClass().getClassLoader()
+              .getResource("diamond.png"));
+      arrow = ImageIO.read(getClass().getClassLoader()
+              .getResource("arrow-black.png"));
+    } catch (IOException ex) {
+      throw new IllegalStateException("Could not find images");
+    }
+
     imageMap = new HashMap<>();
-    imageMap.put(new HashSet<>(Arrays.asList(Direction.NORTH, Direction.SOUTH
-            , Direction.EAST, Direction.WEST)), "NSEW");
-    imageMap.put(new HashSet<>(Arrays.asList(Direction.NORTH, Direction.WEST
-            , Direction.EAST)), "NEW");
-    imageMap.put(new HashSet<>(Arrays.asList(Direction.NORTH, Direction.SOUTH
-            , Direction.EAST)), "NSE");
-    imageMap.put(new HashSet<>(Arrays.asList(Direction.NORTH, Direction.SOUTH
-            , Direction.WEST)), "NSW");
-    imageMap.put(new HashSet<>(Arrays.asList(Direction.WEST, Direction.SOUTH
-            , Direction.EAST)), "SEW");
-    imageMap.put(new HashSet<>(Arrays.asList(Direction.NORTH, Direction.EAST)), "NE");
-    imageMap.put(new HashSet<>(Arrays.asList(Direction.NORTH, Direction.SOUTH)), "NS");
-    imageMap.put(new HashSet<>(Arrays.asList(Direction.SOUTH, Direction.EAST)), "SE");
-    imageMap.put(new HashSet<>(Arrays.asList(Direction.WEST, Direction.EAST)), "EW");
-    imageMap.put(new HashSet<>(Arrays.asList(Direction.NORTH, Direction.WEST)), "NW");
-    imageMap.put(new HashSet<>(Arrays.asList(Direction.SOUTH, Direction.WEST)), "SW");
-    imageMap.put(new HashSet<>(Arrays.asList(Direction.SOUTH)), "S");
-    imageMap.put(new HashSet<>(Arrays.asList(Direction.NORTH)), "N");
-    imageMap.put(new HashSet<>(Arrays.asList(Direction.EAST)), "E");
-    imageMap.put(new HashSet<>(Arrays.asList(Direction.WEST)), "W");
+    imageMap.put(new HashSet<>(Arrays.asList(Direction.NORTH, Direction.SOUTH, Direction.EAST,
+            Direction.WEST)), getClass().getClassLoader()
+            .getResource("NSEW.png"));
+    imageMap.put(new HashSet<>(Arrays.asList(Direction.NORTH, Direction.WEST, Direction.EAST)),
+            getClass().getClassLoader()
+                    .getResource("NEW.png"));
+    imageMap.put(new HashSet<>(Arrays.asList(Direction.NORTH, Direction.SOUTH, Direction.EAST)),
+            getClass().getClassLoader()
+                    .getResource("NSE.png"));
+    imageMap.put(new HashSet<>(Arrays.asList(Direction.NORTH, Direction.SOUTH, Direction.WEST)),
+            getClass().getClassLoader()
+                    .getResource("NSW.png"));
+    imageMap.put(new HashSet<>(Arrays.asList(Direction.WEST, Direction.SOUTH, Direction.EAST)),
+            getClass().getClassLoader()
+                    .getResource("SEW.png"));
+    imageMap.put(new HashSet<>(Arrays.asList(Direction.NORTH, Direction.EAST)),
+            getClass().getClassLoader()
+            .getResource("NE.png"));
+    imageMap.put(new HashSet<>(Arrays.asList(Direction.NORTH, Direction.SOUTH)),
+            getClass().getClassLoader()
+            .getResource("NS.png"));
+    imageMap.put(new HashSet<>(Arrays.asList(Direction.SOUTH, Direction.EAST)),
+            getClass().getClassLoader()
+            .getResource("SE.png"));
+    imageMap.put(new HashSet<>(Arrays.asList(Direction.WEST, Direction.EAST)),
+            getClass().getClassLoader()
+            .getResource("EW.png"));
+    imageMap.put(new HashSet<>(Arrays.asList(Direction.NORTH, Direction.WEST)),
+            getClass().getClassLoader()
+            .getResource("NW.png"));
+    imageMap.put(new HashSet<>(Arrays.asList(Direction.SOUTH, Direction.WEST)),
+            getClass().getClassLoader().getResource("SW.png"));
+    imageMap.put(new HashSet<>(Arrays.asList(Direction.SOUTH)), getClass().getClassLoader()
+            .getResource("S.png"));
+    imageMap.put(new HashSet<>(Arrays.asList(Direction.NORTH)), getClass().getClassLoader()
+            .getResource("N.png"));
+    imageMap.put(new HashSet<>(Arrays.asList(Direction.EAST)), getClass().getClassLoader()
+            .getResource("E.png"));
+    imageMap.put(new HashSet<>(Arrays.asList(Direction.WEST)), getClass().getClassLoader()
+            .getResource("W.png"));
   }
 
   @Override
@@ -73,11 +139,12 @@ class BoardPanel extends JPanel {
           BufferedImage picture = getLocationImage(location);
           if (location.getCoordinate().equals(readModel.getCurrentCoordinate())) {
             try {
-              picture = overlay(picture, IMAGE_URL + "player.png", 0);
+
+              picture = overlay(picture, player, 0);
               if (readModel.getSmell() == Smell.MORE_PUNGENT) {
-                picture = overlay(picture, IMAGE_URL + "stench02.png", 0);
+                picture = overlay(picture, stenchTwo, 0);
               } else if (readModel.getSmell() == Smell.LESS_PUNGENT) {
-                picture = overlay(picture, IMAGE_URL + "stench01.png", 0);
+                picture = overlay(picture, stenchOne, 0);
               }
             } catch (IOException ioe) {
               throw new IllegalStateException("Append failed", ioe);
@@ -91,15 +158,11 @@ class BoardPanel extends JPanel {
     }
     if (readModel.isGameOver()) {
       BufferedImage picture;
-      try {
         if (readModel.getPlayerHealth() == Health.HEALTHY) {
-          picture = ImageIO.read(new File(IMAGE_URL + "win.png"));
+          picture = win;
         } else {
-          picture = ImageIO.read(new File(IMAGE_URL + "lose.png"));
+          picture = lose;
         }
-      } catch (IOException ioe) {
-        throw new IllegalStateException("Append failed", ioe);
-      }
       g2d.drawImage(picture, 0, 0, this);
     }
   }
@@ -120,29 +183,30 @@ class BoardPanel extends JPanel {
     BufferedImage picture;
     try {
       // Get directions
-      picture = ImageIO.read(new File(IMAGE_URL + imageMap.get(directions) + ".png"));
+      URL resource = imageMap.get(directions);
+      picture = ImageIO.read(resource);
       // Get Otyugh
       if (location.getOtyughHealth() == Health.HEALTHY
               || location.getOtyughHealth() == Health.INJURED) {
-        picture = overlay(picture, IMAGE_URL + "otyugh.png", 0);
+        picture = overlay(picture, otyugh, 0);
       }
       if (location.getTreasure() != null) {
         List<Treasure> treasures = location.getTreasure();
         if (treasures.contains(Treasure.RUBY)) {
-          picture = overlay(picture, IMAGE_URL + "ruby.png", 0);
+          picture = overlay(picture, ruby, 0);
         }
         if (treasures.contains(Treasure.SAPPHIRE)) {
-          picture = overlay(picture, IMAGE_URL + "emerald.png", 5);
+          picture = overlay(picture, sapphire, 5);
         }
         if (treasures.contains(Treasure.DIAMOND)) {
-          picture = overlay(picture, IMAGE_URL + "diamond.png", 10);
+          picture = overlay(picture, diamond, 10);
         }
       }
       if (!location.getArrows().isEmpty()) {
-        picture = overlay(picture, IMAGE_URL + "arrow-black.png", 15);
+        picture = overlay(picture, arrow, 15);
       }
       if (location.getThief() != null) {
-        picture = overlay(picture, IMAGE_URL + "thief.png", 20);
+        picture = overlay(picture, thief, 20);
       }
     } catch (IOException ioe) {
       throw new IllegalStateException("Append failed", ioe);
@@ -151,8 +215,8 @@ class BoardPanel extends JPanel {
     return picture;
   }
 
-  private BufferedImage overlay(BufferedImage starting, String fpath, int offset) throws IOException {
-    BufferedImage overlay = ImageIO.read(new File(fpath));
+  private BufferedImage overlay(BufferedImage starting,
+                                BufferedImage overlay, int offset) throws IOException {
     int w = Math.max(starting.getWidth(), overlay.getWidth());
     int h = Math.max(starting.getHeight(), overlay.getHeight());
     BufferedImage combined = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);

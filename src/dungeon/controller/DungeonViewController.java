@@ -5,6 +5,7 @@ import java.util.Random;
 import dungeon.model.Direction;
 import dungeon.model.OtyughDungeon;
 import dungeon.model.OtyughTreasureDungeon;
+import dungeon.model.RDungeon;
 import dungeon.view.DungeonView;
 
 /**
@@ -24,7 +25,7 @@ public class DungeonViewController implements DungeonController, Features {
   private int monstersParse;
 
   /**
-   * Constructor for the view controller.
+   * Constructor for the view controller with a seed.
    *
    * @param m the model to pass information to.
    * @param v the view to make updates to.
@@ -32,6 +33,9 @@ public class DungeonViewController implements DungeonController, Features {
   public DungeonViewController(OtyughDungeon m, DungeonView v, int rows, int columns,
                                int connectivity, boolean wrapped, int treasure, int arrows,
                                int monsters, Long seed) {
+    if (!(m instanceof RDungeon)){
+      throw new IllegalArgumentException("Invalid model");
+    }
     this.model = m;
     this.view = v;
     this.seed = seed;
@@ -43,6 +47,19 @@ public class DungeonViewController implements DungeonController, Features {
     arrowsParse = arrows;
     monstersParse = monsters;
   }
+
+  /**
+   * Constructor for the view controller with no seed.
+   *
+   * @param m the model to pass information to.
+   * @param v the view to make updates to.
+   */
+  public DungeonViewController(OtyughDungeon m, DungeonView v, int rows, int columns,
+                               int connectivity, boolean wrapped, int treasure, int arrows,
+                               int monsters) {
+    this(m, v, rows, columns, connectivity, wrapped, treasure, arrows, monsters, null);
+  }
+
 
   @Override
   public void playGame() {
@@ -65,8 +82,8 @@ public class DungeonViewController implements DungeonController, Features {
       arrowsParse = Integer.parseInt(arrows);
       monstersParse = Integer.parseInt(monsters);
       seed = rand.nextLong();
-      passInput(rowsParse, colsParse, connectivityParse, wrappedParse, treasureParse, arrowsParse
-              , monstersParse, seed);
+      passInput(rowsParse, colsParse, connectivityParse, wrappedParse, treasureParse, arrowsParse,
+              monstersParse, seed);
     } catch (IllegalArgumentException ex) {
       this.seed = backupSeed;
       view.showErrorMessage(ex.toString());

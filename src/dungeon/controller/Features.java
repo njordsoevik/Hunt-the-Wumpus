@@ -24,8 +24,8 @@ public interface Features {
    * @param monsters      The number of Otyughs to inhabit the caves. If zero is inputted, one
    *                          Otyugh will be placed at the final cave.
    */
-  void processInput(String rows, String columns, String connectivity, String wrapped
-          , String treasure, String arrows, String monsters);
+  void processInput(String rows, String columns, String connectivity, String wrapped,
+                    String treasure, String arrows, String monsters);
 
   /**
    * Shoot an arrow.

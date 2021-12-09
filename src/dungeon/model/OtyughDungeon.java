@@ -18,10 +18,9 @@ public interface OtyughDungeon extends Dungeon, RDungeon {
    * is exact to the Otyugh's location. Two hits are required to kill an Otyugh. The arrow will
    * "curve" through a tunnel location
    *
-   * @param     dir      The direction to shoot the arrow.
-   * @param     distance The distance to shoot the arrow.
-   * @throws    IllegalArgumentException If the direction is not available to move, or distance is
-   *    below zero.
+   * @param dir The direction to shoot the arrow.
+   * @param distance The distance to shoot the arrow.
+   * @throws IllegalArgumentException If the direction or distance is invalid.
    */
   void shootArrow(Direction dir, int distance);
 

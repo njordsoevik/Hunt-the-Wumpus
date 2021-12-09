@@ -4,8 +4,8 @@ import dungeon.controller.Features;
 import dungeon.model.RDungeon;
 
 /**
- * A view for TicTacToe: display the game board and provide visual interface
- * for users.
+ * A view for the dungeon that displays the game board and provides a visual interface
+ * for users to interact with.
  */
 public interface DungeonView {
 

@@ -1,6 +1,9 @@
 package dungeon.view;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.Dimension;
+import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
@@ -29,7 +32,7 @@ import dungeon.model.RLocation;
 import dungeon.model.Treasure;
 
 /**
- * This is the view for the dungeon graphical user interface (GUI). Players will interact with
+ * The view for the dungeon graphical user interface (GUI). Players will interact with
  * this GUI to generate and play games.
  */
 public class DungeonSwingView extends JFrame implements DungeonView {
@@ -57,8 +60,15 @@ public class DungeonSwingView extends JFrame implements DungeonView {
   private BoardPanel board;
   private boolean controlModifierPressed;
 
+  /**
+   * The constructor for the dungeon view that displays the menu, game board and information for
+   * playing the game.
+   */
   public DungeonSwingView(RDungeon m) {
     super("Otyugh Dungeon");
+    if (!(m instanceof RDungeon)){
+      throw new IllegalArgumentException("Invalid model");
+    }
     this.model = m;
     this.controlModifierPressed = false;
     this.setSize(900, 800);
