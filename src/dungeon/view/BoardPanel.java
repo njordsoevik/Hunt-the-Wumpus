@@ -5,7 +5,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
@@ -16,7 +15,6 @@ import java.util.Set;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
-import javax.swing.text.html.ImageView;
 
 import dungeon.model.Direction;
 import dungeon.model.Health;
@@ -32,21 +30,21 @@ import dungeon.model.Treasure;
 class BoardPanel extends JPanel {
   private final int scaleX;
   private final int scaleY;
-  private final HashMap<Set, URL> imageMap;
+  private final HashMap<Set<Direction>, URL> imageMap;
   private RLocation[][] locations;
   private Dimension boardSize;
   private RDungeon readModel;
-  private BufferedImage player;
-  private BufferedImage win;
-  private BufferedImage lose;
-  private BufferedImage stenchOne;
-  private BufferedImage stenchTwo;
-  private BufferedImage thief;
-  private BufferedImage otyugh;
-  private BufferedImage ruby;
-  private BufferedImage sapphire;
-  private BufferedImage diamond;
-  private BufferedImage arrow;
+  private final BufferedImage player;
+  private final BufferedImage win;
+  private final BufferedImage lose;
+  private final BufferedImage stenchOne;
+  private final BufferedImage stenchTwo;
+  private final BufferedImage thief;
+  private final BufferedImage otyugh;
+  private final BufferedImage ruby;
+  private final BufferedImage sapphire;
+  private final BufferedImage diamond;
+  private final BufferedImage arrow;
 
   BoardPanel(Dimension d, RDungeon model, int scaleX, int scaleY) {
     locations = new RLocation[d.height][d.width];
@@ -57,73 +55,53 @@ class BoardPanel extends JPanel {
     this.setBackground(Color.BLACK);
 
     try {
-      player = ImageIO.read(getClass().getClassLoader()
-              .getResource("player.png"));
-      win = ImageIO.read(getClass().getClassLoader()
-              .getResource("win.png"));
-      lose = ImageIO.read(getClass().getClassLoader()
-              .getResource("lose.png"));
-      stenchOne = ImageIO.read(getClass().getClassLoader()
-              .getResource("stench01.png"));
-      stenchTwo = ImageIO.read(getClass().getClassLoader()
-              .getResource("stench02.png"));
-      thief = ImageIO.read(getClass().getClassLoader()
-              .getResource("thief.png"));
-      otyugh = ImageIO.read(getClass().getClassLoader()
-              .getResource("otyugh.png"));
-      ruby = ImageIO.read(getClass().getClassLoader()
-              .getResource("ruby.png"));
-      sapphire = ImageIO.read(getClass().getClassLoader()
-              .getResource("emerald.png"));
-      diamond = ImageIO.read(getClass().getClassLoader()
-              .getResource("diamond.png"));
-      arrow = ImageIO.read(getClass().getClassLoader()
-              .getResource("arrow-black.png"));
+      player = ImageIO.read(loadImage("img/player.png"));
+      win = ImageIO.read(loadImage("img/win.png"));
+      lose = ImageIO.read(loadImage("img/lose.png"));
+      stenchOne = ImageIO.read(loadImage("img/stench01.png"));
+      stenchTwo = ImageIO.read(loadImage("img/stench02.png"));
+      thief = ImageIO.read(loadImage("img/thief.png"));
+      otyugh = ImageIO.read(loadImage("img/otyugh.png"));
+      ruby = ImageIO.read(loadImage("img/ruby.png"));
+      sapphire = ImageIO.read(loadImage("img/emerald.png"));
+      diamond = ImageIO.read(loadImage("img/diamond.png"));
+      arrow = ImageIO.read(loadImage("img/arrow-black.png"));
     } catch (IOException ex) {
       throw new IllegalStateException("Could not find images");
     }
 
     imageMap = new HashMap<>();
     imageMap.put(new HashSet<>(Arrays.asList(Direction.NORTH, Direction.SOUTH, Direction.EAST,
-            Direction.WEST)), getClass().getClassLoader()
-            .getResource("NSEW.png"));
+            Direction.WEST)), loadImage("img/NSEW.png"));
     imageMap.put(new HashSet<>(Arrays.asList(Direction.NORTH, Direction.WEST, Direction.EAST)),
-            getClass().getClassLoader()
-                    .getResource("NEW.png"));
+            loadImage("img/NEW.png"));
     imageMap.put(new HashSet<>(Arrays.asList(Direction.NORTH, Direction.SOUTH, Direction.EAST)),
-            getClass().getClassLoader()
-                    .getResource("NSE.png"));
+            loadImage("img/NSE.png"));
     imageMap.put(new HashSet<>(Arrays.asList(Direction.NORTH, Direction.SOUTH, Direction.WEST)),
-            getClass().getClassLoader()
-                    .getResource("NSW.png"));
+            loadImage("img/NSW.png"));
     imageMap.put(new HashSet<>(Arrays.asList(Direction.WEST, Direction.SOUTH, Direction.EAST)),
-            getClass().getClassLoader()
-                    .getResource("SEW.png"));
+            loadImage("img/SEW.png"));
     imageMap.put(new HashSet<>(Arrays.asList(Direction.NORTH, Direction.EAST)),
-            getClass().getClassLoader()
-            .getResource("NE.png"));
+            loadImage("img/NE.png"));
     imageMap.put(new HashSet<>(Arrays.asList(Direction.NORTH, Direction.SOUTH)),
-            getClass().getClassLoader()
-            .getResource("NS.png"));
+            loadImage("img/NS.png"));
     imageMap.put(new HashSet<>(Arrays.asList(Direction.SOUTH, Direction.EAST)),
-            getClass().getClassLoader()
-            .getResource("SE.png"));
+            loadImage("img/SE.png"));
     imageMap.put(new HashSet<>(Arrays.asList(Direction.WEST, Direction.EAST)),
-            getClass().getClassLoader()
-            .getResource("EW.png"));
+            loadImage("img/EW.png"));
     imageMap.put(new HashSet<>(Arrays.asList(Direction.NORTH, Direction.WEST)),
-            getClass().getClassLoader()
-            .getResource("NW.png"));
+            loadImage("img/NW.png"));
     imageMap.put(new HashSet<>(Arrays.asList(Direction.SOUTH, Direction.WEST)),
-            getClass().getClassLoader().getResource("SW.png"));
-    imageMap.put(new HashSet<>(Arrays.asList(Direction.SOUTH)), getClass().getClassLoader()
-            .getResource("S.png"));
-    imageMap.put(new HashSet<>(Arrays.asList(Direction.NORTH)), getClass().getClassLoader()
-            .getResource("N.png"));
-    imageMap.put(new HashSet<>(Arrays.asList(Direction.EAST)), getClass().getClassLoader()
-            .getResource("E.png"));
-    imageMap.put(new HashSet<>(Arrays.asList(Direction.WEST)), getClass().getClassLoader()
-            .getResource("W.png"));
+            loadImage("img/SW.png"));
+    imageMap.put(new HashSet<>(List.of(Direction.SOUTH)), loadImage("img/S.png"));
+    imageMap.put(new HashSet<>(List.of(Direction.NORTH)), loadImage("img/N.png"));
+    imageMap.put(new HashSet<>(List.of(Direction.EAST)), loadImage("img/E.png"));
+    imageMap.put(new HashSet<>(List.of(Direction.WEST)), loadImage("img/W.png"));
+  }
+
+  private URL loadImage(String name) {
+    return this.getClass().getClassLoader()
+            .getResource(name);
   }
 
   @Override
@@ -158,11 +136,11 @@ class BoardPanel extends JPanel {
     }
     if (readModel.isGameOver()) {
       BufferedImage picture;
-        if (readModel.getPlayerHealth() == Health.HEALTHY) {
-          picture = win;
-        } else {
-          picture = lose;
-        }
+      if (readModel.getPlayerHealth() == Health.HEALTHY) {
+        picture = win;
+      } else {
+        picture = lose;
+      }
       g2d.drawImage(picture, 0, 0, this);
     }
   }
