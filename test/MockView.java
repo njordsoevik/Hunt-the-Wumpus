@@ -2,6 +2,9 @@ import dungeon.controller.Features;
 import dungeon.model.RDungeon;
 import dungeon.view.DungeonView;
 
+/**
+ * A mock to simulate a view to check controller input to view.
+ */
 public class MockView implements DungeonView {
   public StringBuilder methodCalled;
 

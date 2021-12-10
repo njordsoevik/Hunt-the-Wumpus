@@ -66,12 +66,12 @@ public class DungeonSwingView extends JFrame implements DungeonView {
    */
   public DungeonSwingView(RDungeon m) {
     super("Otyugh Dungeon");
-    if (!(m instanceof RDungeon)){
+    if (!(m instanceof RDungeon)) {
       throw new IllegalArgumentException("Invalid model");
     }
     this.model = m;
     this.controlModifierPressed = false;
-    this.setSize(900, 800);
+    this.setSize(1000, 800);
     this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     this.setLayout(new BorderLayout());
 
@@ -453,7 +453,7 @@ public class DungeonSwingView extends JFrame implements DungeonView {
 
   @Override
   public void showErrorMessage(String error) {
-    System.out.println("Error: " + error);
+    JOptionPane.showMessageDialog(this, error, "Error: ", JOptionPane.ERROR_MESSAGE);
   }
 
   @Override

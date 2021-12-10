@@ -33,7 +33,7 @@ public class DungeonViewController implements DungeonController, Features {
   public DungeonViewController(OtyughDungeon m, DungeonView v, int rows, int columns,
                                int connectivity, boolean wrapped, int treasure, int arrows,
                                int monsters, Long seed) {
-    if (!(m instanceof RDungeon)){
+    if (!(m instanceof RDungeon)) {
       throw new IllegalArgumentException("Invalid model");
     }
     this.model = m;
