@@ -1,13 +1,12 @@
 # Hunt-the-Wumpus
 
 About/Overview
-
 The world for this game consists of a dungeon, a network of tunnels and caves that are interconnected.
 Players can explore the entire world by traveling from cave to cave through the tunnels that connect them.
 The dungeon contains treasure, arrows, and a monster called an Otyugh. The player must reach the end square to win, without dying to an Otyugh.
+The dungeon also contains a thief, who will steal the player's treasure when first encountered.
 
 List of features
-
 1. Dungeon
 	a. A dungeon is created with a certain set of rows, columns, interconnectivity, the percent of treasure, the percent of arrows, the number of Otyughs, and an option for wrapping.
 	b. Wrapping will allow dungeon locations to "wrap" to the other sides of the grid.
@@ -26,35 +25,27 @@ List of features
 	m. Moving into a location with a healthy Otyugh will kill the player. An injured Otyugh has a 50% chance of killing the player.
 	
 How To Run. Instructions to run the program should include the following:
-Run the JAR file: Project4_Dungeon.jar
+1. COMMAND LINE: Run the JAR file: Project5_Dungeon.jar {rows} {columns} {wrapped} {interconnectivity}
+              {treasure percent} {arrow percent} {number of monsters}
+2. GUI: Run the JAR file: Project5_Dungeon.jar. MUST be in the same directory as res/img/. On time of submission, JAR is in res/, while images are in res/res/img/.
 
 How to Use the Program.
-1. All dungeon creation and interaction is done through the Dungeon interface.
+1. COMMAND LINE: 
+	a. Move: "m" + DIRECTION ("n","s","e","w")
+	b. Shoot: "s" + DIRECTION ("n","s","e","w") + DISTANCE (0+)
+	c. PickUp: "p"
+	d. Information: "i"
+	e. Quit: "q"
+2. GUI: 
+	a. Move: {Arrow Keys} OR {Click adjacent cells}
+	b. Shoot: CNTRL + {Arrow Key}. Input distance in the pop window and press enter.
+	c. PickUp: "p"
 
 Description of Examples.
-Run 1 -- ExampleRun1.txt: The brave adventurer (Game is won).
-1. Create a 3 by 4, unwrapped, 0 interconnectivity dungeon.
-2. Player moves throughout the dungeon, until the smell becomes VERY pungent
-3. Player moves away from  and towards then smell to get an idea of where the Otyugh is.
-4. Player picks up arrows.
-5. Player shoots to the east twice to kill the Otyugh. The smell goes away.
-6. Player moves to the end square where the dead Otyugh resides, game is won!
-
-Run 2 -- ExampleRun2.txt: The greedy adventurer (Game is lost).
-1. Create a 3 by 4, unwrapped, 0 interconnectivity dungeon.
-2. Get player information before picking up any treasure or arrows.
-3. Pick up arrows.
-4. Get player information after picking up arrows.
-5. Move to find treasure.
-6. Pick up arrows and treasure.
-7. Get player information after picking up arrows and treasure.
-8. Move to the end square that contains a live Otyugh. Player dies and loses the game.
-
-Design/Model Changes.
-1. Created an edge class to keep track of the links between each node on creation.
-2. Created Coordinate class and added a reference to Coordinate for viable classes. Allowed for better tracking when creating the dungeon and navigation.
-3. Removed integer variables from Direction, was not needed.
-4. Moved some of the kruskals algorithm to private methods for clean code.
+Run 1 -- Game_Screenshot.png
+1. Create a 5 by 5, unwrapped, 0 interconnectivity dungeon with 1 monster.
+2. Player moves throughout the dungeon, picking up some arrows along the way
+3. Player moves away towards the smell, where the Otyugh is residing.
 
 Assumptions.
 1. None
